@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/*
+  Identidad de marca — Rebeca Velásquez, Psicóloga Clínica
+  Evoluciona los 3 tonos ya existentes en su material: verde salvia,
+  beige/crema, terracota-rosado. No se reemplazan.
+
+  Uso previsto:
+  - sage       → acento fuerte (botones, líneas, iconografía, CTAs)
+  - terracotta → reservado para 1-2 momentos clave (nunca decoración masiva)
+  - cream/base → fondo general, cálido y claro
+  - forest     → única sección de contraste real (Trayectoria/Certificaciones)
+*/
+@theme {
+  /* Verde salvia — profundizado como acento fuerte */
+  --color-sage-50: #f3f6f2;
+  --color-sage-100: #e3ebe0;
+  --color-sage-200: #c7d7c1;
+  --color-sage-300: #a4bd9a;
+  --color-sage-400: #82a175;
+  --color-sage-500: #64855a;
+  --color-sage-600: #4d6b45;
+  --color-sage-700: #3e5638;
+  --color-sage-800: #33452e;
+  --color-sage-900: #2b3a27;
+
+  /* Terracota-rosado — reservado, momentos clave únicamente */
+  --color-terracotta-50: #fbf1ec;
+  --color-terracotta-100: #f5ded2;
+  --color-terracotta-200: #ecbca5;
+  --color-terracotta-300: #e0977a;
+  --color-terracotta-400: #d0785a;
+  --color-terracotta-500: #b95f43;
+  --color-terracotta-600: #994a34;
+
+  /* Beige/crema — base general clara y cálida */
+  --color-cream-50: #fdfbf7;
+  --color-cream-100: #f8f2e9;
+  --color-cream-200: #f0e6d5;
+  --color-cream-300: #e5d5bb;
+
+  /* Verde bosque profundo — única sección de contraste oscuro real */
+  --color-forest-900: #1b2419;
+  --color-forest-800: #212d1e;
+  --color-forest-700: #2a3826;
+
+  --font-serif-brand: "Fraunces", "Georgia", serif;
+  --font-sans-body: "Inter", system-ui, sans-serif;
+}
+
+body {
+  @apply bg-cream-50 text-sage-900;
+  font-family: var(--font-sans-body);
+}
