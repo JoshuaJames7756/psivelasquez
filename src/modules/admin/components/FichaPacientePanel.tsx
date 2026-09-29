@@ -1,5 +1,6 @@
 import { colorAvatar, inicialesNombre } from '../../shared/utils/avatarColor'
 import { useFichaPaciente } from '../hooks/useFichaPaciente'
+import { DocumentosPaciente } from './DocumentosPaciente'
 import { GraficoEscalas } from './GraficoEscalas'
 import { HistorialClinicoForm } from './HistorialClinicoForm'
 
@@ -59,27 +60,7 @@ export function FichaPacientePanel({ pacienteId }: { pacienteId: string | null }
             <GraficoEscalas escalas={escalas} />
           </div>
 
-          <div>
-            <h3 className="mb-3 text-sm font-semibold text-sage-800">Documentos</h3>
-            {documentos.length === 0 ? (
-              <p className="text-sm text-sage-500">Sin documentos adjuntos.</p>
-            ) : (
-              <ul className="space-y-2">
-                {documentos.map((doc) => (
-                  <li key={doc.id}>
-                    <a
-                      href={doc.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-sm text-sage-700 underline hover:text-sage-900"
-                    >
-                      {doc.nombre}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <DocumentosPaciente pacienteId={paciente.id} documentosIniciales={documentos} />
         </div>
       </div>
     </div>

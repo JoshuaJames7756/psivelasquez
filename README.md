@@ -59,4 +59,8 @@ falta). Se corren a mano contra Neon (SQL Editor del dashboard, o `psql`).
 Ver `.env.example`. `DATABASE_URL` (Neon), `CLERK_SECRET_KEY` +
 `CLERK_PUBLISHABLE_KEY` (backend), `VITE_CLERK_PUBLISHABLE_KEY` (frontend,
 misma key pública que `CLERK_PUBLISHABLE_KEY` con el prefijo que Vite
-necesita para exponerla al navegador).
+necesita para exponerla al navegador), y `CLOUDINARY_CLOUD_NAME` +
+`CLOUDINARY_API_KEY` + `CLOUDINARY_API_SECRET` (documentos adjuntos de
+pacientes — el archivo sube directo del navegador a Cloudinary con una
+firma que genera el backend, nunca pasa por nuestras funciones serverless
+ni expone la API secret).
