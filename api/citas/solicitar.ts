@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { sql } from '../_lib/db.js'
+import { sql, vencerSlotsExpirados } from '../_lib/db.js'
 
 const HORAS_VENTANA_EXPIRACION = 48 // confirmado con Joshua: 24-48h, se usa el máximo
 
@@ -47,6 +47,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { slotId, nombre, edad, telefono, motivoInicial, primeraVez, modalidad } = req.body
 
   try {
+    // Vence primero cualquier slot cuya ventana de 24-48h ya pasó,
+    // para que si ESTE slotId era uno de esos, quede disponible y la
+    // reserva pueda seguir en vez de fallar con "ya no está disponible".
+    await vencerSlotsExpirados()
+
     // El slot debe existir y estar disponible — si no, alguien se adelantó.
     const [slot] = await sql`
       select id, estado from slots_sabado where id = ${slotId}

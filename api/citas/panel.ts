@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../_lib/auth.js'
-import { sql } from '../_lib/db.js'
+import { sql, vencerSlotsExpirados } from '../_lib/db.js'
 
 /**
  * GET /api/citas/panel?fecha=YYYY-MM-DD
@@ -22,6 +22,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { fecha } = req.query
 
   try {
+    await vencerSlotsExpirados()
+
     const rows = fecha
       ? await sql`
           select s.id, s.fecha, s.hora_inicio, s.modalidad, s.estado,
