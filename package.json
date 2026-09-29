@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vercel dev",
+    "dev:vite-only": "vite",
     "build": "tsc -b && vite build",
     "typecheck:api": "tsc --noEmit -p tsconfig.api.json",
     "lint": "oxlint",
@@ -29,6 +30,7 @@
     "oxlint": "^1.81.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
+    "vercel": "^60.1.3",
     "vite": "^8.3.0"
   }
 }
