@@ -6,7 +6,7 @@ import { useResumenMes } from '../hooks/useResumenMes'
 import { useSlotsSabado } from '../hooks/useSlotsSabado'
 
 export function HoyPage() {
-  const { slots, cargando: cargandoSlots, confirmar, liberar } = useSlotsSabado()
+  const { slots, cargando: cargandoSlots, aplicarAccion } = useSlotsSabado()
   const { pacientes: enRiesgo, cargando: cargandoRiesgo } = usePacientesEnRiesgo()
   const { resumen, cargando: cargandoResumen } = useResumenMes()
 
@@ -17,7 +17,7 @@ export function HoyPage() {
       {cargandoSlots ? (
         <p className="text-cream-300">Cargando cupos...</p>
       ) : (
-        <OcupacionSabado slots={slots} onConfirmar={confirmar} onLiberar={liberar} />
+        <OcupacionSabado slots={slots} onAccion={aplicarAccion} />
       )}
 
       {!cargandoRiesgo && enRiesgo.length > 0 && <AlertasAbandono pacientes={enRiesgo} />}

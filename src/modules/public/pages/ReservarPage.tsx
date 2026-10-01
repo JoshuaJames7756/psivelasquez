@@ -7,6 +7,9 @@ const estiloPorEstado: Record<EstadoCita, string> = {
   disponible: 'border-sage-400 text-sage-700 hover:bg-sage-100 cursor-pointer',
   solicitada: 'border-terracotta-300 bg-terracotta-50 text-terracotta-600 cursor-not-allowed',
   confirmada: 'border-sage-300 bg-sage-200 text-sage-500 cursor-not-allowed',
+  pagada: 'border-sage-300 bg-sage-200 text-sage-500 cursor-not-allowed',
+  completada: 'border-sage-300 bg-sage-200 text-sage-500 cursor-not-allowed',
+  cancelada: 'border-sage-200 bg-sage-50 text-sage-400 cursor-not-allowed',
   liberada: 'border-sage-400 text-sage-700 hover:bg-sage-100 cursor-pointer',
   vencida: 'border-sage-200 bg-sage-50 text-sage-400 cursor-not-allowed',
 }
@@ -15,6 +18,9 @@ const microcopyPorEstado: Record<EstadoCita, string> = {
   disponible: 'Escríbeme por WhatsApp para reservarlo',
   solicitada: 'Cupo reservado',
   confirmada: 'Cupo reservado',
+  pagada: 'Cupo reservado',
+  completada: 'No disponible',
+  cancelada: 'No disponible',
   liberada: 'Escríbeme por WhatsApp para reservarlo',
   vencida: 'No disponible',
 }

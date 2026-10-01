@@ -7,6 +7,9 @@ const etiquetaPorEstado: Record<SlotSabadoPanel['estado'], string> = {
   disponible: 'Disponible',
   solicitada: 'Solicitada',
   confirmada: 'Confirmada',
+  pagada: 'Pagada',
+  completada: 'Completada',
+  cancelada: 'Cancelada',
   liberada: 'Liberada',
   vencida: 'Vencida',
 }
@@ -14,13 +17,16 @@ const etiquetaPorEstado: Record<SlotSabadoPanel['estado'], string> = {
 const estiloPorEstado: Record<SlotSabadoPanel['estado'], string> = {
   disponible: 'border-forest-700 bg-forest-800',
   solicitada: 'border-terracotta-400 bg-terracotta-500/10',
-  confirmada: 'border-sage-500 bg-sage-500/10',
+  confirmada: 'border-sage-500/70 bg-sage-500/5',
+  pagada: 'border-sage-500 bg-sage-500/10',
+  completada: 'border-sage-600 bg-sage-700/20',
+  cancelada: 'border-cream-300/20 bg-forest-800',
   liberada: 'border-forest-700 bg-forest-800',
   vencida: 'border-cream-300/20 bg-forest-800',
 }
 
 export function AgendaPage() {
-  const { slots, cargando, liberar, reagendar } = useSlotsSabado()
+  const { slots, cargando, aplicarAccion, reagendar } = useSlotsSabado()
   const [origenSeleccionado, setOrigenSeleccionado] = useState<string | null>(null)
 
   function manejarClickSlot(slot: SlotSabadoPanel) {
@@ -78,13 +84,24 @@ export function AgendaPage() {
               <span className="text-xs text-cream-300">{etiquetaPorEstado[slot.estado]}</span>
             </div>
 
-            {slot.paciente_id && (
+            {slot.paciente_id && slot.estado !== 'cancelada' && (
               <span
                 onClick={(e) => {
                   e.stopPropagation()
-                  liberar(slot.id)
+                  aplicarAccion(slot.id, 'cancelar')
                 }}
                 className="rounded-full border border-terracotta-300 px-3 py-1 text-xs text-terracotta-200 hover:bg-terracotta-500/10"
+              >
+                Cancelar
+              </span>
+            )}
+            {slot.estado === 'cancelada' && (
+              <span
+                onClick={(e) => {
+                  e.stopPropagation()
+                  aplicarAccion(slot.id, 'liberar')
+                }}
+                className="rounded-full border border-sage-400 px-3 py-1 text-xs text-sage-300 hover:bg-sage-500/10"
               >
                 Liberar
               </span>

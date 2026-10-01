@@ -1,10 +1,19 @@
 /**
- * Tipos que reflejan el esquema de db/migrations/001_init.sql.
- * Fuente de verdad única para /api y para el panel /admin.
- * Si el SQL cambia, este archivo se actualiza en el mismo commit.
+ * Tipos que reflejan el esquema de db/migrations/001_init.sql +
+ * 006_estados_cita_ampliados.sql. Fuente de verdad única para /api y
+ * para el panel /admin. Si el SQL cambia, este archivo se actualiza
+ * en el mismo commit.
  */
 
-export type EstadoCita = 'disponible' | 'solicitada' | 'confirmada' | 'liberada' | 'vencida'
+export type EstadoCita =
+  | 'disponible'
+  | 'solicitada'
+  | 'confirmada'
+  | 'pagada'
+  | 'completada'
+  | 'cancelada'
+  | 'liberada'
+  | 'vencida'
 export type ModalidadCita = 'presencial' | 'online'
 export type EstadoPaciente = 'activo' | 'pausado' | 'alta'
 export type TipoEscala = 'GAD-7' | 'PHQ-9'

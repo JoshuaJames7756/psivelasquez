@@ -32,13 +32,11 @@ export function useSlotsSabado(fecha?: string) {
     recargar()
   }, [recargar])
 
-  async function confirmar(slotId: string) {
-    await apiClient.patch(`/citas/${slotId}`, { accion: 'confirmar' })
-    await recargar()
-  }
-
-  async function liberar(slotId: string) {
-    await apiClient.patch(`/citas/${slotId}`, { accion: 'liberar' })
+  async function aplicarAccion(
+    slotId: string,
+    accion: 'confirmar' | 'pagar' | 'completar' | 'cancelar' | 'liberar',
+  ) {
+    await apiClient.patch(`/citas/${slotId}`, { accion })
     await recargar()
   }
 
@@ -47,5 +45,5 @@ export function useSlotsSabado(fecha?: string) {
     await recargar()
   }
 
-  return { slots, cargando, error, recargar, confirmar, liberar, reagendar }
+  return { slots, cargando, error, recargar, aplicarAccion, reagendar }
 }

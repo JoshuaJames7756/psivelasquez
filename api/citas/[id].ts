@@ -3,23 +3,38 @@ import { registrarAuditoria } from '../_lib/auditoria.js'
 import { verificarSesion } from '../_lib/auth.js'
 import { sql } from '../_lib/db.js'
 
-type AccionCita = 'confirmar' | 'liberar' | 'reagendar'
+type AccionCita = 'confirmar' | 'pagar' | 'completar' | 'cancelar' | 'liberar' | 'reagendar'
 
 function esAccionValida(valor: unknown): valor is AccionCita {
-  return valor === 'confirmar' || valor === 'liberar' || valor === 'reagendar'
+  return (
+    valor === 'confirmar' ||
+    valor === 'pagar' ||
+    valor === 'completar' ||
+    valor === 'cancelar' ||
+    valor === 'liberar' ||
+    valor === 'reagendar'
+  )
 }
 
 /**
  * PATCH /api/citas/:id
- *   body: { accion: 'confirmar' | 'liberar' }
+ *   body: { accion: 'confirmar' | 'pagar' | 'completar' | 'cancelar' | 'liberar' }
  *   body: { accion: 'reagendar', slotDestinoId }  — :id es el slot ORIGEN
  *
  * Solo panel — requiere sesión de Rebeca (o Joshua, cuenta de soporte).
  * Fusiona citas/[id].ts + citas/reagendar.ts para bajar el conteo de
  * funciones serverless (límite de 12 en el plan Hobby de Vercel).
  *
- * confirmar:  Rebeca recibió el comprobante de pago por WhatsApp y marca
- *             la cita como pagada/confirmada.
+ * Flujo secuencial confirmado (Prompt 2.0, sección 55):
+ *   solicitada -> confirmada -> pagada -> completada
+ * cancelada y liberada son salidas alternativas, no parte de la
+ * secuencia principal.
+ *
+ * confirmar:  Rebeca separó el horario (sin pago todavía).
+ * pagar:      llegó el comprobante del 50% por WhatsApp.
+ * completar:  la sesión efectivamente ocurrió.
+ * cancelar:   el paciente avisó que no viene (tuvo intención, avisó
+ *             — distinto de liberar, que es por falta de pago/vencimiento).
  * liberar:    el slot vuelve a "disponible", sin paciente asociado.
  * reagendar:  mueve la cita del slot :id (origen) al slotDestinoId,
  *             libera el origen. Ver el comentario sobre CTEs más abajo
@@ -106,27 +121,56 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ ok: true })
     }
 
-    // accion === 'confirmar' | 'liberar'
-    const [slotActualizado] =
-      accion === 'confirmar'
-        ? await sql`
-            update slots_sabado
-            set estado = 'confirmada', confirmado_en = now()
-            where id = ${id} and estado = 'solicitada'
-            returning id, estado, confirmado_en
-          `
-        : await sql`
-            update slots_sabado
-            set estado = 'disponible',
-                paciente_id = null,
-                modalidad = null,
-                notas_reserva = null,
-                solicitado_en = null,
-                expira_en = null,
-                confirmado_en = null
-            where id = ${id} and estado in ('solicitada', 'confirmada')
-            returning id, estado
-          `
+    let slotActualizado: Record<string, unknown> | undefined
+
+    if (accion === 'confirmar') {
+      ;[slotActualizado] = await sql`
+        update slots_sabado
+        set estado = 'confirmada', confirmado_en = now()
+        where id = ${id} and estado = 'solicitada'
+        returning id, estado
+      `
+    } else if (accion === 'pagar') {
+      ;[slotActualizado] = await sql`
+        update slots_sabado
+        set estado = 'pagada'
+        where id = ${id} and estado = 'confirmada'
+        returning id, estado
+      `
+    } else if (accion === 'completar') {
+      ;[slotActualizado] = await sql`
+        update slots_sabado
+        set estado = 'completada'
+        where id = ${id} and estado = 'pagada'
+        returning id, estado
+      `
+    } else if (accion === 'cancelar') {
+      // Cancelada es un estado final informativo — a diferencia de
+      // liberar, NO limpia paciente_id, porque conviene saber quién
+      // canceló para seguimiento (contactar, reprogramar). El slot
+      // en sí no vuelve a estar disponible automáticamente: Rebeca
+      // decide si lo libera después con la acción 'liberar'.
+      ;[slotActualizado] = await sql`
+        update slots_sabado
+        set estado = 'cancelada'
+        where id = ${id} and estado in ('solicitada', 'confirmada', 'pagada')
+        returning id, estado
+      `
+    } else {
+      // accion === 'liberar'
+      ;[slotActualizado] = await sql`
+        update slots_sabado
+        set estado = 'disponible',
+            paciente_id = null,
+            modalidad = null,
+            notas_reserva = null,
+            solicitado_en = null,
+            expira_en = null,
+            confirmado_en = null
+        where id = ${id} and estado in ('solicitada', 'confirmada', 'pagada', 'cancelada')
+        returning id, estado
+      `
+    }
 
     if (!slotActualizado) {
       return res.status(409).json({ error: 'El cupo no está en un estado válido para esa acción' })
