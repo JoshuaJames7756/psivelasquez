@@ -5,14 +5,33 @@ import { AgendaPage } from './modules/admin/pages/AgendaPage'
 import { HoyPage } from './modules/admin/pages/HoyPage'
 import { PacientesPage } from './modules/admin/pages/PacientesPage'
 import { SignInPage } from './modules/admin/pages/SignInPage'
+import { AvisoEticoPage } from './modules/public/pages/AvisoEticoPage'
+import { ComoTrabajoPage } from './modules/public/pages/ComoTrabajoPage'
+import { EnfoquePage } from './modules/public/pages/EnfoquePage'
+import { FaqPage } from './modules/public/pages/FaqPage'
+import { FormacionPage } from './modules/public/pages/FormacionPage'
 import { HomePage } from './modules/public/pages/HomePage'
+import { ModalidadPage } from './modules/public/pages/ModalidadPage'
+import { PublicLayout } from './modules/public/pages/PublicLayout'
+import { ReservarPage } from './modules/public/pages/ReservarPage'
+import { SobreMiPage } from './modules/public/pages/SobreMiPage'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Sitio público */}
-        <Route path="/" element={<HomePage />} />
+        {/* Sitio público — ecosistema de páginas (Prompt 2.0, sección 5) */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/sobre-mi" element={<SobreMiPage />} />
+          <Route path="/como-trabajo" element={<ComoTrabajoPage />} />
+          <Route path="/enfoques/:slug" element={<EnfoquePage />} />
+          <Route path="/formacion" element={<FormacionPage />} />
+          <Route path="/modalidad" element={<ModalidadPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          <Route path="/reservar" element={<ReservarPage />} />
+          <Route path="/aviso-etico" element={<AvisoEticoPage />} />
+        </Route>
 
         {/* Login — Clerk necesita rutas propias con /* para su routing interno */}
         <Route path="/sign-in/*" element={<SignInPage />} />

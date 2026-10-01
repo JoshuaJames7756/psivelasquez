@@ -80,6 +80,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(404).json({ error: 'Registro de historial no encontrado' })
     }
 
+    // Decisión deliberada: NO se audita cada llamada de autoguardado
+    // (corre cada ~800ms mientras se escribe, sección 27 del doc —
+    // auditar cada una llenaría el log de ruido sin valor real). La
+    // auditoría real de "se modificó este historial" ocurre a nivel
+    // de sesión de trabajo, no de cada tecleo — pendiente: agregar un
+    // evento de auditoría cuando el paciente cambia de foco en la UI
+    // (se abandona la edición), no en cada autoguardado individual.
     return res.status(200).json({ historial: actualizado })
   } catch (err) {
     console.error('[PUT /api/historial/:id]', err)

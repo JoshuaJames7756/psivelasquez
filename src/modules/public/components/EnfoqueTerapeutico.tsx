@@ -1,30 +1,43 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import type { MouseEvent } from 'react'
+import { Link } from 'react-router-dom'
 
 const especialidades = [
   {
+    slug: 'ansiedad',
     titulo: 'Ansiedad',
     texto:
       'Te ayudo a identificar qué la dispara y a construir herramientas concretas de TCC para manejarla, no solo a hablar de ella.',
   },
   {
+    slug: 'procesos-de-salud',
     titulo: 'Procesos de salud',
     texto:
       'Sé lo que significa acompañar a alguien en un diagnóstico difícil, lo viví de cerca en el Hospital Belga y en Albert Einstein. Trabajamos juntos tu proceso emocional, no solo el médico.',
   },
   {
+    slug: 'transiciones-de-vida',
     titulo: 'Transiciones vitales',
     texto:
       'Mudanzas, duelos, decisiones grandes, cualquier momento donde sientes que el piso se mueve, trabajamos para que encuentres estabilidad de nuevo.',
   },
   {
+    slug: 'pareja',
     titulo: 'Pareja',
     texto:
       'Mi formación en Marriage and Family Studies me da una mirada distinta: no busco culpables, busco entender la dinámica que los tiene atrapados.',
   },
 ]
 
-function TarjetaEspecialidad({ titulo, texto }: { titulo: string; texto: string }) {
+function TarjetaEspecialidad({
+  slug,
+  titulo,
+  texto,
+}: {
+  slug: string
+  titulo: string
+  texto: string
+}) {
   const mouseX = useMotionValue(0.5)
   const mouseY = useMotionValue(0.5)
 
@@ -44,15 +57,22 @@ function TarjetaEspecialidad({ titulo, texto }: { titulo: string; texto: string 
   }
 
   return (
-    <motion.article
+    <motion.div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformPerspective: 800 }}
-      className="rounded-2xl border border-sage-200 bg-cream-50 p-6 shadow-sm transition-shadow hover:shadow-lg"
     >
-      <h3 className="text-lg font-semibold text-sage-800">{titulo}</h3>
-      <p className="mt-3 text-sage-700">{texto}</p>
-    </motion.article>
+      <Link
+        to={`/enfoques/${slug}`}
+        className="block rounded-2xl border border-sage-200 bg-cream-50 p-6 shadow-sm transition-shadow hover:shadow-lg"
+      >
+        <h3 className="text-lg font-semibold text-sage-800">{titulo}</h3>
+        <p className="mt-3 text-sage-700">{texto}</p>
+        <span className="mt-4 inline-block text-sm font-medium text-sage-600">
+          Conocer más →
+        </span>
+      </Link>
+    </motion.div>
   )
 }
 
@@ -65,7 +85,7 @@ export function EnfoqueTerapeutico() {
         </h2>
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {especialidades.map((item) => (
-            <TarjetaEspecialidad key={item.titulo} {...item} />
+            <TarjetaEspecialidad key={item.slug} {...item} />
           ))}
         </div>
       </div>

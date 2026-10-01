@@ -54,6 +54,23 @@ consola al levantar el servidor)
 `002` es opcional (búsqueda difusa de pacientes por nombre, solo si hace
 falta). Se corren a mano contra Neon (SQL Editor del dashboard, o `psql`).
 
+## Límite de funciones serverless (Vercel Hobby)
+
+El plan Hobby de Vercel permite **máximo 12 Serverless Functions** por
+deployment. Cada archivo en `/api` (fuera de `_lib/`) cuenta como una.
+Hoy hay 10 — margen de 2 antes de necesitar consolidar de nuevo.
+
+Antes de agregar un archivo nuevo en `/api`, correr:
+
+```bash
+find api -name "*.ts" -not -path "*/_lib/*" | wc -l
+```
+
+Si ya se está cerca del límite, preferir ramificar por `req.method` o por
+query param dentro de un archivo existente del mismo recurso, en vez de
+crear uno nuevo (ver `api/citas/index.ts` o `api/documentos/index.ts`
+como ejemplos de este patrón).
+
 ## Variables de entorno
 
 Ver `.env.example`. `DATABASE_URL` (Neon), `CLERK_SECRET_KEY` +
@@ -64,3 +81,11 @@ necesita para exponerla al navegador), y `CLOUDINARY_CLOUD_NAME` +
 pacientes — el archivo sube directo del navegador a Cloudinary con una
 firma que genera el backend, nunca pasa por nuestras funciones serverless
 ni expone la API secret).
+
+## Pendiente conocido: jerarquía de headings
+
+Varios componentes movidos de la Home a página propia (Faq, y potencialmente
+otros) todavía usan `<h2>` como si vivieran dentro de una página más larga.
+Como ahora son el contenido principal de su propia ruta, deberían tener un
+`<h1>` visible en la página — revisar cada página pública antes de publicar
+(accesibilidad y SEO, secciones 43 y 47 del Prompt 2.0).

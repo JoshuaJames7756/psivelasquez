@@ -15,7 +15,7 @@ export function usePacientesEnRiesgo() {
 
   useEffect(() => {
     apiClient
-      .get<{ pacientes: PacienteEnRiesgo[] }>('/pacientes/en-riesgo')
+      .get<{ pacientes: PacienteEnRiesgo[] }>('/pacientes?en_riesgo=1')
       .then((data) => setPacientes(data.pacientes))
       .catch(() => setPacientes([]))
       .finally(() => setCargando(false))

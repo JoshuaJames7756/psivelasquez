@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { registrarAuditoria } from '../_lib/auditoria.js'
 import { verificarSesion } from '../_lib/auth.js'
 import { sql } from '../_lib/db.js'
 
@@ -53,6 +54,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         order by subido_en desc
       `,
     ])
+
+    // No se espera (await) para no demorar la respuesta al usuario
+    // por un log de auditoría — ver registrarAuditoria() para el
+    // manejo de errores silencioso.
+    registrarAuditoria({
+      usuarioId: sesion.userId,
+      tipoEvento: 'acceso_historial',
+      pacienteId: id,
+    })
 
     return res.status(200).json({ paciente, historial, escalas, documentos })
   } catch (err) {

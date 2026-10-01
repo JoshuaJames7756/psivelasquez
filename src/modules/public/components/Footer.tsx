@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export function Footer() {
   return (
     <footer className="bg-forest-900 px-6 py-14 text-cream-100">
@@ -32,6 +34,10 @@ export function Footer() {
         <p className="text-sm text-cream-300">
           Edif. VyV NUR, Parque Fidel Anze #200, Esq. Av. Pando, Cochabamba
         </p>
+
+        <Link to="/aviso-etico" className="text-xs text-cream-300 underline hover:text-sage-300">
+          Aviso ético
+        </Link>
 
         <p className="text-xs text-cream-300">
           Sitio construido por{' '}

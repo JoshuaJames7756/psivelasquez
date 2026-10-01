@@ -17,8 +17,8 @@ export function useSlotsSabado(fecha?: string) {
     setCargando(true)
     setError(null)
     try {
-      const query = fecha ? `?fecha=${fecha}` : ''
-      const data = await apiClient.get<{ slots: SlotSabadoPanel[] }>(`/citas/panel${query}`)
+      const query = fecha ? `?panel=1&fecha=${fecha}` : '?panel=1'
+      const data = await apiClient.get<{ slots: SlotSabadoPanel[] }>(`/citas${query}`)
       setSlots(data.slots)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar los cupos')
@@ -43,7 +43,7 @@ export function useSlotsSabado(fecha?: string) {
   }
 
   async function reagendar(slotOrigenId: string, slotDestinoId: string) {
-    await apiClient.patch('/citas/reagendar', { slotOrigenId, slotDestinoId })
+    await apiClient.patch(`/citas/${slotOrigenId}`, { accion: 'reagendar', slotDestinoId })
     await recargar()
   }
 

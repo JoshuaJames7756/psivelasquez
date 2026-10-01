@@ -35,9 +35,7 @@ function HitoTimeline({ periodo, texto }: { periodo: string; texto: string }) {
 export function Trayectoria() {
   return (
     <section className="mx-auto max-w-3xl px-6 py-20">
-      <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
-        Trayectoria y formación
-      </h2>
+      <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">Trayectoria</h2>
       <p className="mt-4 text-sage-700">
         Cada paso de mi formación ha sido intencional: construir una base clínica sólida y, al
         mismo tiempo, una mirada humana que no se queda solo en el diagnóstico.
