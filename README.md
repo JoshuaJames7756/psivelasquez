@@ -70,8 +70,12 @@ por ejemplo) — Vercel usa Node File Trace para seguir esos imports y
 empaquetarlos dentro de cada función igual, sin que cuenten para el
 límite de 12.
 
-Hoy hay 10 archivos en `/api` — margen de 2 antes de necesitar
-consolidar de nuevo. Antes de agregar un archivo nuevo ahí, correr:
+**Hoy hay 12 archivos en `/api` — EN EL LÍMITE, sin margen.** Cualquier
+archivo nuevo en `/api` rompe el deploy de inmediato. Antes de agregar
+algo, fusionarlo dentro de un endpoint existente del mismo recurso
+(ramificando por `req.method` o query param), o consolidar primero.
+
+Antes de agregar un archivo nuevo ahí, correr:
 
 ```bash
 find api -name "*.ts" | wc -l

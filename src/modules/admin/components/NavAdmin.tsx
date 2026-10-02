@@ -41,6 +41,21 @@ const items = [
     ),
   },
   {
+    to: '/admin/seguimiento',
+    label: 'Seguimiento',
+    end: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+        <path
+          d="M12 4a8 8 0 100 16 8 8 0 000-16z"
+          stroke="currentColor"
+          strokeWidth="1.6"
+        />
+        <path d="M12 9v3.5l2.5 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
     to: '/admin/tareas',
     label: 'Tareas',
     end: false,

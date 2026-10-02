@@ -13,9 +13,11 @@ const SEMANAS_RIESGO_DEFAULT = 3
  * bajar el conteo de funciones serverless (límite de 12 en Vercel
  * Hobby).
  *
- * Definición de "en riesgo": paciente activo cuya última cita
- * confirmada fue hace más de N semanas, y que NO tiene ningún slot
- * futuro en estado solicitada/confirmada.
+ * Definición de "en riesgo": paciente activo cuya última cita PAGADA
+ * o COMPLETADA fue hace más de N semanas, y que NO tiene ningún slot
+ * futuro en solicitada/confirmada/pagada. (Corregido tras el cambio
+ * de estados ampliados — 'confirmada' ya no implica que la sesión se
+ * haya dado, ver migración 006.)
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
@@ -41,12 +43,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           p.telefono,
           max(s.fecha) as ultima_cita_confirmada
         from pacientes p
-        join slots_sabado s on s.paciente_id = p.id and s.estado = 'confirmada'
+        join slots_sabado s on s.paciente_id = p.id and s.estado in ('pagada', 'completada')
         where p.estado = 'activo'
           and not exists (
             select 1 from slots_sabado sf
             where sf.paciente_id = p.id
-              and sf.estado in ('solicitada', 'confirmada')
+              and sf.estado in ('solicitada', 'confirmada', 'pagada')
               and sf.fecha >= current_date
           )
         group by p.id, p.nombre, p.telefono
