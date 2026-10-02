@@ -66,6 +66,21 @@ const items = [
       </svg>
     ),
   },
+  {
+    to: '/admin/finanzas',
+    label: 'Finanzas',
+    end: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+        <path
+          d="M12 3v18M7 7h7a3 3 0 010 6H8a3 3 0 000 6h8"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
 ]
 
 export function NavAdmin() {

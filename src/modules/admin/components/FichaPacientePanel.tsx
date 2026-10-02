@@ -57,7 +57,7 @@ export function FichaPacientePanel({ pacienteId }: { pacienteId: string | null }
         <div className="space-y-8">
           <div>
             <h3 className="mb-3 text-sm font-semibold text-sage-800">Escalas de seguimiento</h3>
-            <GraficoEscalas escalas={escalas} />
+            <GraficoEscalas pacienteId={paciente.id} escalasIniciales={escalas} />
           </div>
 
           <DocumentosPaciente pacienteId={paciente.id} documentosIniciales={documentos} />
