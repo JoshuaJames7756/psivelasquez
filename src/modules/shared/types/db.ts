@@ -88,6 +88,21 @@ export interface DocumentoPaciente {
   subido_en: string
 }
 
+export type EstadoTarea = 'todo' | 'en_progreso' | 'hecha' | 'cancelada'
+export type PrioridadTarea = 'baja' | 'media' | 'alta'
+
+export interface Tarea {
+  id: string
+  titulo: string
+  descripcion: string | null
+  prioridad: PrioridadTarea
+  fecha_limite: string | null
+  estado: EstadoTarea
+  paciente_id: string | null
+  creado_en: string
+  actualizado_en: string
+}
+
 export interface EscalaSeguimiento {
   id: string
   paciente_id: string

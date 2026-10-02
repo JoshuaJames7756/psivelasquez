@@ -40,6 +40,17 @@ const items = [
       </svg>
     ),
   },
+  {
+    to: '/admin/tareas',
+    label: 'Tareas',
+    end: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+        <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M8 12l2.5 2.5L16 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
 ]
 
 export function NavAdmin() {

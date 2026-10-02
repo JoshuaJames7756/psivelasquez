@@ -5,6 +5,7 @@ import { AgendaPage } from './modules/admin/pages/AgendaPage'
 import { HoyPage } from './modules/admin/pages/HoyPage'
 import { PacientesPage } from './modules/admin/pages/PacientesPage'
 import { SignInPage } from './modules/admin/pages/SignInPage'
+import { TareasPage } from './modules/admin/pages/TareasPage'
 import { AvisoEticoPage } from './modules/public/pages/AvisoEticoPage'
 import { ComoTrabajoPage } from './modules/public/pages/ComoTrabajoPage'
 import { EnfoquePage } from './modules/public/pages/EnfoquePage'
@@ -48,6 +49,7 @@ function App() {
           <Route index element={<HoyPage />} />
           <Route path="agenda" element={<AgendaPage />} />
           <Route path="pacientes" element={<PacientesPage />} />
+          <Route path="tareas" element={<TareasPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
