@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { verificarSesion } from '../_lib/auth.js'
+import { verificarSesion } from '../../server-lib/auth.js'
 
 if (!process.env.CLOUDINARY_CLOUD_NAME) {
   throw new Error('CLOUDINARY_CLOUD_NAME no está configurada.')

@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { verificarSesion } from '../_lib/auth.js'
-import { sql, vencerSlotsExpirados } from '../_lib/db.js'
+import { verificarSesion } from '../../server-lib/auth.js'
+import { sql, vencerSlotsExpirados } from '../../server-lib/db.js'
 
 /**
  * GET /api/citas?fecha=YYYY-MM-DD           — público, sin datos de paciente

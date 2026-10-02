@@ -12,5 +12,5 @@
     "noUnusedParameters": true,
     "resolveJsonModule": true
   },
-  "include": ["api"]
+  "include": ["api", "server-lib"]
 }

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { sql, vencerSlotsExpirados } from '../_lib/db.js'
+import { sql, vencerSlotsExpirados } from '../../server-lib/db.js'
 
 const HORAS_VENTANA_EXPIRACION = 48 // confirmado con Joshua: 24-48h, se usa el máximo
 

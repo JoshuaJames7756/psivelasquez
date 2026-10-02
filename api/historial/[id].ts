@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { verificarSesion } from '../_lib/auth.js'
-import { sql } from '../_lib/db.js'
+import { verificarSesion } from '../../server-lib/auth.js'
+import { sql } from '../../server-lib/db.js'
 
 interface BodyAutoguardado {
   motivo?: string

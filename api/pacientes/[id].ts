@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { registrarAuditoria } from '../_lib/auditoria.js'
-import { verificarSesion } from '../_lib/auth.js'
-import { sql } from '../_lib/db.js'
+import { registrarAuditoria } from '../../server-lib/auditoria.js'
+import { verificarSesion } from '../../server-lib/auth.js'
+import { sql } from '../../server-lib/db.js'
 
 /**
  * GET /api/pacientes/:id

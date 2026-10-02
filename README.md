@@ -57,19 +57,31 @@ falta). Se corren a mano contra Neon (SQL Editor del dashboard, o `psql`).
 ## Límite de funciones serverless (Vercel Hobby)
 
 El plan Hobby de Vercel permite **máximo 12 Serverless Functions** por
-deployment. Cada archivo en `/api` (fuera de `_lib/`) cuenta como una.
-Hoy hay 10 — margen de 2 antes de necesitar consolidar de nuevo.
+deployment. **Cada archivo dentro de `/api`, SIN excepción, cuenta como
+una función** — esto incluye helpers compartidos (`db.ts`, `auth.ts`,
+etc.), aunque no exporten un handler HTTP. Confirmado con el equipo de
+Vercel en su foro oficial: la regla es "cualquier archivo top-level
+dentro de `/api`", no "cualquier archivo que exporte un handler".
 
-Antes de agregar un archivo nuevo en `/api`, correr:
+Por eso los helpers compartidos viven en `/server-lib` (carpeta
+HERMANA de `/api`, no una subcarpeta suya) y se importan con rutas
+relativas normales (`../../server-lib/db.js` desde `api/citas/index.ts`,
+por ejemplo) — Vercel usa Node File Trace para seguir esos imports y
+empaquetarlos dentro de cada función igual, sin que cuenten para el
+límite de 12.
+
+Hoy hay 10 archivos en `/api` — margen de 2 antes de necesitar
+consolidar de nuevo. Antes de agregar un archivo nuevo ahí, correr:
 
 ```bash
-find api -name "*.ts" -not -path "*/_lib/*" | wc -l
+find api -name "*.ts" | wc -l
 ```
 
 Si ya se está cerca del límite, preferir ramificar por `req.method` o por
 query param dentro de un archivo existente del mismo recurso, en vez de
 crear uno nuevo (ver `api/citas/index.ts` o `api/documentos/index.ts`
-como ejemplos de este patrón).
+como ejemplos de este patrón). Nunca crear un helper nuevo dentro de
+`/api` — siempre en `/server-lib`.
 
 ## Variables de entorno
 
