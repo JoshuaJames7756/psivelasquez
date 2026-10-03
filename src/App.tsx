@@ -12,6 +12,7 @@ import { TareasPage } from './modules/admin/pages/TareasPage'
 import { AvisoEticoPage } from './modules/public/pages/AvisoEticoPage'
 import { ComoTrabajoPage } from './modules/public/pages/ComoTrabajoPage'
 import { EnfoquePage } from './modules/public/pages/EnfoquePage'
+import { EnfoquesIndexPage } from './modules/public/pages/EnfoquesIndexPage'
 import { FaqPage } from './modules/public/pages/FaqPage'
 import { FormacionPage } from './modules/public/pages/FormacionPage'
 import { HomePage } from './modules/public/pages/HomePage'
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/sobre-mi" element={<SobreMiPage />} />
           <Route path="/como-trabajo" element={<ComoTrabajoPage />} />
+          <Route path="/enfoques" element={<EnfoquesIndexPage />} />
           <Route path="/enfoques/:slug" element={<EnfoquePage />} />
           <Route path="/formacion" element={<FormacionPage />} />
           <Route path="/modalidad" element={<ModalidadPage />} />

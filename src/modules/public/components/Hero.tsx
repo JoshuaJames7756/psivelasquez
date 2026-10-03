@@ -27,7 +27,7 @@ export function Hero() {
             transition={{ duration: 0.5 }}
             className="mb-6 inline-block rounded-full bg-sage-100 px-4 py-1.5 text-sm font-medium text-sage-700"
           >
-            Psicologa · Rebeca Velasquez
+            Hospital Belga · Beck Institute
           </motion.span>
 
           <motion.h1

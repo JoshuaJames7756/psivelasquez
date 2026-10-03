@@ -105,3 +105,12 @@ otros) todavía usan `<h2>` como si vivieran dentro de una página más larga.
 Como ahora son el contenido principal de su propia ruta, deberían tener un
 `<h1>` visible en la página — revisar cada página pública antes de publicar
 (accesibilidad y SEO, secciones 43 y 47 del Prompt 2.0).
+
+## Pendiente conocido: datos de enfoques duplicados
+
+El array de las 7 áreas de enfoque (slug, título, resumen) está
+duplicado en 3 archivos: EnfoqueTerapeutico.tsx (tarjetas de Home),
+EnfoquesIndexPage.tsx (índice /enfoques) y EnfoquePage.tsx (página de
+detalle). Si el texto cambia, actualizar en los 3. Candidato a mover a
+un archivo de datos compartido (src/modules/public/data/enfoques.ts)
+en la próxima pasada de limpieza.
