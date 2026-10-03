@@ -28,7 +28,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
     setErrorMsg(null)
 
     try {
-      const res = await fetch('/api/citas/solicitar', {
+      const res = await fetch('/api/citas', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

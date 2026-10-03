@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import rebecaAvatar from '../../../assets/fotos/rebeca-avatar.jpg'
 
 const links = [
   { to: '/sobre-mi', label: 'Sobre mí' },
@@ -16,8 +17,15 @@ export function NavPublica() {
   return (
     <header className="sticky top-0 z-40 border-b border-sage-200/60 bg-cream-50/90 backdrop-blur-sm">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <NavLink to="/" className="font-[var(--font-serif-brand)] text-2xl text-sage-900">
-          RV
+        <NavLink to="/" className="flex items-center gap-2">
+          <img
+            src={rebecaAvatar}
+            alt="Rebeca Velásquez"
+            className="h-9 w-9 rounded-full object-cover"
+            width={300}
+            height={300}
+          />
+          <span className="font-[var(--font-serif-brand)] text-xl text-sage-900">RV</span>
         </NavLink>
 
         {/* Nav desktop */}

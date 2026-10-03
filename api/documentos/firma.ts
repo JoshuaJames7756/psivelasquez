@@ -19,16 +19,18 @@ cloudinary.config({
 })
 
 /**
- * POST /api/documentos/firma   body: { pacienteId }
+ * POST /api/documentos/firma
+ *   body: { pacienteId }                    — adjunto de un paciente
+ *   body: { contexto: 'certificacion' }     — PDF/imagen de certificación
+ *
  * Solo panel. Genera una firma de subida (signed upload) para que el
  * navegador suba el archivo DIRECTO a Cloudinary, sin que pase por
  * nuestro backend — evita el límite de tamaño de las funciones
  * serverless de Vercel y evita exponer CLOUDINARY_API_SECRET, que
  * nunca sale de este archivo.
  *
- * El folder incluye pacienteId para organizar los adjuntos por
- * paciente dentro de Cloudinary y, si algún día se necesita, poder
- * borrar todos los archivos de un paciente de una sola vez.
+ * El folder organiza por tipo: pacientes/<id> o certificaciones/,
+ * así cada categoría queda separada dentro de Cloudinary.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -41,13 +43,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(401).json({ error: 'No autenticado' })
   }
 
-  const { pacienteId } = req.body ?? {}
-  if (typeof pacienteId !== 'string') {
-    return res.status(400).json({ error: 'pacienteId requerido' })
+  const { pacienteId, contexto } = req.body ?? {}
+
+  let folder: string
+  if (contexto === 'certificacion') {
+    folder = 'rebeca-velasquez/certificaciones'
+  } else if (typeof pacienteId === 'string') {
+    folder = `rebeca-velasquez/pacientes/${pacienteId}`
+  } else {
+    return res.status(400).json({ error: 'pacienteId o contexto requerido' })
   }
 
   const timestamp = Math.round(Date.now() / 1000)
-  const folder = `rebeca-velasquez/pacientes/${pacienteId}`
 
   const firma = cloudinary.utils.api_sign_request(
     { timestamp, folder },

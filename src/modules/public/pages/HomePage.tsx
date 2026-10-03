@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ScrollReveal } from '../../shared/components/ScrollReveal'
+import { ComoSeSienteEsteEspacio } from '../components/ComoSeSienteEsteEspacio'
 import { EnfoqueTerapeutico } from '../components/EnfoqueTerapeutico'
 import { Hero } from '../components/Hero'
 import { ParaQuienEs } from '../components/ParaQuienEs'
@@ -26,6 +27,9 @@ export function HomePage() {
       </ScrollReveal>
       <ScrollReveal>
         <PrimeraSesion />
+      </ScrollReveal>
+      <ScrollReveal>
+        <ComoSeSienteEsteEspacio />
       </ScrollReveal>
 
       <ScrollReveal>

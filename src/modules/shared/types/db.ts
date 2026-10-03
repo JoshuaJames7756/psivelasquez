@@ -103,6 +103,18 @@ export interface Tarea {
   actualizado_en: string
 }
 
+export interface Certificacion {
+  id: string
+  institucion: string
+  nombre: string
+  anio: number | null
+  categoria: string | null
+  descripcion: string | null
+  documento_url: string | null
+  orden: number
+  creado_en: string
+}
+
 export interface EscalaSeguimiento {
   id: string
   paciente_id: string

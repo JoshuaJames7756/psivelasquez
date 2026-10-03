@@ -3,6 +3,7 @@ import { RequireAuth } from './modules/admin/components/RequireAuth'
 import { AdminLayout } from './modules/admin/pages/AdminLayout'
 import { AgendaPage } from './modules/admin/pages/AgendaPage'
 import { HoyPage } from './modules/admin/pages/HoyPage'
+import { CredencialesPage } from './modules/admin/pages/CredencialesPage'
 import { FinanzasPage } from './modules/admin/pages/FinanzasPage'
 import { PacientesPage } from './modules/admin/pages/PacientesPage'
 import { SeguimientoPage } from './modules/admin/pages/SeguimientoPage'
@@ -54,6 +55,7 @@ function App() {
           <Route path="seguimiento" element={<SeguimientoPage />} />
           <Route path="tareas" element={<TareasPage />} />
           <Route path="finanzas" element={<FinanzasPage />} />
+          <Route path="credenciales" element={<CredencialesPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
