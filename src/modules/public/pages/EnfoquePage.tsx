@@ -1,33 +1,92 @@
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 /**
- * PLACEHOLDER DE CONTENIDO — el doc (sección 14) pide, para cada una
- * de las 4 áreas, desarrollar: introducción, qué significa la
+ * Títulos y descripciones cortas son texto real de Rebeca (mandado
+ * por Joshua, octubre 2026) — ya NO son placeholder genérico.
+ *
+ * El doc (sección 14) pide además, por cada área: qué significa la
  * problemática, situaciones frecuentes, cómo puede sentirse, cuándo
  * consultar, cómo trabaja Rebeca este tema, qué puede esperar la
- * persona, preguntas frecuentes propias, y un CTA. Es contenido
- * clínico específico por área — no corresponde inventarlo genérico,
- * necesita que Rebeca lo desarrolle (o al menos lo revise) tema por
- * tema antes de publicar.
+ * persona, y preguntas frecuentes propias — ESO sigue pendiente,
+ * es contenido más extenso que el resumen corto que mandó. El
+ * resumen ya se puede publicar tal cual; el desarrollo profundo por
+ * página todavía necesita que Rebeca lo escriba o lo apruebe.
  */
-const titulos: Record<string, string> = {
-  ansiedad: 'Ansiedad',
-  'procesos-de-salud': 'Procesos de salud',
-  'transiciones-de-vida': 'Transiciones de vida',
-  pareja: 'Pareja',
+interface Enfoque {
+  titulo: string
+  resumen: string
+}
+
+const enfoques: Record<string, Enfoque> = {
+  ansiedad: {
+    titulo: 'Ansiedad y preocupación constante',
+    resumen:
+      'Comprender y afrontar pensamientos, preocupaciones y emociones que pueden estar interfiriendo en tu bienestar cotidiano.',
+  },
+  'animo-bajo-depresion': {
+    titulo: 'Ánimo bajo y depresión',
+    resumen:
+      'Trabajar sobre la pérdida de motivación, tristeza, aislamiento y otros cambios emocionales que afectan tu vida diaria.',
+  },
+  'estres-sobrecarga': {
+    titulo: 'Estrés y sobrecarga emocional',
+    resumen:
+      'Desarrollar herramientas para afrontar períodos de alta exigencia, cambios y situaciones que generan agotamiento emocional.',
+  },
+  'procesos-de-salud': {
+    titulo: 'Procesos de salud y enfermedad',
+    resumen:
+      'Acompañar el impacto emocional de un diagnóstico, tratamiento, hospitalización o convivencia con una condición médica.',
+  },
+  'duelo-adaptacion': {
+    titulo: 'Duelo y procesos de adaptación',
+    resumen:
+      'Encontrar un espacio para elaborar pérdidas y adaptarse a cambios importantes en distintas etapas de la vida.',
+  },
+  pareja: {
+    titulo: 'Dificultades en las relaciones',
+    resumen:
+      'Comprender patrones de interacción, comunicación y emociones que pueden estar afectando los vínculos de pareja o familiares.',
+  },
+  'transiciones-de-vida': {
+    titulo: 'Transiciones y momentos de cambio',
+    resumen:
+      'Acompañar períodos de incertidumbre, decisiones importantes o cambios personales que pueden generar malestar emocional.',
+  },
 }
 
 export function EnfoquePage() {
   const { slug } = useParams<{ slug: string }>()
-  const titulo = (slug && titulos[slug]) || 'Enfoque'
+  const enfoque = slug ? enfoques[slug] : undefined
+
+  if (!enfoque) {
+    return (
+      <main className="mx-auto max-w-3xl px-6 py-20 text-center">
+        <h1 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
+          No encontramos esta área
+        </h1>
+        <Link to="/" className="mt-4 inline-block text-sage-600 underline">
+          Volver al inicio
+        </Link>
+      </main>
+    )
+  }
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-20">
-      <h1 className="font-[var(--font-serif-brand)] text-4xl text-sage-900">{titulo}</h1>
-      <p className="mt-6 text-lg text-sage-500">
-        Contenido pendiente de desarrollo para esta área — introducción, situaciones frecuentes,
-        cómo trabaja Rebeca este tema, y preguntas frecuentes específicas.
-      </p>
+      <h1 className="font-[var(--font-serif-brand)] text-4xl text-sage-900">{enfoque.titulo}</h1>
+      <p className="mt-6 text-lg leading-relaxed text-sage-700">{enfoque.resumen}</p>
+
+      {/* Pendiente (sección 14 del doc): situaciones frecuentes, cómo
+          puede sentirse, cuándo consultar, cómo trabaja Rebeca este
+          tema específico, qué puede esperar la persona, FAQ propia. */}
+
+      <Link
+        to="/reservar"
+        className="mt-10 inline-block rounded-full bg-sage-700 px-6 py-2.5 text-sm font-medium text-cream-50 hover:bg-sage-800"
+      >
+        Reservar una sesión
+      </Link>
     </main>
   )
 }
