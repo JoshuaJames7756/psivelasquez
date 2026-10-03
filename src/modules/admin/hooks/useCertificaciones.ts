@@ -64,8 +64,13 @@ export function useCertificaciones() {
         formData.append('signature', firma.signature)
         formData.append('folder', firma.folder)
 
+        // resource_type 'image' explícito (no 'auto'): con 'auto', un
+        // PDF sube como tipo que el navegador fuerza a descargar en
+        // vez de visualizar embebido. 'image' es lo que permite verlo
+        // directo en el navegador (Cloudinary trata el PDF como
+        // imagen navegable, primera página incluida).
         const resCloudinary = await fetch(
-          `https://api.cloudinary.com/v1_1/${firma.cloudName}/auto/upload`,
+          `https://api.cloudinary.com/v1_1/${firma.cloudName}/image/upload`,
           { method: 'POST', body: formData },
         )
         if (!resCloudinary.ok) throw new Error('No se pudo subir el archivo')

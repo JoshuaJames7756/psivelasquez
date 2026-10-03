@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useCertificaciones } from '../hooks/useCertificaciones'
 
 export function CredencialesPage() {
@@ -7,6 +7,7 @@ export function CredencialesPage() {
   const [nombre, setNombre] = useState('')
   const [anio, setAnio] = useState('')
   const [archivo, setArchivo] = useState<File | null>(null)
+  const inputArchivoRef = useRef<HTMLInputElement>(null)
 
   async function manejarSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -55,12 +56,23 @@ export function CredencialesPage() {
           placeholder="Nombre de la certificación"
           className="w-full rounded-lg border border-forest-700 bg-forest-900 px-3 py-2 text-sm text-cream-50 placeholder:text-cream-300/50 focus:border-sage-500 focus:outline-none"
         />
-        <input
-          type="file"
-          accept=".pdf,image/*"
-          onChange={(e) => setArchivo(e.target.files?.[0] ?? null)}
-          className="w-full text-sm text-cream-300"
-        />
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => inputArchivoRef.current?.click()}
+            className="rounded-lg border border-sage-500 px-4 py-2 text-sm font-medium text-sage-300 hover:bg-sage-500/10"
+          >
+            {archivo ? 'Cambiar archivo' : 'Elegir archivo (PDF o imagen)'}
+          </button>
+          {archivo && <span className="truncate text-sm text-cream-300">{archivo.name}</span>}
+          <input
+            ref={inputArchivoRef}
+            type="file"
+            accept=".pdf,image/*"
+            onChange={(e) => setArchivo(e.target.files?.[0] ?? null)}
+            className="hidden"
+          />
+        </div>
         {error && <p className="text-xs text-terracotta-300">{error}</p>}
         <button
           type="submit"

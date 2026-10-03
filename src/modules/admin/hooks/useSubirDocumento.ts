@@ -36,8 +36,17 @@ export function useSubirDocumento(pacienteId: string, onSubido: (doc: DocumentoP
       formData.append('signature', firma.signature)
       formData.append('folder', firma.folder)
 
+      // resource_type explícito: con 'auto', un PDF/imagen sube como
+      // tipo que el navegador fuerza a descargar en vez de mostrar
+      // embebido. 'image' es lo que permite verlo directo en el
+      // navegador (Cloudinary trata el PDF como imagen navegable).
+      // Para cualquier otro tipo (Word, Excel, etc.) usamos 'raw',
+      // que si se descarga está bien — esos no se visualizan inline.
+      const esImagenOPdf = archivo.type === 'application/pdf' || archivo.type.startsWith('image/')
+      const resourceType = esImagenOPdf ? 'image' : 'raw'
+
       const resCloudinary = await fetch(
-        `https://api.cloudinary.com/v1_1/${firma.cloudName}/auto/upload`,
+        `https://api.cloudinary.com/v1_1/${firma.cloudName}/${resourceType}/upload`,
         { method: 'POST', body: formData },
       )
 
