@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
 import { useCertificacionesPublicas } from '../hooks/useCertificacionesPublicas'
+import { urlPreviewImagen } from '../../shared/utils/cloudinary'
 import type { Certificacion } from '../../shared/types/db'
 
 function ModalCertificacion({
@@ -46,7 +47,7 @@ function ModalCertificacion({
             </div>
             {certificacion.documento_url && (
               <img
-                src={certificacion.documento_url}
+                src={urlPreviewImagen(certificacion.documento_url)}
                 alt={certificacion.nombre}
                 className="w-full rounded-lg"
               />
@@ -91,7 +92,7 @@ export function Certificaciones() {
             <div key={c.id} className="rounded-xl border border-forest-700 bg-forest-800 p-5">
               {c.documento_url ? (
                 <img
-                  src={c.documento_url}
+                  src={urlPreviewImagen(c.documento_url)}
                   alt={c.nombre}
                   className="h-32 w-full rounded-lg object-cover"
                   loading="lazy"
