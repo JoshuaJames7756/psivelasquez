@@ -3,7 +3,7 @@ import { Faq } from '../components/Faq'
 export function FaqPage() {
   return (
     <main>
-      <Faq />
+      <Faq nivelTitulo="h1" />
     </main>
   )
 }

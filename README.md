@@ -98,19 +98,18 @@ pacientes — el archivo sube directo del navegador a Cloudinary con una
 firma que genera el backend, nunca pasa por nuestras funciones serverless
 ni expone la API secret).
 
-## Pendiente conocido: jerarquía de headings
+## Pendiente conocido: preview de PDF en certificaciones no funciona
 
-Varios componentes movidos de la Home a página propia (Faq, y potencialmente
-otros) todavía usan `<h2>` como si vivieran dentro de una página más larga.
-Como ahora son el contenido principal de su propia ruta, deberían tener un
-`<h1>` visible en la página — revisar cada página pública antes de publicar
-(accesibilidad y SEO, secciones 43 y 47 del Prompt 2.0).
-
-## Pendiente conocido: datos de enfoques duplicados
-
-El array de las 7 áreas de enfoque (slug, título, resumen) está
-duplicado en 3 archivos: EnfoqueTerapeutico.tsx (tarjetas de Home),
-EnfoquesIndexPage.tsx (índice /enfoques) y EnfoquePage.tsx (página de
-detalle). Si el texto cambia, actualizar en los 3. Candidato a mover a
-un archivo de datos compartido (src/modules/public/data/enfoques.ts)
-en la próxima pasada de limpieza.
+Las imágenes suben y se ven bien (grid + modal). Los PDFs suben
+correctamente a Cloudinary pero el preview (urlPreviewImagen con
+f_jpg) no renderiza — confirmado con Joshua, probado y sigue sin
+funcionar. Posibles causas a investigar en la próxima pasada:
+- El plan gratuito de Cloudinary puede seguir bloqueando la entrega
+  de PDFs aunque se pida como f_jpg (no confirmado si "Allow delivery
+  of PDF and ZIP files" ya se habilitó en el dashboard)
+- La URL guardada en DB de las certificaciones de PDF puede tener un
+  formato distinto al esperado (revisar qué URL exacta devolvió
+  Cloudinary en la subida)
+- Mientras tanto: certificaciones en PDF se pueden cargar sin
+  archivo adjunto, o convertir a imagen (JPG/PNG) manualmente antes
+  de subir, como workaround.

@@ -1,9 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
+import { buscarEnfoque } from '../data/enfoques'
 
 /**
- * Títulos y descripciones cortas son texto real de Rebeca (mandado
- * por Joshua, octubre 2026) — ya NO son placeholder genérico.
- *
  * El doc (sección 14) pide además, por cada área: qué significa la
  * problemática, situaciones frecuentes, cómo puede sentirse, cuándo
  * consultar, cómo trabaja Rebeca este tema, qué puede esperar la
@@ -12,52 +10,9 @@ import { Link, useParams } from 'react-router-dom'
  * resumen ya se puede publicar tal cual; el desarrollo profundo por
  * página todavía necesita que Rebeca lo escriba o lo apruebe.
  */
-interface Enfoque {
-  titulo: string
-  resumen: string
-}
-
-const enfoques: Record<string, Enfoque> = {
-  ansiedad: {
-    titulo: 'Ansiedad y preocupación constante',
-    resumen:
-      'Comprender y afrontar pensamientos, preocupaciones y emociones que pueden estar interfiriendo en tu bienestar cotidiano.',
-  },
-  'animo-bajo-depresion': {
-    titulo: 'Ánimo bajo y depresión',
-    resumen:
-      'Trabajar sobre la pérdida de motivación, tristeza, aislamiento y otros cambios emocionales que afectan tu vida diaria.',
-  },
-  'estres-sobrecarga': {
-    titulo: 'Estrés y sobrecarga emocional',
-    resumen:
-      'Desarrollar herramientas para afrontar períodos de alta exigencia, cambios y situaciones que generan agotamiento emocional.',
-  },
-  'procesos-de-salud': {
-    titulo: 'Procesos de salud y enfermedad',
-    resumen:
-      'Acompañar el impacto emocional de un diagnóstico, tratamiento, hospitalización o convivencia con una condición médica.',
-  },
-  'duelo-adaptacion': {
-    titulo: 'Duelo y procesos de adaptación',
-    resumen:
-      'Encontrar un espacio para elaborar pérdidas y adaptarse a cambios importantes en distintas etapas de la vida.',
-  },
-  pareja: {
-    titulo: 'Dificultades en las relaciones',
-    resumen:
-      'Comprender patrones de interacción, comunicación y emociones que pueden estar afectando los vínculos de pareja o familiares.',
-  },
-  'transiciones-de-vida': {
-    titulo: 'Transiciones y momentos de cambio',
-    resumen:
-      'Acompañar períodos de incertidumbre, decisiones importantes o cambios personales que pueden generar malestar emocional.',
-  },
-}
-
 export function EnfoquePage() {
   const { slug } = useParams<{ slug: string }>()
-  const enfoque = slug ? enfoques[slug] : undefined
+  const enfoque = buscarEnfoque(slug)
 
   if (!enfoque) {
     return (

@@ -87,13 +87,20 @@ function ItemFaq({ pregunta, respuesta }: ItemPregunta) {
  * genérica (invita a escribir, no diagnostica) pero de todos modos
  * Rebeca debería revisarla y ajustarla a su propio criterio clínico
  * antes de publicar.
+ *
+ * nivelTitulo: este componente vive en dos contextos con jerarquía
+ * distinta — como sección de HomePage (donde el <h1> real está en
+ * Hero.tsx, así que acá corresponde <h2>) y como página completa
+ * en FaqPage.tsx (donde esto ES el título principal, <h1>).
  */
-export function Faq() {
+export function Faq({ nivelTitulo = 'h2' }: { nivelTitulo?: 'h1' | 'h2' }) {
+  const Titulo = nivelTitulo
+
   return (
     <section className="mx-auto max-w-3xl px-6 py-20">
-      <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
+      <Titulo className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
         Preguntas frecuentes
-      </h2>
+      </Titulo>
       <div className="mt-8 divide-y divide-sage-200">
         {preguntas.map((item) => (
           <ItemFaq key={item.pregunta} {...item} />
