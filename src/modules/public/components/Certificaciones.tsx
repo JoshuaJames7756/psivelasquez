@@ -74,7 +74,7 @@ export function Certificaciones() {
 
   if (certificaciones.length === 0) {
     return (
-      <section className="bg-forest-900 px-6 py-20 text-cream-50">
+      <section className="border-b border-forest-700 bg-forest-900 px-6 py-20 text-cream-50">
         <div className="mx-auto max-w-5xl">
           <h2 className="font-[var(--font-serif-brand)] text-3xl">Certificaciones</h2>
           <p className="mt-4 text-sage-300">Próximamente.</p>
@@ -84,7 +84,7 @@ export function Certificaciones() {
   }
 
   return (
-    <section className="bg-forest-900 px-6 py-20 text-cream-50">
+    <section className="border-b border-forest-700 bg-forest-900 px-6 py-20 text-cream-50">
       <div className="mx-auto max-w-5xl">
         <h2 className="font-[var(--font-serif-brand)] text-3xl">Certificaciones</h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">

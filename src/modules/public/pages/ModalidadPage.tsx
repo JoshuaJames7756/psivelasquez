@@ -1,3 +1,5 @@
+import { MapaUbicacion } from '../components/MapaUbicacion'
+
 export function ModalidadPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-20">
@@ -28,6 +30,10 @@ export function ModalidadPage() {
           <h2 className="text-sm font-semibold text-sage-800">Horario</h2>
           <p className="mt-2 text-sm text-sage-700">Sábados, 09:00 a 17:00</p>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <MapaUbicacion />
       </div>
     </main>
   )

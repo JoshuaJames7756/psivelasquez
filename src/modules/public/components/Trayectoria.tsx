@@ -1,33 +1,61 @@
 import { motion } from 'motion/react'
 
 const hitos = [
-  { periodo: '2019 – 2024', texto: 'Licenciatura en Psicología, Universidad Católica Boliviana' },
-  { periodo: '2022 – 2025', texto: "Bachelor's en Marriage and Family Studies, BYU-Idaho" },
+  {
+    periodo: '2019 – 2024',
+    institucion: 'Universidad Católica Boliviana',
+    texto: 'Licenciatura en Psicología',
+  },
+  {
+    periodo: '2022 – 2025',
+    institucion: 'BYU-Idaho',
+    texto: "Bachelor's en Marriage and Family Studies",
+  },
   {
     periodo: '2025 – 2026',
-    texto: 'Especialización en Psicología Hospitalaria, Hospital Israelita Albert Einstein (São Paulo)',
+    institucion: 'Hospital Israelita Albert Einstein (São Paulo)',
+    texto: 'Especialización en Psicología Hospitalaria',
   },
-  { periodo: 'Desde mayo 2026', texto: 'Ejerce en el Hospital Belga, Cochabamba (parte-tiempo)' },
+  {
+    periodo: 'Desde mayo 2026',
+    institucion: 'Hospital Belga, Cochabamba',
+    texto: 'Ejerce como psicóloga clínica',
+  },
 ]
 
-function HitoTimeline({ periodo, texto }: { periodo: string; texto: string }) {
+function HitoTimeline({
+  periodo,
+  institucion,
+  texto,
+  esUltimo,
+}: {
+  periodo: string
+  institucion: string
+  texto: string
+  esUltimo: boolean
+}) {
   return (
     <motion.li
-      initial={{ opacity: 0, x: -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.5 }}
-      className="relative mb-8 last:mb-0"
+      className="relative pl-10"
     >
-      <motion.span
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.3, delay: 0.15 }}
-        className="absolute -left-[1.65rem] top-1 h-3 w-3 rounded-full bg-sage-600"
-      />
-      <p className="text-sm font-semibold text-sage-600">{periodo}</p>
-      <p className="mt-1 text-sage-800">{texto}</p>
+      {/* Nodo + línea conectora, dibujados con el propio layout en
+          vez de puntos sueltos sobre un border genérico. */}
+      <span className="absolute left-0 top-1 flex h-7 w-7 items-center justify-center rounded-full border-2 border-sage-500 bg-cream-50">
+        <span className="h-2 w-2 rounded-full bg-sage-600" />
+      </span>
+      {!esUltimo && (
+        <span className="absolute left-[13px] top-8 h-[calc(100%-1rem)] w-px bg-sage-300" />
+      )}
+
+      <div className="pb-10">
+        <p className="text-xs font-semibold uppercase tracking-wide text-sage-500">{periodo}</p>
+        <p className="mt-1 font-[var(--font-serif-brand)] text-lg text-sage-900">{institucion}</p>
+        <p className="mt-0.5 text-sm text-sage-700">{texto}</p>
+      </div>
     </motion.li>
   )
 }
@@ -40,9 +68,9 @@ export function Trayectoria() {
         Cada paso de mi formación ha sido intencional: construir una base clínica sólida y, al
         mismo tiempo, una mirada humana que no se queda solo en el diagnóstico.
       </p>
-      <ol className="mt-10 border-l-2 border-sage-300 pl-6">
-        {hitos.map((hito) => (
-          <HitoTimeline key={hito.periodo} {...hito} />
+      <ol className="mt-10">
+        {hitos.map((hito, i) => (
+          <HitoTimeline key={hito.periodo} {...hito} esUltimo={i === hitos.length - 1} />
         ))}
       </ol>
     </section>

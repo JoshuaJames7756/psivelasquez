@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ScrollAlTopo } from './modules/shared/components/ScrollAlTopo'
 import { RequireAuth } from './modules/admin/components/RequireAuth'
 import { AdminLayout } from './modules/admin/pages/AdminLayout'
 import { AgendaPage } from './modules/admin/pages/AgendaPage'
@@ -24,6 +25,7 @@ import { SobreMiPage } from './modules/public/pages/SobreMiPage'
 function App() {
   return (
     <BrowserRouter>
+      <ScrollAlTopo />
       <Routes>
         {/* Sitio público — ecosistema de páginas (Prompt 2.0, sección 5) */}
         <Route element={<PublicLayout />}>
