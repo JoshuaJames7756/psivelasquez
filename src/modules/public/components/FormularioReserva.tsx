@@ -85,7 +85,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
                   required
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
-                  className="mt-1 w-full rounded-lg border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
+                  className="mt-1 w-full rounded-xl border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
                 />
               </div>
 
@@ -98,7 +98,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
                     max={119}
                     value={edad}
                     onChange={(e) => setEdad(e.target.value)}
-                    className="mt-1 w-full rounded-lg border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
+                    className="mt-1 w-full rounded-xl border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -107,7 +107,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
                     value={telefono}
                     onChange={(e) => setTelefono(e.target.value)}
                     placeholder="+591..."
-                    className="mt-1 w-full rounded-lg border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
+                    className="mt-1 w-full rounded-xl border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
                   />
                 </div>
               </div>
@@ -118,7 +118,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
                   value={motivoInicial}
                   onChange={(e) => setMotivoInicial(e.target.value)}
                   rows={2}
-                  className="mt-1 w-full resize-none rounded-lg border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
+                  className="mt-1 w-full resize-none rounded-xl border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
                 />
               </div>
 

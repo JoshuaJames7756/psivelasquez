@@ -32,7 +32,7 @@ function ModalCertificacion({
               <p className="text-sm font-medium text-sage-800">{certificacion.nombre}</p>
               <button
                 onClick={onClose}
-                className="rounded-full p-1 text-sage-500 hover:bg-sage-100"
+                className="rounded-full p-1 text-sage-500 transition-colors hover:bg-sage-100"
                 aria-label="Cerrar"
               >
                 <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
@@ -108,7 +108,7 @@ export function Certificaciones() {
               {c.documento_url && (
                 <button
                   onClick={() => setSeleccionada(c)}
-                  className="mt-4 text-sm text-terracotta-300 hover:underline"
+                  className="mt-4 text-sm text-terracotta-300 transition-colors hover:text-terracotta-400"
                 >
                   Ver credencial
                 </button>

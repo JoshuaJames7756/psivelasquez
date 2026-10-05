@@ -8,24 +8,24 @@ export function Footer() {
 
         <div className="flex gap-6">
           {/* Iconos SVG propios por red social, hover animado — pendiente diseño */}
-          <a href="https://wa.me/59160389762" className="text-cream-200 hover:text-sage-300">
+          <a href="https://wa.me/59160389762" className="text-cream-200 transition-colors hover:text-sage-300">
             WhatsApp
           </a>
           <a
             href="https://instagram.com/psi.rebecavelasquez"
-            className="text-cream-200 hover:text-sage-300"
+            className="text-cream-200 transition-colors hover:text-sage-300"
           >
             Instagram
           </a>
           <a
             href="https://tiktok.com/@psi.rebecavelasquez"
-            className="text-cream-200 hover:text-sage-300"
+            className="text-cream-200 transition-colors hover:text-sage-300"
           >
             TikTok
           </a>
           <a
             href="https://linkedin.com/in/rebeca-velasquez-/"
-            className="text-cream-200 hover:text-sage-300"
+            className="text-cream-200 transition-colors hover:text-sage-300"
           >
             LinkedIn
           </a>
@@ -35,7 +35,7 @@ export function Footer() {
           Edif. VyV NUR, Parque Fidel Anze #200, Esq. Av. Pando, Cochabamba
         </p>
 
-        <Link to="/aviso-etico" className="text-xs text-cream-300 underline hover:text-sage-300">
+        <Link to="/aviso-etico" className="text-xs text-cream-300 underline transition-colors hover:text-sage-300">
           Aviso ético
         </Link>
 
@@ -43,7 +43,7 @@ export function Footer() {
           Sitio construido por{' '}
           <a
             href="https://xiontech-seven.vercel.app"
-            className="underline hover:text-sage-300"
+            className="underline transition-colors hover:text-sage-300"
           >
             Xion Technology
           </a>

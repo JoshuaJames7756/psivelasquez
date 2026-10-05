@@ -2,14 +2,25 @@ import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import type { MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { enfoques, type Enfoque } from '../data/enfoques'
+import { useMotionSeguro } from '../../shared/hooks/useMotionSeguro'
 
 function TarjetaEspecialidad({ slug, titulo, resumen }: Enfoque) {
+  const { desactivado } = useMotionSeguro()
   const mouseX = useMotionValue(0.5)
   const mouseY = useMotionValue(0.5)
 
   const springConfig = { stiffness: 200, damping: 20 }
-  const rotateX = useSpring(useTransform(mouseY, [0, 1], [7, -7]), springConfig)
-  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-7, 7]), springConfig)
+  // Tilt 3D es movimiento constante atado al cursor — justo lo que
+  // prefers-reduced-motion pide evitar (sección 45 del doc). Con
+  // rango [0,0] el valor nunca se mueve de 0 grados, tarjeta plana.
+  const rotateX = useSpring(
+    useTransform(mouseY, [0, 1], desactivado ? [0, 0] : [7, -7]),
+    springConfig,
+  )
+  const rotateY = useSpring(
+    useTransform(mouseX, [0, 1], desactivado ? [0, 0] : [-7, 7]),
+    springConfig,
+  )
 
   function handleMouseMove(e: MouseEvent<HTMLElement>) {
     const rect = e.currentTarget.getBoundingClientRect()

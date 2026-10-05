@@ -87,7 +87,7 @@ export function NavPublica() {
               to={link.to}
               onClick={() => setMenuAbierto(false)}
               className={({ isActive }) =>
-                `rounded-lg px-3 py-2.5 text-sm font-medium ${
+                `rounded-xl px-3 py-2.5 text-sm font-medium ${
                   isActive ? 'bg-sage-100 text-sage-900' : 'text-sage-700'
                 }`
               }

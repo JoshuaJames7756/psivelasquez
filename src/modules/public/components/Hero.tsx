@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import rebecaHero from '../../../assets/fotos/rebeca-hero.jpg'
+import { useMotionSeguro } from '../../shared/hooks/useMotionSeguro'
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null)
@@ -9,10 +10,14 @@ export function Hero() {
     target: ref,
     offset: ['start start', 'end start'],
   })
+  const { desactivado, duracion } = useMotionSeguro()
 
-  // Profundidad sutil al hacer scroll: el hero se aleja y se desvanece levemente
-  const y = useTransform(scrollYProgress, [0, 1], [0, 60])
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.4])
+  // Profundidad sutil al hacer scroll: el hero se aleja y se desvanece
+  // levemente. Desactivado por completo con prefers-reduced-motion —
+  // desplazamiento ligado al scroll es justo el tipo de movimiento
+  // que puede marear a alguien sensible (sección 45 del doc).
+  const y = useTransform(scrollYProgress, [0, 1], desactivado ? [0, 0] : [0, 60])
+  const opacity = useTransform(scrollYProgress, [0, 1], desactivado ? [1, 1] : [1, 0.4])
 
   return (
     <section ref={ref} className="relative overflow-hidden bg-cream-50 px-6 py-20 md:py-28">
@@ -24,7 +29,7 @@ export function Hero() {
           <motion.span
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: duracion(0.5) }}
             className="mb-6 inline-block rounded-full bg-sage-100 px-4 py-1.5 text-sm font-medium text-sage-700"
           >
             Hospital Belga · Beck Institute
@@ -33,7 +38,7 @@ export function Hero() {
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: duracion(0.6), delay: 0.1 }}
             className="font-[var(--font-serif-brand)] text-4xl leading-tight text-sage-900 md:text-5xl"
           >
             Trabajo contigo desde lo clínico y desde tus vínculos, porque nadie enfrenta esto
@@ -54,14 +59,14 @@ export function Hero() {
               strokeLinecap="round"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 0.9, delay: 0.5, ease: 'easeInOut' }}
+              transition={{ duration: duracion(0.9), delay: 0.5, ease: 'easeInOut' }}
             />
           </svg>
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: duracion(0.6), delay: 0.3 }}
           >
             <Link
               to="/reservar"
@@ -75,7 +80,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+          transition={{ duration: duracion(0.7), delay: 0.15 }}
           className="relative mx-auto aspect-[3/4] w-full max-w-sm overflow-hidden rounded-3xl bg-sage-100 md:mx-0"
         >
           <img

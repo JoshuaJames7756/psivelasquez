@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+/* Fraunces — serif editorial para títulos (display/heading). Pesos
+   400/500/600 cubren texto normal, botones y énfasis sin cargar
+   pesos que nunca se usan. Incluye cursiva (ital) para citas/acentos
+   editoriales si hiciera falta más adelante.
+   Subset "latin" explícito (no el CSS genérico multi-subset): el
+   sitio es en español, no necesitamos los @font-face de cyrillic,
+   greek, vietnamese, etc. que el paquete completo declara — el
+   genérico ya usa unicode-range así que el navegador no los
+   descargaría de todas formas, pero esto mantiene el build y el
+   deploy más livianos sin ese peso muerto en disco. */
+@import "@fontsource/fraunces/latin-400.css";
+@import "@fontsource/fraunces/latin-500.css";
+@import "@fontsource/fraunces/latin-600.css";
+@import "@fontsource/fraunces/latin-400-italic.css";
+
+/* Inter — sans para cuerpo de texto. Mismo criterio: solo subset latin. */
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+
 /*
   Identidad de marca — Rebeca Velásquez, Psicóloga Clínica
   Evoluciona los 3 tonos ya existentes en su material: verde salvia,
@@ -51,4 +71,39 @@
 body {
   @apply bg-cream-50 text-sage-900;
   font-family: var(--font-sans-body);
+}
+
+/* Peso 500 por default en toda la serif display: en 400 (regular)
+   Fraunces se ve débil en tamaños grandes de título. Los componentes
+   pueden seguir subiendo a 600 puntualmente con font-semibold. */
+.font-\[var\(--font-serif-brand\)\] {
+  font-weight: 500;
+  font-optical-sizing: auto;
+}
+
+/*
+  Escala de radio de borde — jerarquía por tamaño del elemento, no
+  elección libre por componente (Prompt 2.0, sección 8: "Definir
+  jerarquía de border, radius, cards, inputs, buttons, containers").
+
+  rounded-full  → pills: botones de acción, badges, avatares
+  rounded-xl    → elementos pequeños: inputs, tarjetas chicas (slots, items de lista)
+  rounded-2xl   → tarjetas medianas: cards de contenido (especialidad, certificación)
+  rounded-3xl   → contenedores grandes: fotos de Hero/Sobre mí, imágenes protagonistas
+*/
+
+/*
+  Foco por teclado consistente con la marca (Prompt 2.0, sección 43:
+  "focus visible" explícito). Solo aparece en navegación por teclado
+  (:focus-visible), no al hacer click con mouse — evita el anillo
+  azul feo del navegador por default sin eliminar el indicador para
+  quien navega sin mouse. Aplica a cualquier elemento interactivo del
+  sitio público que no tenga ya su propio estilo de foco (los inputs
+  de formularios, que usan focus:border-*, quedan como están).
+*/
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-sage-500);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
