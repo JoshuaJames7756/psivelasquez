@@ -107,3 +107,30 @@ button:focus-visible {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/*
+  Grain sutil — Prompt 2.0, sección 9.3: "grain sutil; textura tipo
+  papel; siempre con moderación". Ruido fractal SVG inline (sin
+  request de red, sin imagen descargada) aplicado como overlay
+  pseudo-elemento a muy baja opacidad: rompe la sensación de "color
+  plano digital" sin que el patrón se note conscientemente. .con-grain
+  en un contenedor con position relative lo activa.
+*/
+.con-grain {
+  position: relative;
+  isolation: isolate;
+}
+.con-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.con-grain > * {
+  position: relative;
+  z-index: 1;
+}

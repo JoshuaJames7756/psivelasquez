@@ -69,7 +69,7 @@ export function EnfoqueTerapeutico() {
   }
 
   return (
-    <section className="bg-sage-50 px-6 py-20">
+    <section className="con-grain bg-sage-50 px-6 py-16 md:py-20">
       <div className="mx-auto max-w-4xl">
         <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
           Enfoque terapéutico

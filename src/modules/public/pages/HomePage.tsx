@@ -8,10 +8,14 @@ import { PrimeraSesion } from '../components/PrimeraSesion'
 import { SobreRebeca } from '../components/SobreRebeca'
 
 /**
- * La Home introduce y dirige, no explica todo (Prompt 2.0, sección 4
- * y 12). Formación, Certificaciones, Modalidad y FAQ completos viven
- * en sus propias páginas — acá solo un resumen breve con CTA hacia
- * cada una, evitando duplicar el contenido completo dos veces.
+ * Recorrido de la Home (pedido explícito): quién es Rebeca → a quién
+ * acompaña → cómo se siente trabajar con ella → cómo empezar.
+ * Formación, FAQ y contenido extenso viven en sus propias páginas —
+ * acá solo un CTA hacia Formación al final, sin repetir "reservar"
+ * una tercera vez (ya está en el Hero y en Primera sesión / vía
+ * Certificaciones no aplica — el único otro CTA de reservar directo
+ * quedó en Hero; se quitó el bloque final duplicado "¿lista para dar
+ * el primer paso?" que repetía el mismo mensaje).
  */
 export function HomePage() {
   return (
@@ -33,7 +37,7 @@ export function HomePage() {
       </ScrollReveal>
 
       <ScrollReveal>
-        <section className="mx-auto max-w-3xl px-6 py-16 text-center">
+        <section className="con-grain mx-auto max-w-3xl px-6 py-14 text-center md:py-16">
           <h2 className="font-[var(--font-serif-brand)] text-2xl text-sage-900">
             Una trayectoria construida con intención
           </h2>
@@ -43,27 +47,9 @@ export function HomePage() {
           </p>
           <Link
             to="/formacion"
-            className="mt-5 inline-block rounded-full border border-sage-400 px-6 py-2 text-sm font-medium text-sage-700 hover:bg-sage-100"
+            className="mt-5 inline-block rounded-full border border-sage-400 px-6 py-2 text-sm font-medium text-sage-700 transition-colors hover:bg-sage-100"
           >
             Conocer mi formación
-          </Link>
-        </section>
-      </ScrollReveal>
-
-      <ScrollReveal>
-        <section className="bg-sage-50 px-6 py-16 text-center">
-          <h2 className="font-[var(--font-serif-brand)] text-2xl text-sage-900">
-            ¿Lista para dar el primer paso?
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sage-700">
-            Atiendo un solo día a la semana, presencial u online, para darle a cada sesión la
-            atención que merece.
-          </p>
-          <Link
-            to="/reservar"
-            className="mt-5 inline-block rounded-full bg-sage-700 px-6 py-2 text-sm font-medium text-cream-50 hover:bg-sage-800"
-          >
-            Ver cupos disponibles
           </Link>
         </section>
       </ScrollReveal>

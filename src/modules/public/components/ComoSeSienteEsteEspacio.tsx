@@ -11,8 +11,14 @@ const cualidades = ['Escucha', 'Estructura', 'Respeto', 'Colaboración', 'Privac
  */
 export function ComoSeSienteEsteEspacio() {
   return (
-    <section className="bg-cream-100 px-6 py-20">
-      <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
+    <section className="con-grain relative overflow-hidden bg-cream-100 px-6 py-16 md:py-20">
+      {/* Forma orgánica de fondo, muy sutil — solo acento, nunca
+          compite con el contenido (sección 9.3 del doc). */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-sage-200/40 blur-3xl"
+      />
+      <div className="relative mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
         <div className="order-2 flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-sage-300 bg-sage-50 md:order-1">
           <p className="px-6 text-center text-sm text-sage-400">
             Foto del consultorio pendiente
@@ -43,3 +49,4 @@ export function ComoSeSienteEsteEspacio() {
     </section>
   )
 }
+
