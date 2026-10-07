@@ -22,30 +22,28 @@ export function Hero() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-cream-50 px-6 pb-12 pt-16 md:py-28"
+      className="relative overflow-hidden bg-cream-50 px-6 pb-14 pt-14 md:py-28"
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 top-1/2 h-72 w-72 rounded-full bg-terracotta-100/60 blur-3xl"
+      />
       <motion.div
         style={{ y, opacity }}
         className="mx-auto grid max-w-6xl items-center gap-10 md:gap-12 md:grid-cols-[1.1fr_0.9fr]"
       >
         <div className="text-center md:text-left">
-          {/* Dos hechos distintos, cada uno con su propia etiqueta —
-              evita leerse como una afiliación institucional única
-              que no existe. Rebeca ejerce en Hospital Belga y tiene
-              certificaciones del Beck Institute; son cosas separadas. */}
-          <motion.div
+          {/* Identidad primero: nombre + profesión. Hospital Belga y
+              Beck Institute viven en Formación; acá no van, porque
+              Hospital Belga es experiencia laboral y no su consultorio. */}
+          <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: duracion(0.5) }}
-            className="mb-6 flex flex-wrap items-center justify-center gap-2 md:justify-start"
+            className="mb-4 text-sm font-semibold uppercase tracking-wide text-sage-600"
           >
-            <span className="rounded-full bg-sage-100 px-4 py-1.5 text-sm font-medium text-sage-700">
-              Ejerce en Hospital Belga
-            </span>
-            <span className="rounded-full border border-sage-300 px-4 py-1.5 text-sm font-medium text-sage-600">
-              Certificada por Beck Institute
-            </span>
-          </motion.div>
+            Rebeca Velásquez — Psicóloga Clínica
+          </motion.p>
 
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
@@ -62,7 +60,7 @@ export function Hero() {
             transition={{ duration: duracion(0.5), delay: 0.2 }}
             className="mt-4 text-base text-sage-700 md:text-lg"
           >
-            Soy Rebeca Velásquez, psicóloga clínica. Atiendo en Cochabamba, presencial y online.
+            Atiendo en Cochabamba, presencial y online.
           </motion.p>
 
           {/* Trazo de acento que se dibuja al cargar, bajo el título */}
@@ -101,7 +99,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: duracion(0.7), delay: 0.15 }}
-          className="relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden rounded-3xl bg-sage-100 md:mx-0 md:max-w-sm"
+          className="relative mx-auto aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-t-[999px] rounded-b-3xl bg-sage-100 md:mx-0 md:max-w-sm"
         >
           <img
             src={rebecaHero}

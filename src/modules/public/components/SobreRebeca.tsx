@@ -1,24 +1,41 @@
 import { Link } from 'react-router-dom'
-import rebecaFoto from '../../../assets/fotos/rebeca-sobre-mi.jpg'
+import rebecaAvatar from '../../../assets/fotos/rebeca-avatar.jpg'
 
+/**
+ * Composición distinta a la del Hero a propósito: acá va un recorte
+ * circular del rostro (no el retrato completo en arco), así las dos
+ * secciones no se leen como la misma foto repetida. Cuando haya una
+ * segunda foto realmente distinta de Rebeca, reemplazar el avatar.
+ */
 export function SobreRebeca() {
   return (
-    <section className="con-grain mx-auto max-w-5xl px-6 py-16 md:py-20">
-      <div className="grid items-center gap-10 md:grid-cols-[0.8fr_1.2fr]">
-        <div className="mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden rounded-3xl bg-sage-100 md:mx-0">
-          <img
-            src={rebecaFoto}
-            alt="Rebeca Velásquez"
-            className="h-full w-full object-cover"
-            loading="lazy"
-            width={640}
-            height={853}
-          />
-        </div>
+    <section className="con-grain bg-cream-100 px-6 py-16 md:py-24">
+      <div className="mx-auto grid max-w-5xl items-center gap-8 md:grid-cols-[auto_1fr] md:gap-14">
+        {/* Desktop: círculo grande a la izquierda */}
+        <img
+          src={rebecaAvatar}
+          alt="Rebeca Velásquez"
+          className="hidden h-52 w-52 rounded-full object-cover ring-4 ring-cream-50 md:block"
+          loading="lazy"
+          width={300}
+          height={300}
+        />
+
         <div>
-          <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
-            Sobre Rebeca
-          </h2>
+          <div className="flex items-center gap-4">
+            {/* Mobile: círculo chico junto al título */}
+            <img
+              src={rebecaAvatar}
+              alt="Rebeca Velásquez"
+              className="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-cream-50 md:hidden"
+              loading="lazy"
+              width={300}
+              height={300}
+            />
+            <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
+              Sobre Rebeca
+            </h2>
+          </div>
           <p className="mt-6 text-lg leading-relaxed text-sage-800">
             Soy psicóloga clínica con enfoque Cognitivo-Conductual. Acompaño a adolescentes y
             adultos que atraviesan ansiedad, procesos de salud difíciles, y momentos de cambio,

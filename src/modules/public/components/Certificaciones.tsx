@@ -74,22 +74,22 @@ export function Certificaciones() {
 
   if (certificaciones.length === 0) {
     return (
-      <section className="border-b border-forest-700 bg-forest-900 px-6 py-20 text-cream-50">
+      <section className="con-grain bg-gradient-to-b from-sage-800 to-sage-700 px-6 py-16 text-cream-50 md:py-20">
         <div className="mx-auto max-w-5xl">
           <h2 className="font-[var(--font-serif-brand)] text-3xl">Certificaciones</h2>
-          <p className="mt-4 text-sage-300">Próximamente.</p>
+          <p className="mt-4 text-sage-200">Próximamente.</p>
         </div>
       </section>
     )
   }
 
   return (
-    <section className="border-b border-forest-700 bg-forest-900 px-6 py-20 text-cream-50">
+    <section className="con-grain bg-gradient-to-b from-sage-800 to-sage-700 px-6 py-16 text-cream-50 md:py-20">
       <div className="mx-auto max-w-5xl">
         <h2 className="font-[var(--font-serif-brand)] text-3xl">Certificaciones</h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {certificaciones.map((c) => (
-            <div key={c.id} className="rounded-xl border border-forest-700 bg-forest-800 p-5">
+            <div key={c.id} className="rounded-2xl border border-sage-600/60 bg-sage-900/40 p-5">
               {c.documento_url ? (
                 <img
                   src={urlPreviewImagen(c.documento_url)}
@@ -98,9 +98,9 @@ export function Certificaciones() {
                   loading="lazy"
                 />
               ) : (
-                <div className="h-32 rounded-lg bg-forest-700" />
+                <div className="h-32 rounded-lg bg-sage-700" />
               )}
-              <p className="mt-4 text-sm text-sage-300">
+              <p className="mt-4 text-sm text-sage-200">
                 {c.institucion}
                 {c.anio ? ` · ${c.anio}` : ''}
               </p>
@@ -108,7 +108,7 @@ export function Certificaciones() {
               {c.documento_url && (
                 <button
                   onClick={() => setSeleccionada(c)}
-                  className="mt-4 text-sm text-terracotta-300 transition-colors hover:text-terracotta-400"
+                  className="mt-4 text-sm text-terracotta-200 transition-colors hover:text-terracotta-100"
                 >
                   Ver credencial
                 </button>
