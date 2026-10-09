@@ -50,7 +50,7 @@ export function NotaSesion({
         <button
           onClick={() => setAbierta((v) => !v)}
           aria-expanded={abierta}
-          className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
+          className="flex w-full items-center justify-between gap-3 rounded-3xl px-5 py-4 text-left hover:bg-sage-50/60"
         >
           <span className="min-w-0">
             <span className="block text-sm font-semibold text-sage-900 first-letter:uppercase">{fecha}</span>
@@ -58,7 +58,19 @@ export function NotaSesion({
           </span>
           <span className="flex items-center gap-3">
             <IndicadorAutoguardado estado={estado} />
-            <span aria-hidden="true" className={`text-sage-500 transition-transform ${abierta ? 'rotate-180' : ''}`}>⌄</span>
+            <span
+              aria-hidden="true"
+              className="flex items-center gap-1.5 rounded-full border border-sage-300 bg-sage-100 px-3 py-1.5 text-xs font-medium text-sage-800"
+            >
+              {abierta ? 'Ocultar' : 'Ver nota'}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                className={`h-4 w-4 transition-transform ${abierta ? 'rotate-180' : ''}`}
+              >
+                <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
           </span>
         </button>
 
