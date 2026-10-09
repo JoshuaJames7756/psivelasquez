@@ -98,7 +98,7 @@ export function Faq({ nivelTitulo = 'h2' }: { nivelTitulo?: 'h1' | 'h2' }) {
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-20">
-      <Titulo className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
+      <Titulo className="font-serif-brand text-3xl text-sage-900">
         Preguntas frecuentes
       </Titulo>
       <div className="mt-8 divide-y divide-sage-200">

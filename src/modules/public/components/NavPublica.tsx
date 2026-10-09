@@ -25,7 +25,7 @@ export function NavPublica() {
             width={300}
             height={300}
           />
-          <span className="font-[var(--font-serif-brand)] text-xl text-sage-900">RV</span>
+          <span className="font-serif-brand text-xl text-sage-900">RV</span>
         </NavLink>
 
         {/* Nav desktop */}

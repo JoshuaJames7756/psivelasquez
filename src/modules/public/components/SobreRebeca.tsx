@@ -1,3 +1,5 @@
+import { LineasFondo } from '../../shared/components/LineasFondo'
+import { TituloSeccion } from '../../shared/components/TituloSeccion'
 import { Link } from 'react-router-dom'
 import rebecaAvatar from '../../../assets/fotos/rebeca-avatar.jpg'
 
@@ -9,8 +11,9 @@ import rebecaAvatar from '../../../assets/fotos/rebeca-avatar.jpg'
  */
 export function SobreRebeca() {
   return (
-    <section className="con-grain bg-cream-100 px-6 py-16 md:py-24">
-      <div className="mx-auto grid max-w-5xl items-center gap-8 md:grid-cols-[auto_1fr] md:gap-14">
+    <section className="con-grain relative overflow-hidden bg-cream-100 px-6 py-16 md:py-24">
+      <LineasFondo variante="rama" className="-right-10 top-0 hidden h-full w-72 md:block" />
+      <div className="relative mx-auto grid max-w-5xl items-center gap-8 md:grid-cols-[auto_1fr] md:gap-14">
         {/* Desktop: círculo grande a la izquierda */}
         <img
           src={rebecaAvatar}
@@ -32,9 +35,7 @@ export function SobreRebeca() {
               width={300}
               height={300}
             />
-            <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
-              Sobre Rebeca
-            </h2>
+            <TituloSeccion>Sobre Rebeca</TituloSeccion>
           </div>
           <p className="mt-6 text-lg leading-relaxed text-sage-800">
             Soy psicóloga clínica con enfoque Cognitivo-Conductual. Acompaño a adolescentes y

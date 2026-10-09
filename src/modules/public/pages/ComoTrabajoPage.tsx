@@ -11,7 +11,7 @@
 export function ComoTrabajoPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-20">
-      <h1 className="font-[var(--font-serif-brand)] text-4xl text-sage-900">Cómo trabajo</h1>
+      <h1 className="font-serif-brand text-4xl text-sage-900">Cómo trabajo</h1>
       <p className="mt-6 text-lg text-sage-500">
         Contenido pendiente — necesita que Rebeca describa su metodología (enfoque,
         colaboración, evaluación, objetivos, seguimiento y adaptación del proceso) antes de

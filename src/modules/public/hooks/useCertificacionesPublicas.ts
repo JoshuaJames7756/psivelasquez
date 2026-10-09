@@ -6,7 +6,7 @@ export function useCertificacionesPublicas() {
   const [cargando, setCargando] = useState(true)
 
   useEffect(() => {
-    fetch('/api/certificaciones')
+    fetch('/api/sitio?recurso=certificaciones')
       .then((r) => r.json())
       .then((data) => setCertificaciones(data.certificaciones ?? []))
       .catch(() => setCertificaciones([]))

@@ -71,7 +71,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-md rounded-2xl bg-cream-50 p-6"
           >
-            <h3 className="font-[var(--font-serif-brand)] text-2xl text-sage-900">
+            <h3 className="font-serif-brand text-2xl text-sage-900">
               Reservar {slot.hora_inicio.slice(0, 5)}
             </h3>
             <p className="mt-1 text-sm text-sage-600">

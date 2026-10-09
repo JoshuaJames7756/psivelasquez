@@ -13,7 +13,7 @@ export function SignInPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-forest-900 p-6">
       <div>
-        <p className="mb-6 text-center font-[var(--font-serif-brand)] text-3xl text-cream-50">
+        <p className="mb-6 text-center font-serif-brand text-3xl text-cream-50">
           RV
         </p>
         <SignIn

@@ -29,7 +29,7 @@ export function useCertificaciones() {
   const recargar = useCallback(async () => {
     setCargando(true)
     try {
-      const data = await apiClient.get<{ certificaciones: Certificacion[] }>('/certificaciones')
+      const data = await apiClient.get<{ certificaciones: Certificacion[] }>('/sitio?recurso=certificaciones')
       setCertificaciones(data.certificaciones)
     } catch {
       setCertificaciones([])
@@ -78,7 +78,7 @@ export function useCertificaciones() {
         documentoUrl = dataCloudinary.secure_url
       }
 
-      await apiClient.post('/certificaciones', {
+      await apiClient.post('/sitio?recurso=certificaciones', {
         institucion: datos.institucion,
         nombre: datos.nombre,
         anio: datos.anio,
@@ -96,7 +96,7 @@ export function useCertificaciones() {
   }
 
   async function eliminar(id: string) {
-    await apiClient.delete('/certificaciones', { id })
+    await apiClient.delete('/sitio?recurso=certificaciones', { id })
     await recargar()
   }
 

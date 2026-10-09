@@ -1,3 +1,4 @@
+import { LineasFondo } from '../../shared/components/LineasFondo'
 import { Link } from 'react-router-dom'
 import { linkWhatsApp } from '../../shared/utils/whatsapp'
 
@@ -29,12 +30,13 @@ export function Footer() {
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-40 -right-32 h-96 w-96 rounded-full bg-forest-700/50 blur-2xl"
       />
+      <LineasFondo variante="ondas" className="inset-x-0 bottom-0 h-28 w-full text-forest-700/40" />
 
       <div className="relative mx-auto max-w-6xl">
         {/* 1) Acción primero */}
         <div className="flex flex-col items-start gap-4 border-b border-forest-700 pb-10 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="font-[var(--font-serif-brand)] text-2xl text-cream-50">
+            <p className="font-serif-brand text-2xl text-cream-50">
               ¿Lista para empezar?
             </p>
             <p className="mt-1 text-sm text-cream-300">
@@ -62,7 +64,7 @@ export function Footer() {
         {/* 2) Información en columnas */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-10 lg:grid-cols-4 lg:gap-x-10">
           <div className="col-span-2 lg:col-span-1">
-            <p className="font-[var(--font-serif-brand)] text-xl text-cream-50">
+            <p className="font-serif-brand text-xl text-cream-50">
               Rebeca Velásquez
             </p>
             <p className="mt-1 text-sm text-sage-300">Psicóloga Clínica</p>

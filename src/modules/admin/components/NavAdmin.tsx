@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom'
 const items = [
   {
     to: '/admin',
+    grupo: 'Clínica',
     label: 'Hoy',
     end: true,
     icon: (
@@ -15,6 +16,7 @@ const items = [
   },
   {
     to: '/admin/agenda',
+    grupo: 'Clínica',
     label: 'Agenda',
     end: false,
     icon: (
@@ -26,6 +28,7 @@ const items = [
   },
   {
     to: '/admin/pacientes',
+    grupo: 'Clínica',
     label: 'Pacientes',
     end: false,
     icon: (
@@ -42,6 +45,7 @@ const items = [
   },
   {
     to: '/admin/seguimiento',
+    grupo: 'Clínica',
     label: 'Seguimiento',
     end: false,
     icon: (
@@ -57,6 +61,7 @@ const items = [
   },
   {
     to: '/admin/tareas',
+    grupo: 'Gestión',
     label: 'Tareas',
     end: false,
     icon: (
@@ -68,6 +73,7 @@ const items = [
   },
   {
     to: '/admin/finanzas',
+    grupo: 'Gestión',
     label: 'Finanzas',
     end: false,
     icon: (
@@ -83,6 +89,7 @@ const items = [
   },
   {
     to: '/admin/credenciales',
+    grupo: 'Sitio web',
     label: 'Credenciales',
     end: false,
     icon: (
@@ -96,27 +103,54 @@ const items = [
       </svg>
     ),
   },
+  {
+    to: '/admin/contenido',
+    grupo: 'Sitio web',
+    label: 'Contenido',
+    end: false,
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+        <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" strokeWidth="1.6" />
+        <circle cx="12" cy="12" r="3.5" stroke="currentColor" strokeWidth="1.6" />
+        <circle cx="16.8" cy="7.2" r="0.9" fill="currentColor" />
+      </svg>
+    ),
+  },
 ]
 
-export function NavAdmin() {
+const ordenGrupos = ['Clínica', 'Gestión', 'Sitio web']
+
+export function NavAdmin({ onNavegar }: { onNavegar?: () => void }) {
   return (
-    <nav className="space-y-1">
-      {items.map((item) => (
-        <NavLink
-          key={item.to}
-          to={item.to}
-          end={item.end}
-          className={({ isActive }) =>
-            `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              isActive
-                ? 'bg-sage-700/30 text-cream-50'
-                : 'text-cream-300 hover:bg-forest-800 hover:text-cream-50'
-            }`
-          }
-        >
-          {item.icon}
-          {item.label}
-        </NavLink>
+    <nav aria-label="Panel" className="space-y-6">
+      {ordenGrupos.map((grupo) => (
+        <div key={grupo}>
+          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-sage-300/60">
+            {grupo}
+          </p>
+          <div className="space-y-1">
+            {items
+              .filter((item) => item.grupo === grupo)
+              .map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  onClick={onNavegar}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-sage-200 text-forest-900 shadow-sm'
+                        : 'text-cream-200 hover:bg-forest-800 hover:text-cream-50'
+                    }`
+                  }
+                >
+                  {item.icon}
+                  {item.label}
+                </NavLink>
+              ))}
+          </div>
+        </div>
       ))}
     </nav>
   )

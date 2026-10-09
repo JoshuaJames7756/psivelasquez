@@ -1,111 +1,148 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { useState } from 'react'
+import { motion } from 'motion/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { enfoques, type Enfoque } from '../data/enfoques'
+import { LineasFondo } from '../../shared/components/LineasFondo'
+import { TituloSeccion } from '../../shared/components/TituloSeccion'
+import { useMotionSeguro } from '../../shared/hooks/useMotionSeguro'
+import { enfoques } from '../data/enfoques'
 
-function ItemAcordeon({
-  enfoque,
-  abierto,
-  onToggle,
-}: {
-  enfoque: Enfoque
-  abierto: boolean
-  onToggle: () => void
-}) {
-  return (
-    <div className="border-b border-sage-200 last:border-b-0">
-      <button
-        onClick={onToggle}
-        aria-expanded={abierto}
-        className="flex w-full items-center justify-between gap-4 py-5 text-left"
-      >
-        <span className="text-base font-semibold text-sage-800">{enfoque.titulo}</span>
-        <motion.span
-          animate={{ rotate: abierto ? 45 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="shrink-0 text-xl text-sage-400"
-        >
-          +
-        </motion.span>
-      </button>
-
-      <AnimatePresence initial={false}>
-        {abierto && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden"
-          >
-            <div className="pb-5">
-              <p className="text-sm leading-relaxed text-sage-700">{enfoque.resumen}</p>
-              <Link
-                to={`/enfoques/${enfoque.slug}`}
-                className="mt-3 inline-block text-sm font-medium text-sage-600 transition-colors hover:text-sage-800"
-              >
-                Conocer más →
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
+/**
+ * Carrusel horizontal con scroll-snap nativo: funciona con el dedo en
+ * móvil, con trackpad y con teclado (flechas). Los botones solo
+ * desplazan el mismo scroll, así no hay un segundo estado que pueda
+ * desincronizarse. Sin autoplay a propósito: el movimiento que no
+ * controlas es un problema de accesibilidad.
+ */
 export function EnfoqueTerapeutico() {
-  const [abiertoSlug, setAbiertoSlug] = useState<string | null>(enfoques[0].slug)
+  const pista = useRef<HTMLDivElement>(null)
+  const [activo, setActivo] = useState(0)
+  const { desactivado } = useMotionSeguro()
 
-  // Dos columnas en desktop: primeros 4 a la izquierda, resto a la
-  // derecha — mantiene el acordeón legible sin una sola lista muy
-  // larga en pantallas anchas.
-  const mitad = Math.ceil(enfoques.length / 2)
-  const columnaA = enfoques.slice(0, mitad)
-  const columnaB = enfoques.slice(mitad)
+  const actualizarActivo = useCallback(() => {
+    const el = pista.current
+    if (!el) return
+    const tarjetas = Array.from(el.children) as HTMLElement[]
+    const centro = el.scrollLeft + el.clientWidth / 2
+    let mejor = 0
+    let distancia = Infinity
+    tarjetas.forEach((t, i) => {
+      const d = Math.abs(t.offsetLeft + t.offsetWidth / 2 - centro)
+      if (d < distancia) {
+        distancia = d
+        mejor = i
+      }
+    })
+    setActivo(mejor)
+  }, [])
 
-  function manejarToggle(slug: string) {
-    setAbiertoSlug((actual) => (actual === slug ? null : slug))
+  useEffect(() => {
+    actualizarActivo()
+  }, [actualizarActivo])
+
+  function irA(indice: number) {
+    const el = pista.current
+    const tarjeta = el?.children[indice] as HTMLElement | undefined
+    if (!el || !tarjeta) return
+    el.scrollTo({
+      left: tarjeta.offsetLeft - (el.clientWidth - tarjeta.offsetWidth) / 2,
+      behavior: desactivado ? 'auto' : 'smooth',
+    })
   }
 
   return (
-    <section className="con-grain bg-sage-50 px-6 py-16 md:py-20">
-      <div className="mx-auto max-w-4xl">
-        <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
-          Enfoque terapéutico
-        </h2>
-        <p className="mt-3 text-sage-700">
-          Estas son las áreas donde trabajo con más frecuencia. Toca una para conocer más.
-        </p>
+    <section
+      aria-roledescription="carrusel"
+      aria-label="Áreas de trabajo"
+      className="con-grain relative overflow-hidden bg-sage-50 py-16 md:py-20"
+    >
+      <LineasFondo variante="ondas" className="inset-x-0 top-0 h-40 w-full" />
 
-        <div className="mt-8 grid gap-x-10 md:grid-cols-2">
-          <div>
-            {columnaA.map((enfoque) => (
-              <ItemAcordeon
-                key={enfoque.slug}
-                enfoque={enfoque}
-                abierto={abiertoSlug === enfoque.slug}
-                onToggle={() => manejarToggle(enfoque.slug)}
-              />
-            ))}
-          </div>
-          <div>
-            {columnaB.map((enfoque) => (
-              <ItemAcordeon
-                key={enfoque.slug}
-                enfoque={enfoque}
-                abierto={abiertoSlug === enfoque.slug}
-                onToggle={() => manejarToggle(enfoque.slug)}
-              />
-            ))}
-          </div>
+      <div className="relative mx-auto flex max-w-6xl items-end justify-between gap-4 px-6">
+        <div>
+          <TituloSeccion>Enfoque terapéutico</TituloSeccion>
+          <p className="mt-3 max-w-xl text-sage-700">
+            Estas son las áreas donde trabajo con más frecuencia. Desliza para recorrerlas.
+          </p>
         </div>
+        <div className="hidden gap-2 md:flex">
+          <button
+            type="button"
+            onClick={() => irA(Math.max(0, activo - 1))}
+            disabled={activo === 0}
+            aria-label="Área anterior"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-sage-300 text-sage-700 transition-colors hover:bg-sage-100 disabled:opacity-30"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            onClick={() => irA(Math.min(enfoques.length - 1, activo + 1))}
+            disabled={activo === enfoques.length - 1}
+            aria-label="Área siguiente"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-sage-700 text-cream-50 transition-colors hover:bg-sage-800 disabled:opacity-30"
+          >
+            →
+          </button>
+        </div>
+      </div>
 
+      <div
+        ref={pista}
+        onScroll={actualizarActivo}
+        tabIndex={0}
+        className="sin-scrollbar relative mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth px-6 pb-4 md:px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))]"
+      >
+        {enfoques.map((e, i) => (
+          <motion.article
+            key={e.slug}
+            animate={{ opacity: i === activo ? 1 : 0.6, scale: i === activo || desactivado ? 1 : 0.97 }}
+            transition={{ duration: desactivado ? 0 : 0.3 }}
+            aria-label={`${i + 1} de ${enfoques.length}: ${e.titulo}`}
+            className="relative flex w-[82%] shrink-0 snap-center flex-col overflow-hidden rounded-3xl border border-sage-200 bg-cream-50 p-7 shadow-sm sm:w-[22rem]"
+          >
+            <span
+              aria-hidden="true"
+              className="font-serif-brand pointer-events-none absolute -right-2 -top-4 text-8xl italic text-sage-100"
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 className="font-serif-brand relative mt-10 text-xl leading-snug text-sage-900">
+              {e.titulo}
+            </h3>
+            <p className="relative mt-3 flex-1 text-sm leading-relaxed text-sage-700">
+              {e.resumen}
+            </p>
+            <Link
+              to={`/enfoques/${e.slug}`}
+              className="relative mt-5 inline-flex items-center gap-1 text-sm font-medium text-sage-700 transition-colors hover:text-sage-900"
+            >
+              Conocer más <span aria-hidden="true">→</span>
+            </Link>
+          </motion.article>
+        ))}
+        <div className="w-1 shrink-0" aria-hidden="true" />
+      </div>
+
+      <div className="relative mx-auto mt-4 flex max-w-6xl items-center justify-between px-6">
+        <div className="flex gap-2" role="group" aria-label="Elegir área">
+          {enfoques.map((e, i) => (
+            <button
+              key={e.slug}
+              type="button"
+              onClick={() => irA(i)}
+              aria-label={`Ir a ${e.titulo}`}
+              aria-current={i === activo}
+              className={`h-2 rounded-full transition-all ${
+                i === activo ? 'w-6 bg-sage-700' : 'w-2 bg-sage-300'
+              }`}
+            />
+          ))}
+        </div>
         <Link
           to="/enfoques"
-          className="mt-8 inline-block text-sm font-medium text-sage-600 underline transition-colors hover:text-sage-800"
+          className="text-sm font-medium text-sage-600 underline transition-colors hover:text-sage-800"
         >
-          Ver las 7 áreas completas
+          Ver las {enfoques.length} áreas
         </Link>
       </div>
     </section>

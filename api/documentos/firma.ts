@@ -48,6 +48,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   let folder: string
   if (contexto === 'certificacion') {
     folder = 'rebeca-velasquez/certificaciones'
+  } else if (contexto === 'redes') {
+    folder = 'rebeca-velasquez/redes'
   } else if (typeof pacienteId === 'string') {
     folder = `rebeca-velasquez/pacientes/${pacienteId}`
   } else {

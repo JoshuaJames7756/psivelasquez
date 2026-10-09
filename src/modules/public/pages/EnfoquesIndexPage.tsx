@@ -4,7 +4,7 @@ import { enfoques } from '../data/enfoques'
 export function EnfoquesIndexPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-20">
-      <h1 className="font-[var(--font-serif-brand)] text-4xl text-sage-900">
+      <h1 className="font-serif-brand text-4xl text-sage-900">
         Enfoque terapéutico
       </h1>
       <p className="mt-4 max-w-2xl text-sage-700">

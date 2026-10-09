@@ -123,3 +123,14 @@ export interface EscalaSeguimiento {
   aplicada_en: string
   creado_en: string
 }
+
+export interface PublicacionRed {
+  id: string
+  plataforma: 'instagram' | 'tiktok'
+  url: string
+  titulo: string | null
+  miniatura_url: string | null
+  visible: boolean
+  orden: number
+  creado_en: string
+}

@@ -15,7 +15,7 @@ export function SobreMiPage() {
     <main className="mx-auto max-w-5xl px-6 py-20">
       <div className="grid items-start gap-10 md:grid-cols-[1fr_0.8fr]">
         <div>
-          <h1 className="font-[var(--font-serif-brand)] text-4xl text-sage-900">Sobre mí</h1>
+          <h1 className="font-serif-brand text-4xl text-sage-900">Sobre mí</h1>
 
           <p className="mt-6 text-lg leading-relaxed text-sage-800">
             Soy psicóloga clínica con enfoque Cognitivo-Conductual. Acompaño a adolescentes y

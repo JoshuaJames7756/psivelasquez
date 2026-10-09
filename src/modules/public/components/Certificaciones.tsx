@@ -63,7 +63,7 @@ function ModalCertificacion({
  * Única sección de contraste oscuro real del sitio (verde bosque profundo).
  * Grid estilo LinkedIn: preview del documento, institución, año, "ver credencial"
  * abre un modal en vez de navegar a otra pestaña (sección 16 del doc: "preview; modal").
- * Datos reales desde /api/certificaciones — Rebeca las gestiona desde el
+ * Datos reales desde /api/sitio?recurso=certificaciones — Rebeca las gestiona desde el
  * panel /admin/credenciales.
  */
 export function Certificaciones() {
@@ -76,7 +76,7 @@ export function Certificaciones() {
     return (
       <section className="con-grain bg-gradient-to-b from-sage-800 to-sage-700 px-6 py-16 text-cream-50 md:py-20">
         <div className="mx-auto max-w-5xl">
-          <h2 className="font-[var(--font-serif-brand)] text-3xl">Certificaciones</h2>
+          <h2 className="font-serif-brand text-3xl">Certificaciones</h2>
           <p className="mt-4 text-sage-200">Próximamente.</p>
         </div>
       </section>
@@ -86,7 +86,7 @@ export function Certificaciones() {
   return (
     <section className="con-grain bg-gradient-to-b from-sage-800 to-sage-700 px-6 py-16 text-cream-50 md:py-20">
       <div className="mx-auto max-w-5xl">
-        <h2 className="font-[var(--font-serif-brand)] text-3xl">Certificaciones</h2>
+        <h2 className="font-serif-brand text-3xl">Certificaciones</h2>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {certificaciones.map((c) => (
             <div key={c.id} className="rounded-2xl border border-sage-600/60 bg-sage-900/40 p-5">

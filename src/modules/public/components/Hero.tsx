@@ -1,3 +1,4 @@
+import { LineasFondo } from '../../shared/components/LineasFondo'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
@@ -49,9 +50,15 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: duracion(0.6), delay: 0.1 }}
-            className="font-[var(--font-serif-brand)] text-4xl leading-tight text-sage-900 md:text-5xl"
+            className="font-serif-brand text-4xl leading-tight text-sage-900 md:text-5xl"
           >
-            Psicoterapia para atravesar momentos difíciles, con una mirada clínica y cercana
+            Psicoterapia para atravesar momentos difíciles, con una mirada clínica y{' '}
+            <span className="relative inline-block italic text-terracotta-600">
+              cercana
+              <svg viewBox="0 0 100 8" preserveAspectRatio="none" className="absolute -bottom-1 left-0 h-2 w-full" fill="none" aria-hidden="true">
+                <motion.path d="M1 5 C 25 1, 60 8, 99 3" stroke="var(--color-terracotta-300)" strokeWidth="2" strokeLinecap="round" vectorEffect="non-scaling-stroke" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: duracion(0.8), delay: 1, ease: 'easeInOut' }} />
+              </svg>
+            </span>
           </motion.h1>
 
           <motion.p
@@ -99,15 +106,18 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: duracion(0.7), delay: 0.15 }}
-          className="relative mx-auto aspect-[3/4] w-full max-w-[240px] overflow-hidden rounded-t-[999px] rounded-b-3xl bg-sage-100 md:mx-0 md:max-w-sm"
+          className="relative mx-auto w-full max-w-[240px] md:mx-0 md:max-w-sm"
         >
-          <img
-            src={rebecaHero}
-            alt="Rebeca Velásquez, psicóloga clínica"
-            className="h-full w-full object-cover"
-            width={800}
-            height={1067}
-          />
+          <LineasFondo variante="contorno" className="-inset-4 h-[calc(100%+2rem)] w-[calc(100%+2rem)]" />
+          <div className="relative aspect-[3/4] overflow-hidden rounded-t-[999px] rounded-b-3xl bg-sage-100">
+            <img
+              src={rebecaHero}
+              alt="Rebeca Velásquez, psicóloga clínica"
+              className="h-full w-full object-cover"
+              width={800}
+              height={1067}
+            />
+          </div>
         </motion.div>
       </motion.div>
     </section>

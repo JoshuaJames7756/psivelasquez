@@ -3,7 +3,7 @@ import { MapaUbicacion } from '../components/MapaUbicacion'
 export function ModalidadPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-20">
-      <h1 className="font-[var(--font-serif-brand)] text-4xl text-sage-900">Modalidad</h1>
+      <h1 className="font-serif-brand text-4xl text-sage-900">Modalidad</h1>
       <p className="mt-4 text-sage-700">
         Atiendo un solo día a la semana para poder darle a cada sesión la atención que merece.
         Puedes elegir la modalidad que prefieras al reservar.

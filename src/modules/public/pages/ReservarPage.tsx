@@ -43,7 +43,7 @@ export function ReservarPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-20">
-      <h1 className="font-[var(--font-serif-brand)] text-4xl text-sage-900">Reservar</h1>
+      <h1 className="font-serif-brand text-4xl text-sage-900">Reservar</h1>
       <p className="mt-4 text-sage-700">
         Estos son los cupos disponibles del próximo sábado. Elige un horario para comenzar tu
         reserva.

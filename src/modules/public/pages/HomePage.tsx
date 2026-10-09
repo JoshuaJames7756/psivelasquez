@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ScrollReveal } from '../../shared/components/ScrollReveal'
 import { ComoSeSienteEsteEspacio } from '../components/ComoSeSienteEsteEspacio'
+import { ContenidoRedes } from '../components/ContenidoRedes'
 import { EnfoqueTerapeutico } from '../components/EnfoqueTerapeutico'
 import { Hero } from '../components/Hero'
 import { ParaQuienEs } from '../components/ParaQuienEs'
@@ -35,10 +36,11 @@ export function HomePage() {
       <ScrollReveal>
         <ComoSeSienteEsteEspacio />
       </ScrollReveal>
+      <ContenidoRedes />
 
       <ScrollReveal>
         <section className="con-grain mx-auto max-w-3xl px-6 py-14 text-center md:py-16">
-          <h2 className="font-[var(--font-serif-brand)] text-2xl text-sage-900">
+          <h2 className="font-serif-brand text-2xl text-sage-900">
             Una trayectoria construida con intención
           </h2>
           <p className="mt-3 text-sage-700">

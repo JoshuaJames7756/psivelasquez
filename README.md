@@ -113,3 +113,16 @@ funcionar. Posibles causas a investigar en la próxima pasada:
 - Mientras tanto: certificaciones en PDF se pueden cargar sin
   archivo adjunto, o convertir a imagen (JPG/PNG) manualmente antes
   de subir, como workaround.
+
+
+## Contenido editable del sitio (`/api/sitio`)
+
+Certificaciones y publicaciones de redes comparten UNA función:
+`api/sitio.ts?recurso=certificaciones|redes`. La lógica vive en
+`server-lib/certificaciones.ts` y `server-lib/redes.ts`. Para otro
+recurso editable se agrega un manejador en `server-lib` y una línea en
+`api/sitio.ts`, sin tocar el límite de 12 funciones (hoy: 12).
+
+Migración nueva: `009_publicaciones_redes.sql` (obligatoria para la
+sección "Contenido" y la página `/admin/contenido`). Si la tabla no
+existe, la sección pública simplemente no se muestra.

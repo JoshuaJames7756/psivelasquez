@@ -1,6 +1,9 @@
+import { LineasFondo } from '../../shared/components/LineasFondo'
 export function ParaQuienEs() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-16 md:py-20">
+    <section className="relative overflow-hidden">
+      <LineasFondo variante="ondas" className="inset-x-0 top-0 h-40 w-full opacity-70" />
+      <div className="relative mx-auto max-w-3xl px-6 py-16 md:py-20">
       <p className="text-lg leading-relaxed text-sage-800">
         Esto te puede servir si sientes que la ansiedad, un diagnóstico médico, un cambio de
         vida o tu relación de pareja te están pesando más de lo que puedes manejar solo, y
@@ -14,6 +17,7 @@ export function ParaQuienEs() {
           no una cita agendada. Contáctame igual y te oriento sobre dónde buscar ayuda urgente,
           pero mi consulta no reemplaza una emergencia psiquiátrica.
         </p>
+      </div>
       </div>
     </section>
   )

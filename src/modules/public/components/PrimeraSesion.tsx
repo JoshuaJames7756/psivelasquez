@@ -1,3 +1,5 @@
+import { LineasFondo } from '../../shared/components/LineasFondo'
+import { TituloSeccion } from '../../shared/components/TituloSeccion'
 /**
  * Frase adicional por paso (no inventa el proceso clínico, solo
  * aclara qué significa cada punto desde la perspectiva de quien
@@ -24,11 +26,10 @@ const pasos = [
 
 export function PrimeraSesion() {
   return (
-    <section className="bg-cream-100 px-6 py-16 md:py-20">
-      <div className="mx-auto max-w-3xl">
-        <h2 className="font-[var(--font-serif-brand)] text-3xl text-sage-900">
-          Qué esperar en tu primera sesión
-        </h2>
+    <section className="relative overflow-hidden bg-cream-100 px-6 py-16 md:py-20">
+      <LineasFondo variante="ondas" className="inset-x-0 bottom-0 h-40 w-full" />
+      <div className="relative mx-auto max-w-3xl">
+        <TituloSeccion>Qué esperar en tu primera sesión</TituloSeccion>
         <ol className="mt-8 space-y-5 md:mt-10 md:space-y-6">
           {pasos.map((paso, i) => (
             <li key={paso.titulo} className="flex gap-4">
