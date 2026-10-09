@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../../server-lib/auth.js'
+import { registrarAuditoria } from '../../server-lib/auditoria.js'
 import { sql } from '../../server-lib/db.js'
 
 const SEMANAS_RIESGO_DEFAULT = 3
@@ -20,14 +21,43 @@ const SEMANAS_RIESGO_DEFAULT = 3
  * haya dado, ver migración 006.)
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET')
+  if (req.method !== 'GET' && req.method !== 'POST') {
+    res.setHeader('Allow', 'GET, POST')
     return res.status(405).json({ error: 'Método no permitido' })
   }
 
   const sesion = await verificarSesion(req)
   if (!sesion) {
     return res.status(401).json({ error: 'No autenticado' })
+  }
+
+  // POST: alta manual de un paciente (por ejemplo, alguien que agenda
+  // por WhatsApp y nunca pasó por el formulario del sitio).
+  if (req.method === 'POST') {
+    const { nombre, edad, telefono, motivoInicial } = req.body ?? {}
+    if (typeof nombre !== 'string' || nombre.trim().length < 2) {
+      return res.status(400).json({ error: 'El nombre es requerido' })
+    }
+    if (edad !== undefined && edad !== null && (!Number.isInteger(edad) || edad < 0 || edad > 120)) {
+      return res.status(400).json({ error: 'Edad no válida' })
+    }
+    try {
+      const [paciente] = await sql`
+        insert into pacientes (nombre, edad, telefono, motivo_inicial, primera_vez)
+        values (${nombre.trim()}, ${edad ?? null}, ${telefono || null}, ${motivoInicial || null}, true)
+        returning *
+      `
+      registrarAuditoria({
+        usuarioId: sesion.userId,
+        tipoEvento: 'creacion_paciente',
+        pacienteId: paciente.id,
+        detalle: 'alta manual desde el panel',
+      })
+      return res.status(201).json({ paciente })
+    } catch (err) {
+      console.error('[POST /api/pacientes]', err)
+      return res.status(500).json({ error: 'Error al crear el paciente' })
+    }
   }
 
   if (req.query.en_riesgo === '1') {

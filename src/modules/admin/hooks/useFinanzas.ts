@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useApiClient } from '../../shared/services/apiClient'
 
 interface Finanzas {
@@ -15,8 +15,8 @@ export function useFinanzas() {
   const [finanzas, setFinanzas] = useState<Finanzas | null>(null)
   const [cargando, setCargando] = useState(true)
 
-  useEffect(() => {
-    apiClient
+  const cargar = useCallback(() => {
+    return apiClient
       .get<Finanzas>('/resumen-mes?finanzas=1')
       .then(setFinanzas)
       .catch(() => setFinanzas(null))
@@ -24,5 +24,15 @@ export function useFinanzas() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { finanzas, cargando }
+  useEffect(() => {
+    cargar()
+  }, [cargar])
+
+  /** Cambia el precio de sesión (se guarda en el servidor y se recalcula todo). */
+  async function guardarPrecio(precioSesion: number) {
+    await apiClient.put('/resumen-mes', { precioSesion })
+    await cargar()
+  }
+
+  return { finanzas, cargando, guardarPrecio }
 }

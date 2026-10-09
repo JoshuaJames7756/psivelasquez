@@ -3,6 +3,7 @@ import { LineasFondo } from '../../shared/components/LineasFondo'
 import { AgendaSabado } from '../components/hoy/AgendaSabado'
 import { Atencion } from '../components/hoy/Atencion'
 import { esActivo } from '../components/hoy/estados'
+import { NotasRapidas } from '../components/hoy/NotasRapidas'
 import { KpiCard } from '../components/hoy/KpiCard'
 import { usePacientesEnRiesgo } from '../hooks/usePacientesEnRiesgo'
 import { useResumenMes } from '../hooks/useResumenMes'
@@ -105,7 +106,10 @@ export function HoyPage() {
           onAccion={aplicarAccion}
           onReintentar={recargar}
         />
-        <Atencion enRiesgo={enRiesgo} tareas={tareas} onHecha={(id) => cambiarEstado(id, 'hecha')} />
+        <div className="space-y-6">
+          <Atencion enRiesgo={enRiesgo} tareas={tareas} onHecha={(id) => cambiarEstado(id, 'hecha')} />
+          <NotasRapidas />
+        </div>
       </div>
     </div>
   )

@@ -4,7 +4,7 @@ import type { Paciente } from '../../shared/types/db'
 
 const DEBOUNCE_MS = 300
 
-export function useBusquedaPacientes(termino: string) {
+export function useBusquedaPacientes(termino: string, version = 0) {
   const apiClient = useApiClient()
   const [resultados, setResultados] = useState<Paciente[]>([])
   const [cargando, setCargando] = useState(false)
@@ -22,7 +22,7 @@ export function useBusquedaPacientes(termino: string) {
 
     return () => clearTimeout(timeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [termino])
+  }, [termino, version])
 
   return { resultados, cargando }
 }

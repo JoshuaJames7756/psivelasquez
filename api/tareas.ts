@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../server-lib/auth.js'
 import { sql } from '../server-lib/db.js'
+import { manejarNotas } from '../server-lib/notas.js'
 
 /**
  * GET /api/tareas?estado=todo       — listar, filtro opcional por estado
@@ -17,6 +18,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!sesion) {
     return res.status(401).json({ error: 'No autenticado' })
   }
+
+  // Notas rápidas comparten esta función (límite de 12 en Vercel Hobby).
+  if (req.query.recurso === 'notas') return manejarNotas(req, res)
 
   if (req.method === 'GET') {
     const { estado } = req.query

@@ -19,12 +19,14 @@ export function useFichaPaciente(id: string | null) {
   const [ficha, setFicha] = useState<FichaPaciente | null>(null)
   const [cargando, setCargando] = useState(false)
 
-  const recargar = useCallback(() => {
+  // recargar(true) actualiza sin mostrar "Cargando" (se conserva el
+  // scroll y lo que Rebeca está leyendo); si cambia el paciente sí.
+  const recargar = useCallback((silencioso = false) => {
     if (!id) {
       setFicha(null)
       return
     }
-    setCargando(true)
+    if (!silencioso) setCargando(true)
     apiClient
       .get<FichaPaciente>(`/pacientes/${id}`)
       .then(setFicha)

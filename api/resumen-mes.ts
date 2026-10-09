@@ -1,10 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../server-lib/auth.js'
+import { registrarAuditoria } from '../server-lib/auditoria.js'
 import { sql } from '../server-lib/db.js'
 
 /**
  * GET /api/resumen-mes               — números simples para Hoy
  * GET /api/resumen-mes?finanzas=1    — vista ampliada (sección 32 del doc)
+ * PUT /api/resumen-mes               body: { precioSesion } — cambia el precio de sesión
  *
  * Solo panel. Fusiona la vista de Finanzas acá en vez de crear un
  * archivo nuevo — límite de 12 funciones serverless en Vercel Hobby,
@@ -15,14 +17,38 @@ import { sql } from '../server-lib/db.js'
  * Rebeca desde el panel.
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET')
+  if (req.method !== 'GET' && req.method !== 'PUT') {
+    res.setHeader('Allow', 'GET, PUT')
     return res.status(405).json({ error: 'Método no permitido' })
   }
 
   const sesion = await verificarSesion(req)
   if (!sesion) {
     return res.status(401).json({ error: 'No autenticado' })
+  }
+
+  // PUT { precioSesion }: Rebeca cambia el precio desde Finanzas.
+  if (req.method === 'PUT') {
+    const { precioSesion } = req.body ?? {}
+    if (typeof precioSesion !== 'number' || !Number.isFinite(precioSesion) || precioSesion < 0 || precioSesion > 100000) {
+      return res.status(400).json({ error: 'Precio no válido' })
+    }
+    try {
+      await sql`
+        insert into configuracion (clave, valor)
+        values ('precio_sesion_bob', ${String(precioSesion)})
+        on conflict (clave) do update set valor = excluded.valor
+      `
+      registrarAuditoria({
+        usuarioId: sesion.userId,
+        tipoEvento: 'accion_administrativa',
+        detalle: 'cambió el precio de sesión',
+      })
+      return res.status(200).json({ precioSesion })
+    } catch (err) {
+      console.error('[PUT /api/resumen-mes]', err)
+      return res.status(500).json({ error: 'Error al guardar el precio' })
+    }
   }
 
   try {

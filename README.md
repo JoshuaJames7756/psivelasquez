@@ -126,3 +126,16 @@ recurso editable se agrega un manejador en `server-lib` y una línea en
 Migración nueva: `009_publicaciones_redes.sql` (obligatoria para la
 sección "Contenido" y la página `/admin/contenido`). Si la tabla no
 existe, la sección pública simplemente no se muestra.
+
+## Panel clínico: notas, exportación y precio
+
+- Migración `010_notas_rapidas.sql`: notas rápidas del panel (Hoy). Viven
+  en `api/tareas.ts?recurso=notas` (lógica en `server-lib/notas.ts`).
+- Notas de sesión: `POST /api/pacientes/:id {accion:'nota'}` crea, `DELETE`
+  elimina, `PUT /api/historial/:id` autoguarda. Alta manual de pacientes:
+  `POST /api/pacientes`. Edición de datos: `PATCH /api/pacientes/:id`.
+- Precio de sesión: `PUT /api/resumen-mes {precioSesion}`.
+- Exportar a PDF: se genera en el navegador (diálogo de impresión,
+  "Guardar como PDF"); los datos clínicos no salen a ningún servicio.
+  Requiere permitir ventanas emergentes en el sitio.
+- Cada alta, edición, creación o borrado de notas queda en `audit_log`.
