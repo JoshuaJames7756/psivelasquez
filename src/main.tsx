@@ -1,6 +1,6 @@
 import { ClerkProvider } from '@clerk/clerk-react'
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
@@ -12,10 +12,16 @@ if (!CLERK_PUBLISHABLE_KEY) {
   )
 }
 
-createRoot(document.getElementById('root')!).render(
+const raiz = document.getElementById('root')!
+const app = (
   <StrictMode>
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <App />
     </ClerkProvider>
-  </StrictMode>,
+  </StrictMode>
 )
+
+// Las páginas públicas llegan prerenderizadas (scripts/prerender.mjs): se
+// "hidratan". El panel y el login llegan vacíos: render normal.
+if (raiz.hasChildNodes()) hydrateRoot(raiz, app)
+else createRoot(raiz).render(app)

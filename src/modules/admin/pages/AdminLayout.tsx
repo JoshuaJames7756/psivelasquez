@@ -1,3 +1,4 @@
+import { useSeo } from '../../shared/seo/useSeo'
 import { UserButton } from '@clerk/clerk-react'
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
@@ -62,6 +63,7 @@ const PANTALLAS_RENOVADAS = [
 ]
 
 export function AdminLayout() {
+  useSeo({ titulo: 'Panel | Rebeca Velásquez', descripcion: 'Panel privado', ruta: '/admin', noindex: true })
   const [abierto, setAbierto] = useState(false)
   const { pathname } = useLocation()
   const renovada = PANTALLAS_RENOVADAS.includes(pathname)

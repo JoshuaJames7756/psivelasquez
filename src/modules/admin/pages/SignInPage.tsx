@@ -1,3 +1,4 @@
+import { useSeo } from '../../shared/seo/useSeo'
 import { SignIn } from '@clerk/clerk-react'
 
 /**
@@ -10,6 +11,7 @@ import { SignIn } from '@clerk/clerk-react'
  * credenciales reales del proyecto.
  */
 export function SignInPage() {
+  useSeo({ titulo: 'Ingresar | Rebeca Velásquez', descripcion: 'Acceso privado', ruta: '/sign-in', noindex: true })
   return (
     <div className="flex min-h-screen items-center justify-center bg-forest-900 p-6">
       <div>

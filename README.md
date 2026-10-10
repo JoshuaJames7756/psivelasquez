@@ -148,3 +148,19 @@ que verifica la sesión, registra el acceso en auditoría y devuelve un enlace
 firmado que vence a los 5 minutos. Eliminar un documento privado también lo
 borra de Cloudinary. Los documentos subidos antes de esta migración quedan
 marcados "Público" hasta que se eliminen y se vuelvan a adjuntar.
+
+## SEO
+
+- `src/modules/shared/seo/sitio.ts`: título, descripción y datos estructurados de cada página (fuente única).
+- `npm run build` hace cuatro pasos: compila el cliente, compila el servidor
+  (`src/entry-server.tsx`) y `scripts/prerender.mjs` escribe un HTML por ruta
+  (con metadatos y contenido ya renderizado), más `sitemap.xml` y `robots.txt`.
+  Vercel sirve esos archivos estáticos antes de la regla que reescribe a `index.html`.
+- **Dominio propio:** definir `VITE_SITE_URL` en Vercel (ej. `https://www.midominio.com`)
+  y volver a desplegar: cambia canonical, Open Graph, sitemap y robots.
+- Páginas con `noindex: true` en `sitio.ts` (hoy Cómo trabajo y Aviso ético, por no
+  tener contenido final) no entran al sitemap. Quitar el flag al publicar el texto.
+- `/admin` y `/sign-in`: bloqueados en robots.txt, con `noindex` en la página y
+  con cabecera `X-Robots-Tag` (vercel.json).
+- Imagen para compartir: `public/og-imagen.jpg` (1200x630).
+- Pendiente fuera del código: Google Business Profile y Search Console.
