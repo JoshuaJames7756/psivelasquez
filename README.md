@@ -164,3 +164,7 @@ marcados "Público" hasta que se eliminen y se vuelvan a adjuntar.
   con cabecera `X-Robots-Tag` (vercel.json).
 - Imagen para compartir: `public/og-imagen.jpg` (1200x630).
 - Pendiente fuera del código: Google Business Profile y Search Console.
+
+> `vercel.json` reescribe las rutas no prerenderizadas (`/admin`, `/sign-in`, URLs
+> desconocidas) a `app-shell.html` (HTML vacío). `index.html` es la portada ya
+> renderizada: no usarlo como fallback del panel.

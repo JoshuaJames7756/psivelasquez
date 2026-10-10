@@ -13,6 +13,15 @@ const servidor = await import(pathToFileURL(join('dist-ssr', 'entry-server.js'))
 const { render, rutasSeo, seo404, SITE_URL, NOMBRE_SITIO, IMAGEN_SOCIAL, jsonLdInicio } = servidor
 
 const plantilla = await readFile(join(dist, 'index.html'), 'utf8')
+// Cascarón vacío para rutas que NO se prerenderizan (/admin, /sign-in, URLs
+// desconocidas): vercel.json reescribe hacia aquí. Si se usara index.html
+// (que trae la portada ya renderizada), el panel intentaría hidratar el
+// contenido de la portada y quedaría en blanco.
+await writeFile(
+  join(dist, 'app-shell.html'),
+  plantilla.replace('<!--seo-->', '<meta name="robots" content="noindex, nofollow" />'),
+)
+
 const esc = (t) => t.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
 function cabecera(d, ruta) {
