@@ -82,10 +82,12 @@ export interface HistorialClinico {
 export interface DocumentoPaciente {
   id: string
   paciente_id: string
-  url: string
+  /** null en documentos privados: solo se abren con un enlace firmado. */
+  url: string | null
   nombre: string
   tipo: string | null
   subido_en: string
+  privado: boolean
 }
 
 export type EstadoTarea = 'todo' | 'en_progreso' | 'hecha' | 'cancelada'

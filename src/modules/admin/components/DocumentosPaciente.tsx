@@ -26,6 +26,21 @@ export function DocumentosPaciente({
     e.target.value = '' // permite volver a elegir el mismo archivo después
   }
 
+  async function abrir(doc: DocumentoPaciente) {
+    setErrorEliminar(null)
+    // La pestaña se abre ya (gesto del clic) para que el navegador no la
+    // bloquee; después se le asigna el enlace firmado.
+    const pestana = window.open('', '_blank')
+    try {
+      const { url } = await apiClient.get<{ url: string }>(`/documentos?id=${doc.id}`)
+      if (pestana) pestana.location.href = url
+      else window.location.href = url
+    } catch {
+      pestana?.close()
+      setErrorEliminar('No se pudo abrir el documento. Intenta de nuevo.')
+    }
+  }
+
   async function eliminar(doc: DocumentoPaciente) {
     if (!window.confirm(`¿Eliminar "${doc.nombre}" de la ficha? No se puede deshacer.`)) return
     setEliminandoId(doc.id)
@@ -62,14 +77,24 @@ export function DocumentosPaciente({
         <ul className="space-y-2">
           {documentos.map((doc) => (
             <li key={doc.id} className="flex items-center justify-between gap-3 rounded-2xl bg-cream-100/70 px-3 py-2">
-              <a
-                href={doc.url}
-                target="_blank"
-                rel="noreferrer"
-                className="min-w-0 truncate text-sm text-sage-800 underline hover:text-sage-900"
+              <button
+                onClick={() => abrir(doc)}
+                className="min-w-0 truncate text-left text-sm text-sage-800 underline hover:text-sage-900"
               >
                 {doc.nombre}
-              </a>
+              </button>
+              <span
+                title={
+                  doc.privado
+                    ? 'Privado: solo se abre con tu sesión'
+                    : 'Enlace público anterior. Para hacerlo privado, elimínalo y vuelve a adjuntarlo.'
+                }
+                className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                  doc.privado ? 'bg-sage-100 text-sage-700' : 'bg-terracotta-50 text-terracotta-600'
+                }`}
+              >
+                {doc.privado ? 'Privado' : 'Público'}
+              </span>
               <button
                 onClick={() => eliminar(doc)}
                 disabled={eliminandoId === doc.id}

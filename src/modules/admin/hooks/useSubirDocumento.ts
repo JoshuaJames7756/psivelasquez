@@ -5,6 +5,7 @@ import type { DocumentoPaciente } from '../../shared/types/db'
 interface RespuestaFirma {
   timestamp: number
   folder: string
+  type?: string
   signature: string
   apiKey: string
   cloudName: string
@@ -35,6 +36,7 @@ export function useSubirDocumento(pacienteId: string, onSubido: (doc: DocumentoP
       formData.append('timestamp', String(firma.timestamp))
       formData.append('signature', firma.signature)
       formData.append('folder', firma.folder)
+      if (firma.type) formData.append('type', firma.type)
 
       // resource_type explícito: con 'auto', un PDF/imagen sube como
       // tipo que el navegador fuerza a descargar en vez de mostrar
@@ -59,6 +61,10 @@ export function useSubirDocumento(pacienteId: string, onSubido: (doc: DocumentoP
       const { documento } = await apiClient.post<{ documento: DocumentoPaciente }>('/documentos', {
         pacienteId,
         url: dataCloudinary.secure_url,
+        privado: firma.type === 'authenticated',
+        publicId: dataCloudinary.public_id,
+        resourceType,
+        formato: dataCloudinary.format,
         nombre: archivo.name,
         tipo: archivo.type,
       })

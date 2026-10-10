@@ -139,3 +139,12 @@ existe, la sección pública simplemente no se muestra.
   "Guardar como PDF"); los datos clínicos no salen a ningún servicio.
   Requiere permitir ventanas emergentes en el sitio.
 - Cada alta, edición, creación o borrado de notas queda en `audit_log`.
+
+## Documentos de pacientes privados (migración 011)
+
+Los adjuntos nuevos se suben a Cloudinary con `type: authenticated`: la URL
+directa no funciona. Se abren desde la ficha con `GET /api/documentos?id=`,
+que verifica la sesión, registra el acceso en auditoría y devuelve un enlace
+firmado que vence a los 5 minutos. Eliminar un documento privado también lo
+borra de Cloudinary. Los documentos subidos antes de esta migración quedan
+marcados "Público" hasta que se eliminen y se vuelvan a adjuntar.

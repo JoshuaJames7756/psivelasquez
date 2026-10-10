@@ -167,7 +167,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         order by aplicada_en asc
       `,
       sql`
-        select * from documentos_paciente
+        select id, paciente_id, case when privado then null else url end as url,
+               nombre, tipo, subido_en, privado
+        from documentos_paciente
         where paciente_id = ${id}
         order by subido_en desc
       `,
