@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CabeceraPagina } from '../../shared/components/CabeceraPagina'
 import { FormularioReserva } from '../components/FormularioReserva'
 import { useSlotsPublicos, type SlotPublico } from '../hooks/useSlotsPublicos'
 import type { EstadoCita } from '../../shared/types/db'
@@ -42,12 +43,16 @@ export function ReservarPage() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-20">
-      <h1 className="font-serif-brand text-4xl text-sage-900">Reservar</h1>
-      <p className="mt-4 text-sage-700">
-        Estos son los cupos disponibles del próximo sábado. Elige un horario para comenzar tu
-        reserva.
-      </p>
+    <main>
+      <CabeceraPagina
+        etiqueta="Próximo sábado"
+        titulo="Reservar"
+        intro="Estos son los cupos disponibles del próximo sábado. Elige un horario para comenzar tu reserva."
+        estilo="ondas"
+        tono="sage"
+        ancho="max-w-4xl"
+      />
+      <div className="mx-auto max-w-4xl px-6 pb-20 pt-4">
 
       {reservaExitosa && (
         <div className="mt-6 rounded-xl border-2 border-sage-400 bg-sage-100 p-4 text-sm text-sage-800">
@@ -84,6 +89,7 @@ export function ReservarPage() {
         onClose={() => setSlotSeleccionado(null)}
         onReservado={manejarReservado}
       />
+      </div>
     </main>
   )
 }

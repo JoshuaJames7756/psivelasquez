@@ -1,5 +1,8 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
+import { FormaFlotante } from '../../shared/components/Decoraciones'
+import { LineasFondo } from '../../shared/components/LineasFondo'
+import { TituloSeccion } from '../../shared/components/TituloSeccion'
 import { useCertificacionesPublicas } from '../hooks/useCertificacionesPublicas'
 import { urlPreviewImagen } from '../../shared/utils/cloudinary'
 import type { Certificacion } from '../../shared/types/db'
@@ -60,12 +63,24 @@ function ModalCertificacion({
 }
 
 /**
- * Única sección de contraste oscuro real del sitio (verde bosque profundo).
- * Grid estilo LinkedIn: preview del documento, institución, año, "ver credencial"
- * abre un modal en vez de navegar a otra pestaña (sección 16 del doc: "preview; modal").
- * Datos reales desde /api/sitio?recurso=certificaciones — Rebeca las gestiona desde el
- * panel /admin/credenciales.
+ * Sección clara (crema → verde muy suave) para que no rompa el
+ * equilibrio de color del sitio. Tarjetas tipo credencial: vista previa
+ * del documento, institución y año; "Ver credencial" abre un modal.
+ * Datos reales desde /api/sitio?recurso=certificaciones, gestionados
+ * desde el panel /admin/credenciales.
  */
+const fondoSeccion =
+  'relative overflow-hidden bg-gradient-to-b from-cream-100 via-sage-50 to-sage-100/70 px-6 py-16 md:py-20'
+
+function Decoracion() {
+  return (
+    <>
+      <LineasFondo variante="circulos" className="-right-28 -top-28 h-96 w-96" />
+      <FormaFlotante className="-bottom-16 -left-10 h-56 w-56" color="bg-terracotta-100/50" />
+    </>
+  )
+}
+
 export function Certificaciones() {
   const { certificaciones, cargando } = useCertificacionesPublicas()
   const [seleccionada, setSeleccionada] = useState<Certificacion | null>(null)
@@ -74,46 +89,55 @@ export function Certificaciones() {
 
   if (certificaciones.length === 0) {
     return (
-      <section className="con-grain bg-gradient-to-b from-sage-800 to-sage-700 px-6 py-16 text-cream-50 md:py-20">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="font-serif-brand text-3xl">Certificaciones</h2>
-          <p className="mt-4 text-sage-200">Próximamente.</p>
+      <section className={fondoSeccion}>
+        <Decoracion />
+        <div className="relative mx-auto max-w-5xl">
+          <TituloSeccion>Certificaciones</TituloSeccion>
+          <p className="mt-4 text-sage-700">Próximamente.</p>
         </div>
       </section>
     )
   }
 
   return (
-    <section className="con-grain bg-gradient-to-b from-sage-800 to-sage-700 px-6 py-16 text-cream-50 md:py-20">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="font-serif-brand text-3xl">Certificaciones</h2>
+    <section className={fondoSeccion}>
+      <Decoracion />
+      <div className="relative mx-auto max-w-5xl">
+        <TituloSeccion>Certificaciones</TituloSeccion>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {certificaciones.map((c) => (
-            <div key={c.id} className="rounded-2xl border border-sage-600/60 bg-sage-900/40 p-5">
+          {certificaciones.map((c, i) => (
+            <motion.div
+              key={c.id}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: (i % 3) * 0.08 }}
+              className="rounded-3xl border border-sage-200 bg-cream-50 p-4 shadow-sm transition-shadow hover:shadow-md"
+            >
               {c.documento_url ? (
                 <img
                   src={urlPreviewImagen(c.documento_url)}
                   alt={c.nombre}
-                  className="h-32 w-full rounded-lg object-cover"
+                  className="aspect-[4/3] w-full rounded-2xl bg-sage-50 object-cover object-top"
                   loading="lazy"
                 />
               ) : (
-                <div className="h-32 rounded-lg bg-sage-700" />
+                <div className="aspect-[4/3] rounded-2xl bg-sage-100" />
               )}
-              <p className="mt-4 text-sm text-sage-200">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-sage-600">
                 {c.institucion}
                 {c.anio ? ` · ${c.anio}` : ''}
               </p>
-              <p className="font-medium">{c.nombre}</p>
+              <p className="mt-1 font-serif-brand text-lg text-sage-900">{c.nombre}</p>
               {c.documento_url && (
                 <button
                   onClick={() => setSeleccionada(c)}
-                  className="mt-4 text-sm text-terracotta-200 transition-colors hover:text-terracotta-100"
+                  className="mt-3 text-sm font-medium text-sage-700 underline decoration-terracotta-300 underline-offset-4 transition-colors hover:text-sage-900"
                 >
                   Ver credencial
                 </button>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

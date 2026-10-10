@@ -9,6 +9,14 @@ export interface Enfoque {
   slug: string
   titulo: string
   resumen: string
+  /**
+   * Opcionales: se muestran en la página de detalle solo si existen.
+   * Es contenido clínico, así que NO se inventa: se completa cuando
+   * Rebeca lo escriba o lo apruebe.
+   */
+  queEs?: string
+  senales?: string[]
+  comoAyuda?: string
 }
 
 export const enfoques: Enfoque[] = [

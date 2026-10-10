@@ -10,12 +10,16 @@ const fechaCorta = (f: string) =>
 function Grupo({
   titulo,
   descripcion,
+  origen,
   tono,
+  vacio,
   children,
 }: {
   titulo: string
   descripcion: string
+  origen: string
   tono: string
+  vacio: boolean
   children: React.ReactNode
 }) {
   return (
@@ -23,8 +27,13 @@ function Grupo({
       <div className={`px-5 py-4 ${tono}`}>
         <h2 className="font-serif-brand text-xl text-sage-900">{titulo}</h2>
         <p className="text-sm text-sage-700">{descripcion}</p>
+        <p className="mt-1 text-xs text-sage-600">{origen}</p>
       </div>
-      <ul className="divide-y divide-cream-300/50">{children}</ul>
+      {vacio ? (
+        <p className="px-5 py-4 text-sm text-sage-600">Nada por ahora.</p>
+      ) : (
+        <ul className="divide-y divide-cream-300/50">{children}</ul>
+      )}
     </section>
   )
 }
@@ -53,6 +62,11 @@ export function SeguimientoPage() {
       <div>
         <h1 className="font-serif-brand text-3xl text-sage-900">Seguimiento</h1>
         <p className="text-sm text-sage-600">Lo que necesita tu atención, en un solo lugar.</p>
+        <p className="mt-2 max-w-2xl rounded-2xl bg-sage-50 px-4 py-3 text-sm text-sage-800">
+          Aquí no se escribe nada a mano: esta pantalla se arma sola con lo que pasa en la Agenda y en la ficha
+          de cada paciente. Cuando resuelves algo allá (confirmas una cita, registras el pago o agendas una
+          sesión), desaparece de aquí.
+        </p>
       </div>
 
       {nada && (
@@ -65,8 +79,15 @@ export function SeguimientoPage() {
         </div>
       )}
 
-      {datos.solicitadas.length > 0 && (
-        <Grupo titulo="Por confirmar" descripcion="Pidieron un horario y esperan tu respuesta." tono="bg-terracotta-50">
+      {!nada && (
+        <>
+        <Grupo
+          titulo="Por confirmar"
+          descripcion="Pidieron un horario y esperan tu respuesta."
+          origen="Se llena cuando alguien solicita un horario desde la página de Reservar."
+          tono="bg-terracotta-50"
+          vacio={datos.solicitadas.length === 0}
+        >
           {datos.solicitadas.map((s) => (
             <li key={s.id} className="flex items-center justify-between gap-3 px-5 py-3">
               <span className="text-sm text-sage-900">
@@ -82,10 +103,14 @@ export function SeguimientoPage() {
             </li>
           ))}
         </Grupo>
-      )}
 
-      {datos.confirmadasSinPago.length > 0 && (
-        <Grupo titulo="Esperando el comprobante" descripcion="Horario confirmado, falta el adelanto." tono="bg-sage-100">
+        <Grupo
+          titulo="Esperando el comprobante"
+          descripcion="Horario confirmado, falta el adelanto."
+          origen="Se llena cuando confirmas una cita en la Agenda y aún no registras el pago."
+          tono="bg-sage-100"
+          vacio={datos.confirmadasSinPago.length === 0}
+        >
           {datos.confirmadasSinPago.map((s) => (
             <li key={s.id} className="flex items-center justify-between gap-3 px-5 py-3">
               <span className="text-sm text-sage-900">
@@ -101,10 +126,14 @@ export function SeguimientoPage() {
             </li>
           ))}
         </Grupo>
-      )}
 
-      {datos.pacientesEnRiesgo.length > 0 && (
-        <Grupo titulo="Pacientes a retomar" descripcion="Llevan semanas sin una sesión agendada." tono="bg-cream-200/60">
+        <Grupo
+          titulo="Pacientes a retomar"
+          descripcion="Llevan semanas sin una sesión agendada."
+          origen="Se llena con pacientes activos sin cita confirmada hace 3 semanas o más."
+          tono="bg-cream-200/60"
+          vacio={datos.pacientesEnRiesgo.length === 0}
+        >
           {datos.pacientesEnRiesgo.map((p) => (
             <li key={p.id} className="flex items-center justify-between gap-3 px-5 py-3">
               <span className="text-sm text-sage-900">
@@ -124,6 +153,7 @@ export function SeguimientoPage() {
             </li>
           ))}
         </Grupo>
+        </>
       )}
     </div>
   )

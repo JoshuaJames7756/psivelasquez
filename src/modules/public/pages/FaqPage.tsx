@@ -1,9 +1,16 @@
+import { CabeceraPagina } from '../../shared/components/CabeceraPagina'
 import { Faq } from '../components/Faq'
 
 export function FaqPage() {
   return (
     <main>
-      <Faq nivelTitulo="h1" />
+      <CabeceraPagina
+        etiqueta="Antes de escribirme"
+        titulo="Preguntas frecuentes"
+        estilo="circulos"
+        tono="crema"
+      />
+      <Faq conTitulo={false} />
     </main>
   )
 }

@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
 import { useMotionSeguro } from '../hooks/useMotionSeguro'
 
-type Variante = 'ondas' | 'contorno' | 'rama'
+type Variante = 'ondas' | 'contorno' | 'rama' | 'circulos' | 'hojas'
 
 /**
  * Líneas decorativas de fondo: trazos finos que se dibujan una vez al
@@ -26,6 +26,24 @@ const trazos: Record<Variante, { viewBox: string; paths: string[] }> = {
     paths: [
       'M200 20 C 90 20, 20 110, 20 230 C 20 380, 100 480, 200 480 C 300 480, 380 380, 380 230 C 380 110, 310 20, 200 20 Z',
       'M200 50 C 110 50, 50 125, 50 230 C 50 360, 115 450, 200 450 C 285 450, 350 360, 350 230 C 350 125, 290 50, 200 50 Z',
+    ],
+  },
+  circulos: {
+    viewBox: '0 0 400 400',
+    paths: [
+      'M40 200 a160 160 0 1 0 320 0 a160 160 0 1 0 -320 0',
+      'M90 200 a110 110 0 1 0 220 0 a110 110 0 1 0 -220 0',
+      'M140 200 a60 60 0 1 0 120 0 a60 60 0 1 0 -120 0',
+    ],
+  },
+  hojas: {
+    viewBox: '0 0 300 300',
+    paths: [
+      'M20 280 C 80 230, 150 160, 270 40',
+      'M90 215 C 70 180, 80 150, 105 130 C 125 155, 120 190, 90 215 Z',
+      'M150 160 C 130 125, 140 95, 165 75 C 185 100, 180 135, 150 160 Z',
+      'M200 112 C 225 105, 245 115, 255 135 C 230 145, 210 135, 200 112 Z',
+      'M60 250 C 90 255, 115 245, 125 225 C 95 215, 70 225, 60 250 Z',
     ],
   },
   rama: {

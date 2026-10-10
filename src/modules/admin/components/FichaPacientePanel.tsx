@@ -88,6 +88,7 @@ export function FichaPacientePanel({
   const { crearNota, eliminarNota } = useAccionesPaciente()
   const [editando, setEditando] = useState(false)
   const [creandoNota, setCreandoNota] = useState(false)
+  const [recienCreadaId, setRecienCreadaId] = useState<string | null>(null)
   const [aviso, setAviso] = useState<string | null>(null)
 
   if (!pacienteId) {
@@ -116,7 +117,8 @@ export function FichaPacientePanel({
     setCreandoNota(true)
     setAviso(null)
     try {
-      await crearNota(paciente.id)
+      const { nota } = await crearNota(paciente.id)
+      setRecienCreadaId(nota.id)
       recargar(true)
     } catch {
       setAviso('No se pudo crear la nota. Intenta de nuevo.')
@@ -213,11 +215,11 @@ export function FichaPacientePanel({
             </div>
           ) : (
             <ol className="relative space-y-4 border-l-2 border-sage-200 pl-0">
-              {historial.map((h, i) => (
+              {historial.map((h) => (
                 <NotaSesion
                   key={h.id}
                   registro={h}
-                  abiertaInicial={i === 0}
+                  abiertaInicial={historial.length === 1 || h.id === recienCreadaId}
                   onExportar={() => exportar(h.id)}
                   onEliminar={() => borrar(h.id)}
                 />

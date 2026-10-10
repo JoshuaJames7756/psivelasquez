@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { CabeceraPagina } from '../../shared/components/CabeceraPagina'
 
 /**
  * Texto dividido en 3 bloques (experiencia / formación / manera de
@@ -12,12 +13,12 @@ import { Link } from 'react-router-dom'
  */
 export function SobreMiPage() {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-20">
+    <main>
+      <CabeceraPagina etiqueta="Rebeca Velásquez" titulo="Sobre mí" estilo="hojas" tono="terracota" ancho="max-w-5xl" />
+      <div className="mx-auto max-w-5xl px-6 pb-20 pt-6">
       <div className="grid items-start gap-10 md:grid-cols-[1fr_0.8fr]">
         <div>
-          <h1 className="font-serif-brand text-4xl text-sage-900">Sobre mí</h1>
-
-          <p className="mt-6 text-lg leading-relaxed text-sage-800">
+          <p className="text-lg leading-relaxed text-sage-800">
             Soy psicóloga clínica con enfoque Cognitivo-Conductual. Acompaño a adolescentes y
             adultos que atraviesan ansiedad, procesos de salud difíciles, y momentos de cambio.
           </p>
@@ -48,6 +49,7 @@ export function SobreMiPage() {
             Otra foto de Rebeca, pendiente
           </p>
         </div>
+      </div>
       </div>
     </main>
   )

@@ -93,15 +93,23 @@ function ItemFaq({ pregunta, respuesta }: ItemPregunta) {
  * Hero.tsx, así que acá corresponde <h2>) y como página completa
  * en FaqPage.tsx (donde esto ES el título principal, <h1>).
  */
-export function Faq({ nivelTitulo = 'h2' }: { nivelTitulo?: 'h1' | 'h2' }) {
+export function Faq({
+  nivelTitulo = 'h2',
+  conTitulo = true,
+}: {
+  nivelTitulo?: 'h1' | 'h2'
+  conTitulo?: boolean
+}) {
   const Titulo = nivelTitulo
 
   return (
-    <section className="mx-auto max-w-3xl px-6 py-20">
-      <Titulo className="font-serif-brand text-3xl text-sage-900">
-        Preguntas frecuentes
-      </Titulo>
-      <div className="mt-8 divide-y divide-sage-200">
+    <section className={`mx-auto max-w-3xl px-6 ${conTitulo ? 'py-20' : 'pb-20 pt-6'}`}>
+      {conTitulo && (
+        <Titulo className="font-serif-brand text-3xl text-sage-900">
+          Preguntas frecuentes
+        </Titulo>
+      )}
+      <div className={`${conTitulo ? 'mt-8' : ''} divide-y divide-sage-200`}>
         {preguntas.map((item) => (
           <ItemFaq key={item.pregunta} {...item} />
         ))}

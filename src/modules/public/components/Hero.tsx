@@ -1,3 +1,4 @@
+import { AnilloGiratorio, FormaFlotante, PuntosFondo } from '../../shared/components/Decoraciones'
 import { LineasFondo } from '../../shared/components/LineasFondo'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
@@ -109,6 +110,14 @@ export function Hero() {
           className="relative mx-auto w-full max-w-[240px] md:mx-0 md:max-w-sm"
         >
           <LineasFondo variante="contorno" className="-inset-4 h-[calc(100%+2rem)] w-[calc(100%+2rem)]" />
+          {/* Arco desplazado detrás de la foto: da profundidad sin tapar el rostro */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 translate-x-3 translate-y-3 rounded-t-[999px] rounded-b-3xl bg-sage-200/60 md:translate-x-5 md:translate-y-5"
+          />
+          <PuntosFondo className="-bottom-8 -right-10 h-32 w-32" />
+          <AnilloGiratorio className="-right-5 -top-3 h-20 w-20 md:-right-8 md:h-24 md:w-24" />
+          <FormaFlotante className="-left-8 bottom-12 h-24 w-24" color="bg-terracotta-200/60" recorrido={10} duracionCiclo={7} />
           <div className="relative aspect-[3/4] overflow-hidden rounded-t-[999px] rounded-b-3xl bg-sage-100">
             <img
               src={rebecaHero}
@@ -118,6 +127,15 @@ export function Hero() {
               height={1067}
             />
           </div>
+          <motion.div
+            aria-hidden="true"
+            animate={desactivado ? undefined : { y: [0, -6, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute -left-3 bottom-6 flex items-center gap-2 rounded-full border border-sage-200 bg-cream-50/95 px-3 py-1.5 text-xs font-medium text-sage-800 shadow-md md:-left-8"
+          >
+            <span className="h-2 w-2 rounded-full bg-terracotta-400" />
+            Presencial y online
+          </motion.div>
         </motion.div>
       </motion.div>
     </section>
