@@ -50,7 +50,16 @@ function Menu({ onNavegar }: { onNavegar?: () => void }) {
  * para seguir siendo legibles sobre el fondo claro. Cada una pierde
  * ese envoltorio cuando se rediseña (ver PANTALLAS_RENOVADAS).
  */
-const PANTALLAS_RENOVADAS = ['/admin', '/admin/pacientes', '/admin/finanzas']
+const PANTALLAS_RENOVADAS = [
+  '/admin',
+  '/admin/pacientes',
+  '/admin/finanzas',
+  '/admin/agenda',
+  '/admin/seguimiento',
+  '/admin/tareas',
+  '/admin/credenciales',
+  '/admin/contenido',
+]
 
 export function AdminLayout() {
   const [abierto, setAbierto] = useState(false)

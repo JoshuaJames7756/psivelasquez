@@ -40,5 +40,10 @@ export function useTareas() {
     await recargar()
   }
 
-  return { tareas, cargando, recargar, crear, cambiarEstado }
+  async function eliminar(id: string) {
+    await apiClient.delete('/tareas', { id })
+    await recargar()
+  }
+
+  return { tareas, cargando, recargar, crear, cambiarEstado, eliminar }
 }

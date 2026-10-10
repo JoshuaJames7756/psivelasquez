@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useTareas } from '../hooks/useTareas'
-import type { EstadoTarea, Tarea } from '../../shared/types/db'
+import { botonPrimario, campo, tarjeta } from '../utils/estilos'
+import type { EstadoTarea, PrioridadTarea, Tarea } from '../../shared/types/db'
 
-const columnas: { estado: EstadoTarea; titulo: string }[] = [
-  { estado: 'todo', titulo: 'Por hacer' },
-  { estado: 'en_progreso', titulo: 'En progreso' },
-  { estado: 'hecha', titulo: 'Hechas' },
+const columnas: { estado: EstadoTarea; titulo: string; vacio: string }[] = [
+  { estado: 'todo', titulo: 'Por hacer', vacio: 'Nada pendiente.' },
+  { estado: 'en_progreso', titulo: 'En progreso', vacio: 'Nada en curso.' },
+  { estado: 'hecha', titulo: 'Hechas', vacio: 'Aún no hay tareas hechas.' },
 ]
 
 const colorPrioridad: Record<Tarea['prioridad'], string> = {
@@ -14,107 +15,153 @@ const colorPrioridad: Record<Tarea['prioridad'], string> = {
   baja: 'bg-sage-300',
 }
 
+const siguienteEstado: Partial<Record<EstadoTarea, { a: EstadoTarea; texto: string }>> = {
+  todo: { a: 'en_progreso', texto: 'Empezar' },
+  en_progreso: { a: 'hecha', texto: 'Marcar hecha' },
+}
+
 function TarjetaTarea({
   tarea,
   onAvanzar,
+  onEliminar,
 }: {
   tarea: Tarea
   onAvanzar: (id: string, siguiente: EstadoTarea) => void
+  onEliminar: (id: string) => void
 }) {
-  const siguienteEstado: Partial<Record<EstadoTarea, EstadoTarea>> = {
-    todo: 'en_progreso',
-    en_progreso: 'hecha',
-  }
   const siguiente = siguienteEstado[tarea.estado]
-
   return (
-    <div className="rounded-lg border border-forest-700 bg-forest-800 p-3">
+    <div className="rounded-2xl border border-cream-300/70 bg-white p-3 shadow-sm">
       <div className="flex items-start gap-2">
-        <span className={`mt-1 h-2 w-2 shrink-0 rounded-full ${colorPrioridad[tarea.prioridad]}`} />
+        <span
+          title={`Prioridad ${tarea.prioridad}`}
+          className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${colorPrioridad[tarea.prioridad]}`}
+        />
         <div className="min-w-0 flex-1">
-          <p className="text-sm text-cream-50">{tarea.titulo}</p>
+          <p className={`text-sm text-sage-900 ${tarea.estado === 'hecha' ? 'line-through opacity-60' : ''}`}>
+            {tarea.titulo}
+          </p>
           {tarea.fecha_limite && (
-            <p className="mt-1 text-xs text-cream-300">
+            <p className="mt-1 text-xs text-sage-600">
+              Para el{' '}
               {new Date(tarea.fecha_limite).toLocaleDateString('es-BO', {
                 day: 'numeric',
                 month: 'short',
+                timeZone: 'UTC',
               })}
             </p>
           )}
         </div>
       </div>
-      {siguiente && (
+      <div className="mt-2 flex items-center justify-between">
+        {siguiente ? (
+          <button
+            onClick={() => onAvanzar(tarea.id, siguiente.a)}
+            className="rounded-full bg-sage-100 px-3 py-1 text-xs font-medium text-sage-800 hover:bg-sage-200"
+          >
+            {siguiente.texto}
+          </button>
+        ) : (
+          <span />
+        )}
         <button
-          onClick={() => onAvanzar(tarea.id, siguiente)}
-          className="mt-2 text-xs font-medium text-sage-400 hover:text-sage-300"
+          onClick={() => {
+            if (window.confirm('¿Eliminar esta tarea?')) onEliminar(tarea.id)
+          }}
+          className="text-xs text-terracotta-600 hover:underline"
         >
-          {siguiente === 'en_progreso' ? 'Empezar →' : 'Marcar hecha →'}
+          Eliminar
         </button>
-      )}
+      </div>
     </div>
   )
 }
 
-function FormularioTareaRapida({ onCrear }: { onCrear: (titulo: string) => void }) {
-  const [titulo, setTitulo] = useState('')
-
-  function manejarSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!titulo.trim()) return
-    onCrear(titulo.trim())
-    setTitulo('')
-  }
-
-  return (
-    <form onSubmit={manejarSubmit} className="mb-6 flex gap-2">
-      <input
-        value={titulo}
-        onChange={(e) => setTitulo(e.target.value)}
-        placeholder="Nueva tarea..."
-        className="flex-1 rounded-lg border border-forest-700 bg-forest-800 px-3 py-2 text-sm text-cream-50 placeholder:text-cream-300/50 focus:border-sage-500 focus:outline-none"
-      />
-      <button
-        type="submit"
-        className="rounded-lg bg-sage-700 px-4 py-2 text-sm font-medium text-cream-50 hover:bg-sage-800"
-      >
-        Agregar
-      </button>
-    </form>
-  )
-}
-
 export function TareasPage() {
-  const { tareas, cargando, crear, cambiarEstado } = useTareas()
+  const { tareas, cargando, crear, cambiarEstado, eliminar } = useTareas()
+  const [titulo, setTitulo] = useState('')
+  const [prioridad, setPrioridad] = useState<PrioridadTarea>('media')
+  const [fecha, setFecha] = useState('')
+  const [enviando, setEnviando] = useState(false)
 
-  if (cargando) {
-    return <p className="p-8 text-cream-300">Cargando tareas...</p>
+  async function enviar(e: React.FormEvent) {
+    e.preventDefault()
+    if (!titulo.trim() || enviando) return
+    setEnviando(true)
+    try {
+      await crear({ titulo: titulo.trim(), prioridad, fechaLimite: fecha || undefined })
+      setTitulo('')
+      setFecha('')
+      setPrioridad('media')
+    } finally {
+      setEnviando(false)
+    }
   }
 
   return (
-    <section className="p-6 md:p-8">
-      <h1 className="text-2xl font-semibold text-cream-50">Tareas</h1>
+    <section className="space-y-6">
+      <header>
+        <h1 className="font-serif-brand text-3xl text-sage-900">Tareas</h1>
+        <p className="mt-1 text-sm text-sage-700">Lo pendiente de tu consulta, de un vistazo.</p>
+      </header>
 
-      <div className="mt-6 max-w-md">
-        <FormularioTareaRapida onCrear={(titulo) => crear({ titulo })} />
-      </div>
+      <form onSubmit={enviar} className={`${tarjeta} flex flex-wrap items-end gap-3 p-4`}>
+        <label className="min-w-[14rem] flex-1 text-xs font-medium text-sage-700">
+          Nueva tarea
+          <input
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+            placeholder="Ej. Llamar a un paciente nuevo"
+            maxLength={200}
+            className={`${campo} mt-1`}
+          />
+        </label>
+        <label className="text-xs font-medium text-sage-700">
+          Prioridad
+          <select
+            value={prioridad}
+            onChange={(e) => setPrioridad(e.target.value as PrioridadTarea)}
+            className={`${campo} mt-1`}
+          >
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </label>
+        <label className="text-xs font-medium text-sage-700">
+          Fecha límite
+          <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} className={`${campo} mt-1`} />
+        </label>
+        <button type="submit" disabled={!titulo.trim() || enviando} className={botonPrimario}>
+          {enviando ? 'Agregando...' : 'Agregar'}
+        </button>
+      </form>
 
-      <div className="mt-4 grid gap-6 md:grid-cols-3">
-        {columnas.map((col) => (
-          <div key={col.estado}>
-            <h2 className="mb-3 text-sm font-semibold text-cream-300">{col.titulo}</h2>
-            <div className="space-y-2">
-              {tareas
-                .filter((t) => t.estado === col.estado)
-                .map((tarea) => (
-                  <TarjetaTarea key={tarea.id} tarea={tarea} onAvanzar={cambiarEstado} />
-                ))}
-              {tareas.filter((t) => t.estado === col.estado).length === 0 && (
-                <p className="text-xs text-cream-300/50">Nada acá.</p>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+      {cargando ? (
+        <p className="text-sm text-sage-700">Cargando tareas...</p>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-3">
+          {columnas.map((col) => {
+            const items = tareas.filter((t) => t.estado === col.estado)
+            return (
+              <div key={col.estado} className="rounded-3xl bg-cream-100/70 p-3">
+                <h2 className="mb-3 flex items-center justify-between px-1 text-sm font-semibold text-sage-800">
+                  {col.titulo}
+                  <span className="rounded-full bg-cream-50 px-2 py-0.5 text-xs font-medium text-sage-700">
+                    {items.length}
+                  </span>
+                </h2>
+                <div className="space-y-2">
+                  {items.map((t) => (
+                    <TarjetaTarea key={t.id} tarea={t} onAvanzar={cambiarEstado} onEliminar={eliminar} />
+                  ))}
+                  {items.length === 0 && <p className="px-1 py-3 text-xs text-sage-600">{col.vacio}</p>}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
     </section>
   )
 }

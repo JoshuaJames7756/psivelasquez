@@ -1,8 +1,6 @@
 import { useRef, useState } from 'react'
 import { useRedes } from '../hooks/useRedes'
-
-const campo =
-  'w-full rounded-lg border border-forest-700 bg-forest-900 px-3 py-2 text-sm text-cream-50 placeholder:text-cream-300/50 focus:border-sage-500 focus:outline-none'
+import { botonPrimario, botonSecundario, campo, tarjeta } from '../utils/estilos'
 
 export function ContenidoPage() {
   const { publicaciones, cargando, guardando, error, crear, cambiarVisible, eliminar } = useRedes()
@@ -29,17 +27,19 @@ export function ContenidoPage() {
   }
 
   return (
-    <section className="p-6 md:p-8">
-      <h1 className="text-2xl font-semibold text-cream-50">Contenido en redes</h1>
-      <p className="mt-1 text-sm text-cream-300">
+    <section className="space-y-6">
+      <header>
+        <h1 className="font-serif-brand text-3xl text-sage-900">Contenido en redes</h1>
+        <p className="mt-1 max-w-2xl text-sm text-sage-700">
         Lo que agregues aparece en la sección "Contenido" de la página de inicio. Las más nuevas
         van primero. Pega el enlace de la publicación y, si quieres, sube una captura como
         miniatura.
-      </p>
+        </p>
+      </header>
 
       <form
         onSubmit={enviar}
-        className="mt-6 max-w-lg space-y-3 rounded-xl border border-forest-700 bg-forest-800 p-5"
+        className={`${tarjeta} max-w-lg space-y-3 p-5`}
       >
         <div className="flex gap-2" role="group" aria-label="Red social">
           {(['instagram', 'tiktok'] as const).map((p) => (
@@ -50,8 +50,8 @@ export function ContenidoPage() {
               onClick={() => setPlataforma(p)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium ${
                 plataforma === p
-                  ? 'bg-sage-700 text-cream-50'
-                  : 'border border-forest-700 text-cream-300 hover:text-cream-50'
+                  ? 'bg-sage-700 text-sage-900'
+                  : 'border border-sage-300 text-sage-800 hover:bg-sage-50'
               }`}
             >
               {p === 'instagram' ? 'Instagram' : 'TikTok'}
@@ -77,11 +77,11 @@ export function ContenidoPage() {
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="rounded-lg border border-sage-500 px-4 py-2 text-sm font-medium text-sage-300 hover:bg-sage-500/10"
+            className={botonSecundario}
           >
             {miniatura ? 'Cambiar miniatura' : 'Elegir miniatura (imagen)'}
           </button>
-          {miniatura && <span className="truncate text-sm text-cream-300">{miniatura.name}</span>}
+          {miniatura && <span className="truncate text-sm text-sage-700">{miniatura.name}</span>}
           <input
             ref={inputRef}
             type="file"
@@ -90,42 +90,42 @@ export function ContenidoPage() {
             onChange={(e) => setMiniatura(e.target.files?.[0] ?? null)}
           />
         </div>
-        {error && <p className="text-xs text-terracotta-300">{error}</p>}
+        {error && <p className="text-xs text-terracotta-600">{error}</p>}
         <button
           type="submit"
           disabled={guardando}
-          className="rounded-lg bg-sage-700 px-4 py-2 text-sm font-medium text-cream-50 hover:bg-sage-800 disabled:opacity-50"
+          className={botonPrimario}
         >
           {guardando ? 'Guardando...' : 'Agregar publicación'}
         </button>
       </form>
 
-      <div className="mt-8 max-w-2xl space-y-2">
+      <div className="max-w-2xl space-y-2">
         {cargando ? (
-          <p className="text-cream-300">Cargando...</p>
+          <p className="text-sage-700">Cargando...</p>
         ) : publicaciones.length === 0 ? (
-          <p className="text-sm text-cream-300">Aún no hay publicaciones. Agrega la primera arriba.</p>
+          <p className="text-sm text-sage-700">Aún no hay publicaciones. Agrega la primera arriba.</p>
         ) : (
           publicaciones.map((p) => (
             <div
               key={p.id}
-              className="flex items-center gap-3 rounded-lg border border-forest-700 bg-forest-800 p-3"
+              className="flex items-center gap-3 rounded-2xl border border-cream-300/70 bg-cream-50 p-3 shadow-sm"
             >
               {p.miniatura_url ? (
                 <img src={p.miniatura_url} alt="" className="h-14 w-11 rounded object-cover" />
               ) : (
-                <div className="h-14 w-11 rounded bg-forest-900" aria-hidden="true" />
+                <div className="h-14 w-11 rounded bg-cream-200" aria-hidden="true" />
               )}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm text-cream-50">{p.titulo || p.url}</p>
-                <p className="text-xs text-cream-300">
+                <p className="truncate text-sm text-sage-900">{p.titulo || p.url}</p>
+                <p className="text-xs text-sage-700">
                   {p.plataforma === 'instagram' ? 'Instagram' : 'TikTok'}
                   {p.visible ? '' : ' · oculta'}
                 </p>
               </div>
               <button
                 onClick={() => cambiarVisible(p.id, !p.visible)}
-                className="text-xs text-sage-300 hover:underline"
+                className="text-xs text-sage-700 hover:underline"
               >
                 {p.visible ? 'Ocultar' : 'Mostrar'}
               </button>
@@ -133,7 +133,7 @@ export function ContenidoPage() {
                 onClick={() => {
                   if (window.confirm('¿Eliminar esta publicación?')) eliminar(p.id)
                 }}
-                className="text-xs text-terracotta-300 hover:underline"
+                className="text-xs text-terracotta-600 hover:underline"
               >
                 Eliminar
               </button>

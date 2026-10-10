@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { useCertificaciones } from '../hooks/useCertificaciones'
+import { botonPrimario, botonSecundario, campo, tarjeta } from '../utils/estilos'
 
 export function CredencialesPage() {
   const { certificaciones, cargando, guardando, error, crear, eliminar } = useCertificaciones()
@@ -25,46 +26,48 @@ export function CredencialesPage() {
   }
 
   return (
-    <section className="p-6 md:p-8">
-      <h1 className="text-2xl font-semibold text-cream-50">Credenciales</h1>
-      <p className="mt-1 text-sm text-cream-300">
-        Se muestran en /formacion del sitio público, en el orden en que las agregues.
-      </p>
+    <section className="space-y-6">
+      <header>
+        <h1 className="font-serif-brand text-3xl text-sage-900">Credenciales</h1>
+        <p className="mt-1 text-sm text-sage-700">
+          Se muestran en la página de formación del sitio público, en el orden en que las agregues.
+        </p>
+      </header>
 
       <form
         onSubmit={manejarSubmit}
-        className="mt-6 max-w-lg space-y-3 rounded-xl border border-forest-700 bg-forest-800 p-5"
+        className={`${tarjeta} max-w-lg space-y-3 p-5`}
       >
         <div className="grid gap-3 sm:grid-cols-2">
           <input
             value={institucion}
             onChange={(e) => setInstitucion(e.target.value)}
             placeholder="Institución"
-            className="rounded-lg border border-forest-700 bg-forest-900 px-3 py-2 text-sm text-cream-50 placeholder:text-cream-300/50 focus:border-sage-500 focus:outline-none"
+            className={campo}
           />
           <input
             value={anio}
             onChange={(e) => setAnio(e.target.value)}
             placeholder="Año"
             type="number"
-            className="rounded-lg border border-forest-700 bg-forest-900 px-3 py-2 text-sm text-cream-50 placeholder:text-cream-300/50 focus:border-sage-500 focus:outline-none"
+            className={campo}
           />
         </div>
         <input
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           placeholder="Nombre de la certificación"
-          className="w-full rounded-lg border border-forest-700 bg-forest-900 px-3 py-2 text-sm text-cream-50 placeholder:text-cream-300/50 focus:border-sage-500 focus:outline-none"
+          className={campo}
         />
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => inputArchivoRef.current?.click()}
-            className="rounded-lg border border-sage-500 px-4 py-2 text-sm font-medium text-sage-300 hover:bg-sage-500/10"
+            className={botonSecundario}
           >
             {archivo ? 'Cambiar archivo' : 'Elegir archivo (PDF o imagen)'}
           </button>
-          {archivo && <span className="truncate text-sm text-cream-300">{archivo.name}</span>}
+          {archivo && <span className="truncate text-sm text-sage-700">{archivo.name}</span>}
           <input
             ref={inputArchivoRef}
             type="file"
@@ -73,36 +76,40 @@ export function CredencialesPage() {
             className="hidden"
           />
         </div>
-        {error && <p className="text-xs text-terracotta-300">{error}</p>}
+        {error && <p className="text-xs text-terracotta-600">{error}</p>}
         <button
           type="submit"
           disabled={guardando}
-          className="rounded-lg bg-sage-700 px-4 py-2 text-sm font-medium text-cream-50 hover:bg-sage-800 disabled:opacity-50"
+          className={botonPrimario}
         >
           {guardando ? 'Guardando...' : 'Agregar certificación'}
         </button>
       </form>
 
-      <div className="mt-8 space-y-2">
+      <div className="max-w-2xl space-y-2">
         {cargando ? (
-          <p className="text-cream-300">Cargando...</p>
+          <p className="text-sage-700">Cargando...</p>
         ) : (
-          certificaciones.map((c) => (
+          certificaciones.length === 0 ? (
+            <p className="text-sm text-sage-700">Aún no hay certificaciones. Agrega la primera arriba.</p>
+          ) : certificaciones.map((c) => (
             <div
               key={c.id}
-              className="flex items-center justify-between rounded-lg border border-forest-700 bg-forest-800 p-3"
+              className="flex items-center justify-between gap-3 rounded-2xl border border-cream-300/70 bg-cream-50 p-3 shadow-sm"
             >
               <div>
-                <p className="text-sm text-cream-50">{c.nombre}</p>
-                <p className="text-xs text-cream-300">
+                <p className="text-sm text-sage-900">{c.nombre}</p>
+                <p className="text-xs text-sage-700">
                   {c.institucion}
                   {c.anio ? ` · ${c.anio}` : ''}
                   {c.documento_url ? ' · con documento' : ' · sin documento'}
                 </p>
               </div>
               <button
-                onClick={() => eliminar(c.id)}
-                className="text-xs text-terracotta-300 hover:underline"
+                onClick={() => {
+                  if (window.confirm('¿Eliminar esta certificación?')) eliminar(c.id)
+                }}
+                className="text-xs text-terracotta-600 hover:underline"
               >
                 Eliminar
               </button>
