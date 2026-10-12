@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../../server-lib/auth.js'
 import { sql } from '../../server-lib/db.js'
+import { esUuid, textoOpcionalValido } from '../../server-lib/validar.js'
 
 interface BodyAutoguardado {
   motivo?: string
@@ -37,11 +38,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const { id } = req.query
-  if (typeof id !== 'string') {
+  if (!esUuid(id)) {
     return res.status(400).json({ error: 'ID inválido' })
   }
 
-  const body = req.body as BodyAutoguardado
+  const body = (req.body ?? {}) as BodyAutoguardado
+  for (const campo of [body.motivo, body.intervencion, body.tareasHomework, body.proximosPasos]) {
+    if (!textoOpcionalValido(campo, 20000)) {
+      return res.status(400).json({ error: 'Texto inválido o demasiado largo' })
+    }
+  }
 
   if (
     body.motivo === undefined &&

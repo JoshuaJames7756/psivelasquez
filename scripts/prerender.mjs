@@ -37,6 +37,11 @@ function cabecera(d, ruta) {
     `<meta property="og:description" content="${esc(d.descripcion)}" />`,
     `<meta property="og:url" content="${url}" />`,
     `<meta property="og:image" content="${IMAGEN_SOCIAL}" />`,
+    `<meta property="og:image:secure_url" content="${IMAGEN_SOCIAL}" />`,
+    `<meta property="og:image:type" content="image/jpeg" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="Rebeca Velásquez, psicóloga clínica en Cochabamba" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
   ]
   if (ruta === '/') {

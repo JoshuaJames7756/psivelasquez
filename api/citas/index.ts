@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../../server-lib/auth.js'
 import { sql, vencerSlotsExpirados } from '../../server-lib/db.js'
+import { esFecha, esUuid } from '../../server-lib/validar.js'
 
 const HORAS_VENTANA_EXPIRACION = 48 // confirmado con Joshua: 24-48h, se usa el máximo
 
@@ -11,16 +12,24 @@ interface BodySolicitar {
   telefono?: string
   motivoInicial?: string
   primeraVez: boolean
+  sitioWeb?: string
   modalidad: 'presencial' | 'online'
 }
 
 function validarBodySolicitar(body: unknown): body is BodySolicitar {
   if (typeof body !== 'object' || body === null) return false
   const b = body as Record<string, unknown>
+  const telOk = b.telefono === undefined || b.telefono === null || (typeof b.telefono === 'string' && b.telefono.length <= 30)
+  const motivoOk = b.motivoInicial === undefined || b.motivoInicial === null || (typeof b.motivoInicial === 'string' && b.motivoInicial.length <= 1000)
+  const edadOk = b.edad === undefined || b.edad === null || (Number.isInteger(b.edad) && (b.edad as number) >= 0 && (b.edad as number) <= 120)
   return (
-    typeof b.slotId === 'string' &&
+    esUuid(b.slotId) &&
     typeof b.nombre === 'string' &&
-    b.nombre.trim().length > 0 &&
+    b.nombre.trim().length >= 2 &&
+    b.nombre.length <= 120 &&
+    telOk &&
+    motivoOk &&
+    edadOk &&
     typeof b.primeraVez === 'boolean' &&
     (b.modalidad === 'presencial' || b.modalidad === 'online')
   )
@@ -47,6 +56,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const { slotId, nombre, edad, telefono, motivoInicial, primeraVez, modalidad } = req.body
 
+    // Trampa para bots: el formulario tiene un campo oculto que una persona nunca llena.
+    // Se responde "ok" falso para no darle pistas al bot, sin crear nada.
+    if (typeof req.body.sitioWeb === 'string' && req.body.sitioWeb.length > 0) {
+      return res.status(201).json({ ok: true })
+    }
+
     try {
       // Vence primero cualquier slot cuya ventana de 24-48h ya pasó,
       // para que si ESTE slotId era uno de esos, quede disponible y
@@ -61,30 +76,51 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(409).json({ error: 'Ese cupo ya no está disponible' })
       }
 
-      const [paciente] = await sql`
-        insert into pacientes (nombre, edad, telefono, motivo_inicial, primera_vez)
-        values (${nombre}, ${edad ?? null}, ${telefono ?? null}, ${motivoInicial ?? null}, ${primeraVez})
-        returning id
-      `
+      // Un teléfono no puede tener más de una solicitud pendiente a la vez:
+      // evita que una sola persona (o un bot) acapare los 8 cupos.
+      const digitos = (telefono ?? '').replace(/\D/g, '')
+      if (digitos.length >= 6) {
+        const [pendiente] = await sql`
+          select 1
+          from slots_sabado s
+          join pacientes p on p.id = s.paciente_id
+          where s.estado = 'solicitada'
+            and regexp_replace(coalesce(p.telefono, ''), '\D', '', 'g') = ${digitos}
+          limit 1
+        `
+        if (pendiente) {
+          return res.status(429).json({
+            error: 'Ya tienes una solicitud pendiente. Escríbeme por WhatsApp para coordinarla.',
+          })
+        }
+      }
 
+      // Todo en UNA sentencia: el paciente solo se crea si el cupo sigue
+      // disponible, y queda asociado al cupo en el mismo paso (sin pacientes
+      // huérfanos si alguien se adelanta).
       const [slotActualizado] = await sql`
+        with p as (
+          insert into pacientes (nombre, edad, telefono, motivo_inicial, primera_vez)
+          select ${nombre.trim()}, ${edad ?? null}, ${telefono ?? null}, ${motivoInicial ?? null}, ${primeraVez}
+          where exists (select 1 from slots_sabado where id = ${slotId} and estado = 'disponible')
+          returning id
+        )
         update slots_sabado
         set estado = 'solicitada',
-            paciente_id = ${paciente.id},
+            paciente_id = (select id from p),
             modalidad = ${modalidad},
             notas_reserva = ${motivoInicial ?? null},
             solicitado_en = now(),
             expira_en = now() + interval '1 hour' * ${HORAS_VENTANA_EXPIRACION}
-        where id = ${slotId} and estado = 'disponible'
+        where id = ${slotId} and estado = 'disponible' and exists (select 1 from p)
         returning id, estado, expira_en
       `
 
       if (!slotActualizado) {
-        // Carrera: alguien lo tomó entre el select y el update.
         return res.status(409).json({ error: 'Ese cupo se acaba de reservar, elige otro horario' })
       }
 
-      return res.status(201).json({ slot: slotActualizado, pacienteId: paciente.id })
+      return res.status(201).json({ slot: slotActualizado })
     } catch (err) {
       console.error('[POST /api/citas]', err)
       return res.status(500).json({ error: 'Error al procesar la reserva' })
@@ -98,6 +134,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const { fecha, panel } = req.query
   const esVistaPanel = panel === '1'
+  if (fecha !== undefined && !esFecha(fecha)) {
+    return res.status(400).json({ error: 'Fecha inválida' })
+  }
 
   if (esVistaPanel) {
     const sesion = await verificarSesion(req)

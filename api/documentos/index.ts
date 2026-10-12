@@ -3,6 +3,7 @@ import { registrarAuditoria } from '../../server-lib/auditoria.js'
 import { verificarSesion } from '../../server-lib/auth.js'
 import { cloudinary } from '../../server-lib/cloudinary.js'
 import { sql } from '../../server-lib/db.js'
+import { esUuid } from '../../server-lib/validar.js'
 
 /**
  * GET /api/documentos?id=  → { url } (firmada y de corta vida si es privado)
@@ -32,7 +33,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'GET') {
     const id = req.query.id
-    if (typeof id !== 'string') {
+    if (!esUuid(id)) {
       return res.status(400).json({ error: 'id requerido' })
     }
     try {
@@ -69,7 +70,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'POST') {
     const { pacienteId, url, nombre, tipo, publicId, resourceType, formato, privado } = req.body ?? {}
+    // Desde la migración 011 todo adjunto nuevo debe ser privado.
     const esPrivado = privado === true
+    if (!esPrivado) {
+      return res.status(400).json({ error: 'Los documentos nuevos deben subirse como privados' })
+    }
     if (esPrivado) {
       // Zero-Trust: el public_id debe estar bajo la carpeta de ESTE paciente.
       const okPublicId =
@@ -82,7 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     }
     if (
-      typeof pacienteId !== 'string' ||
+      !esUuid(pacienteId) ||
       typeof url !== 'string' ||
       typeof nombre !== 'string' ||
       !url.startsWith('https://')
@@ -111,7 +116,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'DELETE') {
     const { id } = req.body ?? {}
-    if (typeof id !== 'string') {
+    if (!esUuid(id)) {
       return res.status(400).json({ error: 'id requerido' })
     }
 

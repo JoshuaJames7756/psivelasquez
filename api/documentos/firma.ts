@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../../server-lib/auth.js'
 import { cloudinary } from '../../server-lib/cloudinary.js'
+import { esUuid } from '../../server-lib/validar.js'
 
 /**
  * POST /api/documentos/firma
@@ -37,7 +38,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     folder = 'rebeca-velasquez/certificaciones'
   } else if (contexto === 'redes') {
     folder = 'rebeca-velasquez/redes'
-  } else if (typeof pacienteId === 'string') {
+  } else if (esUuid(pacienteId)) {
     folder = `rebeca-velasquez/pacientes/${pacienteId}`
     type = 'authenticated'
   } else {

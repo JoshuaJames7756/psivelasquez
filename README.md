@@ -168,3 +168,8 @@ marcados "Público" hasta que se eliminen y se vuelvan a adjuntar.
 > `vercel.json` reescribe las rutas no prerenderizadas (`/admin`, `/sign-in`, URLs
 > desconocidas) a `app-shell.html` (HTML vacío). `index.html` es la portada ya
 > renderizada: no usarlo como fallback del panel.
+
+## Seguridad
+
+Ver `SEGURIDAD.md` (checklist previo al lanzamiento y riesgos conocidos). Lo esencial:
+definir `ADMIN_USER_IDS` en Vercel con los IDs de Clerk de quienes pueden entrar al panel.

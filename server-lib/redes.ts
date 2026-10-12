@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from './auth.js'
 import { sql } from './db.js'
+import { esUuid, textoOpcionalValido } from './validar.js'
 
 /**
  * Publicaciones de redes (recurso "redes" de api/sitio.ts).
@@ -71,6 +72,9 @@ export async function manejarRedes(req: VercelRequest, res: VercelResponse) {
     if (!urlValida(plataforma, url)) {
       return res.status(400).json({ error: 'El enlace debe ser https y de la red elegida' })
     }
+    if (!textoOpcionalValido(titulo, 90)) {
+      return res.status(400).json({ error: 'Título demasiado largo' })
+    }
     if (!miniaturaValida(miniaturaUrl)) {
       return res.status(400).json({ error: 'Miniatura no válida' })
     }
@@ -92,7 +96,7 @@ export async function manejarRedes(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'PATCH') {
     const { id, visible } = req.body ?? {}
-    if (typeof id !== 'string' || typeof visible !== 'boolean') {
+    if (!esUuid(id) || typeof visible !== 'boolean') {
       return res.status(400).json({ error: 'id y visible requeridos' })
     }
     try {
@@ -109,7 +113,7 @@ export async function manejarRedes(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'DELETE') {
     const { id } = req.body ?? {}
-    if (typeof id !== 'string') return res.status(400).json({ error: 'id requerido' })
+    if (!esUuid(id)) return res.status(400).json({ error: 'id requerido' })
     try {
       const [eliminada] = await sql`delete from publicaciones_redes where id = ${id} returning id`
       if (!eliminada) return res.status(404).json({ error: 'No encontrada' })

@@ -14,6 +14,30 @@ if (!process.env.CLERK_PUBLISHABLE_KEY) {
   throw new Error('CLERK_PUBLISHABLE_KEY no está configurada.')
 }
 
+/**
+ * Lista de usuarios autorizados a entrar al panel (IDs de Clerk, separados
+ * por coma). Sin esta lista CUALQUIER persona que se registre en Clerk
+ * tendría acceso a los datos de los pacientes, así que si falta, el panel
+ * queda cerrado (falla cerrada) en vez de abierto.
+ */
+const ADMIN_USER_IDS = (process.env.ADMIN_USER_IDS ?? '')
+  .split(',')
+  .map((id) => id.trim())
+  .filter(Boolean)
+
+if (ADMIN_USER_IDS.length === 0) {
+  console.error(
+    '[auth] ADMIN_USER_IDS no está configurada: el panel rechazará a todos. ' +
+      'Define los IDs de Clerk de Rebeca y de soporte en las variables de entorno.',
+  )
+}
+
+// Orígenes permitidos para el token de sesión (recomendado por Clerk). Opcional.
+const AUTHORIZED_PARTIES = (process.env.AUTHORIZED_PARTIES ?? '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean)
+
 const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY,
   publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
@@ -26,10 +50,8 @@ const clerkClient = createClerkClient({
  * authenticateRequest() espera la Web API Request, no el objeto de
  * Node/Express que expone Vercel.
  *
- * rol único: cualquier sesión válida de Clerk en este proyecto
- * corresponde a Rebeca o a Joshua (cuenta de soporte) — no hay
- * verificación de rol adicional más allá de "sesión válida", porque
- * el proyecto de Clerk mismo solo tiene estos dos usuarios invitados.
+ * Rol único (Rebeca + soporte), pero se verifica contra ADMIN_USER_IDS:
+ * no se asume que Clerk solo tenga usuarios invitados.
  */
 export async function verificarSesion(req: VercelRequest): Promise<{ userId: string } | null> {
   const headers = new Headers()
@@ -46,7 +68,10 @@ export async function verificarSesion(req: VercelRequest): Promise<{ userId: str
 
   const request = new Request(url, { headers })
 
-  const estado = await clerkClient.authenticateRequest(request)
+  const estado = await clerkClient.authenticateRequest(
+    request,
+    AUTHORIZED_PARTIES.length ? { authorizedParties: AUTHORIZED_PARTIES } : undefined,
+  )
 
   if (!estado.isAuthenticated) {
     return null
@@ -54,6 +79,11 @@ export async function verificarSesion(req: VercelRequest): Promise<{ userId: str
 
   const auth = estado.toAuth()
   if (!auth?.userId) {
+    return null
+  }
+
+  // Sesión válida NO basta: el usuario debe estar en la lista de autorizados.
+  if (!ADMIN_USER_IDS.includes(auth.userId)) {
     return null
   }
 

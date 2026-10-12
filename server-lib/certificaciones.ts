@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from './auth.js'
 import { sql } from './db.js'
+import { esUuid, textoOpcionalValido, urlCloudinary } from './validar.js'
 
 /**
  * GET /api/certificaciones     — público, el sitio las muestra en /formacion
@@ -33,8 +34,19 @@ export async function manejarCertificaciones(req: VercelRequest, res: VercelResp
   if (req.method === 'POST') {
     const { institucion, nombre, anio, categoria, descripcion, documentoUrl, orden } =
       req.body ?? {}
-    if (typeof institucion !== 'string' || typeof nombre !== 'string') {
+    if (typeof institucion !== 'string' || typeof nombre !== 'string' || !institucion.trim() || !nombre.trim()) {
       return res.status(400).json({ error: 'institucion y nombre son requeridos' })
+    }
+    if (
+      institucion.length > 200 ||
+      nombre.length > 300 ||
+      !textoOpcionalValido(categoria, 100) ||
+      !textoOpcionalValido(descripcion, 2000) ||
+      (anio != null && (!Number.isInteger(anio) || anio < 1950 || anio > 2100)) ||
+      (orden != null && !Number.isInteger(orden)) ||
+      (documentoUrl != null && documentoUrl !== '' && !urlCloudinary(documentoUrl))
+    ) {
+      return res.status(400).json({ error: 'Datos de certificación inválidos' })
     }
 
     try {
@@ -96,7 +108,7 @@ export async function manejarCertificaciones(req: VercelRequest, res: VercelResp
 
   if (req.method === 'DELETE') {
     const { id } = req.body ?? {}
-    if (typeof id !== 'string') {
+    if (!esUuid(id)) {
       return res.status(400).json({ error: 'id requerido' })
     }
 

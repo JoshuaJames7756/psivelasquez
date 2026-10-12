@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { registrarAuditoria } from '../../server-lib/auditoria.js'
 import { verificarSesion } from '../../server-lib/auth.js'
 import { sql } from '../../server-lib/db.js'
+import { esFecha, esUuid, textoOpcionalValido } from '../../server-lib/validar.js'
 
 /**
  * GET /api/pacientes/:id
@@ -29,12 +30,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const { id } = req.query
-  if (typeof id !== 'string') {
+  if (!esUuid(id)) {
     return res.status(400).json({ error: 'ID inválido' })
   }
 
   if (req.method === 'POST' && req.body?.accion === 'nota') {
     const { motivo, intervencion, tareasHomework, proximosPasos } = req.body
+    for (const campo of [motivo, intervencion, tareasHomework, proximosPasos]) {
+      if (!textoOpcionalValido(campo, 20000)) {
+        return res.status(400).json({ error: 'Texto demasiado largo' })
+      }
+    }
     try {
       const [nota] = await sql`
         insert into historial_clinico (paciente_id, motivo, intervencion, tareas_homework, proximos_pasos)
@@ -59,8 +65,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'PATCH') {
     const { nombre, edad, telefono, estado, motivoInicial } = req.body ?? {}
-    if (nombre !== undefined && (typeof nombre !== 'string' || nombre.trim().length === 0)) {
+    if (nombre !== undefined && (typeof nombre !== 'string' || nombre.trim().length === 0 || nombre.length > 120)) {
       return res.status(400).json({ error: 'El nombre no puede quedar vacío' })
+    }
+    if (!textoOpcionalValido(telefono, 30) || !textoOpcionalValido(motivoInicial, 1000)) {
+      return res.status(400).json({ error: 'Teléfono o motivo demasiado largo' })
     }
     if (estado !== undefined && !['activo', 'pausado', 'alta'].includes(estado)) {
       return res.status(400).json({ error: 'Estado no válido' })
@@ -97,7 +106,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'DELETE') {
     const { historialId } = req.body ?? {}
-    if (typeof historialId !== 'string') {
+    if (!esUuid(historialId)) {
       return res.status(400).json({ error: 'historialId requerido' })
     }
     try {
@@ -120,8 +129,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'POST') {
     const { tipo, puntaje, aplicadaEn } = req.body ?? {}
-    if ((tipo !== 'GAD-7' && tipo !== 'PHQ-9') || typeof puntaje !== 'number' || puntaje < 0) {
+    const maximo = tipo === 'GAD-7' ? 21 : tipo === 'PHQ-9' ? 27 : -1
+    if (maximo < 0 || !Number.isInteger(puntaje) || puntaje < 0 || puntaje > maximo) {
       return res.status(400).json({ error: 'Datos de escala inválidos' })
+    }
+    if (aplicadaEn !== undefined && aplicadaEn !== null && !esFecha(aplicadaEn)) {
+      return res.status(400).json({ error: 'Fecha inválida' })
     }
 
     try {
@@ -130,6 +143,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         values (${id}, ${tipo}, ${puntaje}, coalesce(${aplicadaEn ?? null}::date, current_date))
         returning *
       `
+      registrarAuditoria({
+        usuarioId: sesion.userId,
+        tipoEvento: 'modificacion_paciente',
+        pacienteId: id,
+        detalle: `registró escala ${tipo}`,
+      })
       return res.status(201).json({ escala })
     } catch (err) {
       console.error('[POST /api/pacientes/:id]', err)

@@ -19,6 +19,8 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
   const [modalidad, setModalidad] = useState<'presencial' | 'online'>('presencial')
   const [estadoEnvio, setEstadoEnvio] = useState<EstadoEnvio>('inactivo')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  // Campo trampa para bots: oculto a personas, nunca debe llenarse.
+  const [sitioWeb, setSitioWeb] = useState('')
 
   async function manejarSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -39,6 +41,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
           motivoInicial: motivoInicial || undefined,
           primeraVez,
           modalidad,
+          sitioWeb,
         }),
       })
 
@@ -79,10 +82,17 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
             </p>
 
             <form onSubmit={manejarSubmit} className="mt-6 space-y-4">
+              <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                <label>
+                  No llenar este campo
+                  <input tabIndex={-1} autoComplete="off" value={sitioWeb} onChange={(e) => setSitioWeb(e.target.value)} />
+                </label>
+              </div>
               <div>
                 <label className="text-xs font-medium text-sage-600">Nombre completo</label>
                 <input
                   required
+                  maxLength={120}
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
                   className="mt-1 w-full rounded-xl border border-sage-200 p-2.5 text-sm focus:border-sage-500 focus:outline-none"
@@ -104,6 +114,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
                 <div>
                   <label className="text-xs font-medium text-sage-600">WhatsApp</label>
                   <input
+                    maxLength={30}
                     value={telefono}
                     onChange={(e) => setTelefono(e.target.value)}
                     placeholder="+591..."
@@ -115,6 +126,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
               <div>
                 <label className="text-xs font-medium text-sage-600">Motivo breve</label>
                 <textarea
+                  maxLength={1000}
                   value={motivoInicial}
                   onChange={(e) => setMotivoInicial(e.target.value)}
                   rows={2}

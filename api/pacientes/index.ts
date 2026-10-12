@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../../server-lib/auth.js'
 import { registrarAuditoria } from '../../server-lib/auditoria.js'
 import { sql } from '../../server-lib/db.js'
+import { textoOpcionalValido } from '../../server-lib/validar.js'
 
 const SEMANAS_RIESGO_DEFAULT = 3
 
@@ -35,8 +36,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // por WhatsApp y nunca pasó por el formulario del sitio).
   if (req.method === 'POST') {
     const { nombre, edad, telefono, motivoInicial } = req.body ?? {}
-    if (typeof nombre !== 'string' || nombre.trim().length < 2) {
-      return res.status(400).json({ error: 'El nombre es requerido' })
+    if (typeof nombre !== 'string' || nombre.trim().length < 2 || nombre.length > 120) {
+      return res.status(400).json({ error: 'El nombre es requerido (máx. 120 caracteres)' })
+    }
+    if (!textoOpcionalValido(telefono, 30) || !textoOpcionalValido(motivoInicial, 1000)) {
+      return res.status(400).json({ error: 'Teléfono o motivo demasiado largo' })
     }
     if (edad !== undefined && edad !== null && (!Number.isInteger(edad) || edad < 0 || edad > 120)) {
       return res.status(400).json({ error: 'Edad no válida' })
@@ -93,7 +97,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const { q } = req.query
-  const termino = typeof q === 'string' ? q.trim() : ''
+  const termino = typeof q === 'string' ? q.trim().slice(0, 80) : ''
 
   try {
     const rows = termino

@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { sql } from './db.js'
+import { esUuid } from './validar.js'
 
 /**
  * Notas rápidas (recurso "notas" de api/tareas.ts). La sesión ya la
@@ -34,7 +35,7 @@ export async function manejarNotas(req: VercelRequest, res: VercelResponse) {
     try {
       const [nota] = await sql`
         insert into notas_rapidas (texto, paciente_id)
-        values (${texto.trim()}, ${typeof pacienteId === 'string' ? pacienteId : null})
+        values (${texto.trim()}, ${esUuid(pacienteId) ? pacienteId : null})
         returning *
       `
       return res.status(201).json({ nota })
@@ -46,7 +47,7 @@ export async function manejarNotas(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'DELETE') {
     const { id } = req.body ?? {}
-    if (typeof id !== 'string') return res.status(400).json({ error: 'id requerido' })
+    if (!esUuid(id)) return res.status(400).json({ error: 'id requerido' })
     try {
       await sql`delete from notas_rapidas where id = ${id}`
       return res.status(200).json({ ok: true })

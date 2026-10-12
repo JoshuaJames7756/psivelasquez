@@ -2,6 +2,10 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../server-lib/auth.js'
 import { sql } from '../server-lib/db.js'
 import { manejarNotas } from '../server-lib/notas.js'
+import { esFecha, esUuid, textoOpcionalValido } from '../server-lib/validar.js'
+
+const ESTADOS = ['todo', 'en_progreso', 'hecha', 'cancelada']
+const PRIORIDADES = ['baja', 'media', 'alta']
 
 /**
  * GET /api/tareas?estado=todo       — listar, filtro opcional por estado
@@ -26,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { estado } = req.query
     try {
       const rows =
-        typeof estado === 'string'
+        typeof estado === 'string' && ESTADOS.includes(estado)
           ? await sql`
               select * from tareas where estado = ${estado}
               order by fecha_limite asc nulls last, creado_en desc
@@ -44,15 +48,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'POST') {
     const { titulo, descripcion, prioridad, fechaLimite, pacienteId } = req.body ?? {}
-    if (typeof titulo !== 'string' || titulo.trim().length === 0) {
-      return res.status(400).json({ error: 'El título es requerido' })
+    if (typeof titulo !== 'string' || titulo.trim().length === 0 || titulo.length > 200) {
+      return res.status(400).json({ error: 'El título es requerido (máx. 200 caracteres)' })
+    }
+    if (
+      !textoOpcionalValido(descripcion, 2000) ||
+      (prioridad !== undefined && !PRIORIDADES.includes(prioridad)) ||
+      (fechaLimite != null && !esFecha(fechaLimite)) ||
+      (pacienteId != null && !esUuid(pacienteId))
+    ) {
+      return res.status(400).json({ error: 'Datos de tarea inválidos' })
     }
 
     try {
       const [tarea] = await sql`
         insert into tareas (titulo, descripcion, prioridad, fecha_limite, paciente_id)
         values (
-          ${titulo},
+          ${titulo.trim()},
           ${descripcion ?? null},
           ${prioridad ?? 'media'},
           ${fechaLimite ?? null},
@@ -106,7 +118,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'DELETE') {
     const { id } = req.body ?? {}
-    if (typeof id !== 'string') {
+    if (!esUuid(id)) {
       return res.status(400).json({ error: 'id requerido' })
     }
 
