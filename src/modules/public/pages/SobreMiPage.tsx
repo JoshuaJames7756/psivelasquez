@@ -45,7 +45,7 @@ export function SobreMiPage() {
         </div>
 
         <div className="mx-auto flex aspect-[3/4] w-full max-w-sm items-center justify-center rounded-3xl border-2 border-dashed border-sage-300 bg-sage-50 md:mx-0">
-          <p className="px-6 text-center text-sm text-sage-400">
+          <p className="px-6 text-center text-sm text-sage-700">
             Otra foto de Rebeca, pendiente
           </p>
         </div>

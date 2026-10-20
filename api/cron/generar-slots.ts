@@ -35,6 +35,11 @@ function proximoSabado(): string {
  */
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const secretEsperado = process.env.CRON_SECRET
+  // En producción el endpoint falla cerrado: sin CRON_SECRET nadie puede invocarlo.
+  if (!secretEsperado && process.env.VERCEL_ENV === 'production') {
+    console.error('[cron] CRON_SECRET no está configurada en producción')
+    return res.status(401).json({ error: 'No autorizado' })
+  }
   if (secretEsperado) {
     const auth = req.headers.authorization
     if (auth !== `Bearer ${secretEsperado}`) {

@@ -62,7 +62,18 @@ export function ReservarPage() {
       )}
 
       {cargando && <p className="mt-10 text-sage-500">Cargando cupos...</p>}
-      {error && <p className="mt-10 text-terracotta-600">{error}</p>}
+      {error && (
+        <div role="alert" className="mt-10 flex flex-wrap items-center gap-3 text-terracotta-600">
+          <p>{error}</p>
+          <button
+            type="button"
+            onClick={recargar}
+            className="rounded-full border border-terracotta-300 px-4 py-1.5 text-sm font-medium hover:bg-terracotta-50"
+          >
+            Reintentar
+          </button>
+        </div>
+      )}
 
       {!cargando && !error && slots.length === 0 && (
         <p className="mt-10 text-sage-500">No hay cupos publicados todavía para el próximo sábado.</p>

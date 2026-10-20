@@ -28,11 +28,12 @@ export function useSlotsPublicos() {
     setError(null)
     try {
       const res = await fetch('/api/citas')
-      if (!res.ok) throw new Error('No se pudieron cargar los cupos')
+      if (!res.ok) throw new Error('respuesta no válida')
       const data = await res.json()
       setSlots(data.slots)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al cargar los cupos')
+    } catch {
+      // Mensaje propio: el error técnico del navegador ("Failed to fetch") no sirve a quien reserva.
+      setError('No pudimos cargar los cupos. Revisa tu conexión e inténtalo de nuevo.')
     } finally {
       setCargando(false)
     }

@@ -31,3 +31,8 @@ Revisión hecha sobre toda la API (`/api` y `/server-lib`).
 - **Autoguardado de notas** no se audita (sería ruido); sí se audita crear y eliminar.
 - **Cron abierto si no hay `CRON_SECRET`**: es idempotente (no duplica cupos), pero conviene definirlo.
 - Los logs de Vercel pueden incluir mensajes de error de Postgres; no compartir capturas de logs.
+
+
+## Actualización: cron cerrado en producción
+
+`/api/cron/generar-slots` ahora responde 401 en producción si `CRON_SECRET` no está definida (antes quedaba abierto). Vercel envía el secreto solo al invocar el cron. Hay una prueba automática que lo verifica.

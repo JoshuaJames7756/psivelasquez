@@ -68,7 +68,7 @@ function HitoTimeline({
       )}
 
       <div className="pb-10">
-        <p className="text-xs font-semibold uppercase tracking-wide text-sage-500">{periodo}</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-sage-700">{periodo}</p>
         <p className="mt-1 font-serif-brand text-lg text-sage-900">{institucion}</p>
         <p className="mt-0.5 text-sm text-sage-700">{texto}</p>
       </div>

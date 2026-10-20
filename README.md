@@ -173,3 +173,26 @@ marcados "Público" hasta que se eliminen y se vuelvan a adjuntar.
 
 Ver `SEGURIDAD.md` (checklist previo al lanzamiento y riesgos conocidos). Lo esencial:
 definir `ADMIN_USER_IDS` en Vercel con los IDs de Clerk de quienes pueden entrar al panel.
+
+
+## Pruebas automatizadas
+
+| Comando | Qué hace |
+| --- | --- |
+| `npm test` | Pruebas unitarias y de la API (Vitest). Sin red ni base de datos: usan datos falsos. |
+| `npm run test:e2e` | Pruebas en navegador (Playwright) sobre el build de producción. |
+| `PRELANZAMIENTO=1 npm run test:e2e` | Agrega la lista de control previa al lanzamiento: falla si queda texto provisional ("pendiente", "lorem ipsum"...) en páginas que salen en Google. |
+
+Primera vez con Playwright: `npx playwright install chromium`. Las pruebas de navegador necesitan
+`VITE_CLERK_PUBLISHABLE_KEY` en `.env.local` porque construyen el sitio igual que producción.
+
+Qué cubren:
+
+- **Permisos:** cada endpoint del panel responde 401 sin sesión y no toca la base de datos.
+- **Reserva pública:** validación de datos, campo trampa para bots, cupo ocupado, límite por teléfono y que la respuesta no exponga datos de pacientes.
+- **Documentos privados y exportación CSV:** reglas de subida, auditoría y neutralización de fórmulas.
+- **Cron:** exige `CRON_SECRET` y en producción queda cerrado si falta.
+- **Sitio público:** todas las páginas del sitemap cargan, tienen un h1, metadatos SEO, sin errores de consola, sin scroll horizontal en móvil y sin problemas graves de accesibilidad (axe, WCAG AA).
+- **Flujo de reserva** completo con la API simulada, incluido el error y el reintento.
+
+No cubren el panel con sesión real de Clerk ni la base de datos real: eso se prueba a mano antes de lanzar (ver `SEGURIDAD.md`).
