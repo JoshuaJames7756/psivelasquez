@@ -33,6 +33,18 @@ async function request<T>(path: string, token: string | null, init?: RequestInit
   return res.json() as Promise<T>
 }
 
+/** Descarga un archivo (p. ej. CSV) autenticado y lo devuelve como Blob. */
+async function descargarBlob(path: string, token: string | null): Promise<Blob> {
+  const headers: Record<string, string> = {}
+  if (token) headers.Authorization = `Bearer ${token}`
+  const res = await fetch(`/api${path}`, { headers })
+  if (!res.ok) {
+    const body = await res.json().catch(() => null)
+    throw new ApiError(body?.error ?? `Error ${res.status}`, res.status)
+  }
+  return res.blob()
+}
+
 /**
  * Hook: construye un cliente API que adjunta el token de sesión de
  * Clerk en cada llamada. Usar esto (no un cliente plano fuera de
@@ -50,6 +62,7 @@ export function useApiClient() {
   return useMemo(
     () => ({
       get: async <T>(path: string) => request<T>(path, await getToken()),
+      descargar: async (path: string) => descargarBlob(path, await getToken()),
       post: async <T>(path: string, body: unknown) =>
         request<T>(path, await getToken(), { method: 'POST', body: JSON.stringify(body) }),
       patch: async <T>(path: string, body: unknown) =>

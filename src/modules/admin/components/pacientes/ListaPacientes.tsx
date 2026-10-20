@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { colorAvatar, inicialesNombre } from '../../../shared/utils/avatarColor'
+import { ExportarDatos } from './ExportarDatos'
 import { useAccionesPaciente } from '../../hooks/useAccionesPaciente'
 import { useBusquedaPacientes } from '../../hooks/useBusquedaPacientes'
 
@@ -136,6 +137,7 @@ export function ListaPacientes({
           ))}
         </ul>
       </div>
+      <ExportarDatos />
     </div>
   )
 }
