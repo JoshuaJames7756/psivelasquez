@@ -1,17 +1,24 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ScrollAlTopo } from './modules/shared/components/ScrollAlTopo'
 import { RequireAuth } from './modules/admin/components/RequireAuth'
-import { AdminLayout } from './modules/admin/pages/AdminLayout'
-import { AgendaPage } from './modules/admin/pages/AgendaPage'
-import { HoyPage } from './modules/admin/pages/HoyPage'
-import { ContenidoPage } from './modules/admin/pages/ContenidoPage'
-import { CredencialesPage } from './modules/admin/pages/CredencialesPage'
-import { FinanzasPage } from './modules/admin/pages/FinanzasPage'
-import { PacientesPage } from './modules/admin/pages/PacientesPage'
-import { SeguimientoPage } from './modules/admin/pages/SeguimientoPage'
+import { PantallaCarga } from './modules/shared/components/PantallaCarga'
 import { rutasPublicas } from './modules/public/RutasPublicas'
 import { SignInPage } from './modules/admin/pages/SignInPage'
-import { TareasPage } from './modules/admin/pages/TareasPage'
+
+// El panel se descarga aparte: quien solo visita el sitio público no baja su código.
+const pagina = <T extends Record<string, React.ComponentType>>(cargar: () => Promise<T>, nombre: keyof T) =>
+  lazy(() => cargar().then((m) => ({ default: m[nombre] })))
+
+const AdminLayout = pagina(() => import('./modules/admin/pages/AdminLayout'), 'AdminLayout')
+const HoyPage = pagina(() => import('./modules/admin/pages/HoyPage'), 'HoyPage')
+const AgendaPage = pagina(() => import('./modules/admin/pages/AgendaPage'), 'AgendaPage')
+const PacientesPage = pagina(() => import('./modules/admin/pages/PacientesPage'), 'PacientesPage')
+const SeguimientoPage = pagina(() => import('./modules/admin/pages/SeguimientoPage'), 'SeguimientoPage')
+const TareasPage = pagina(() => import('./modules/admin/pages/TareasPage'), 'TareasPage')
+const FinanzasPage = pagina(() => import('./modules/admin/pages/FinanzasPage'), 'FinanzasPage')
+const CredencialesPage = pagina(() => import('./modules/admin/pages/CredencialesPage'), 'CredencialesPage')
+const ContenidoPage = pagina(() => import('./modules/admin/pages/ContenidoPage'), 'ContenidoPage')
 
 function App() {
   return (
@@ -29,7 +36,9 @@ function App() {
           path="/admin"
           element={
             <RequireAuth>
-              <AdminLayout />
+              <Suspense fallback={<PantallaCarga />}>
+                <AdminLayout />
+              </Suspense>
             </RequireAuth>
           }
         >

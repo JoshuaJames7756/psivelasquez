@@ -1,8 +1,9 @@
 import { useSeo } from '../../shared/seo/useSeo'
 import { UserButton } from '@clerk/clerk-react'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import rebecaAvatar from '../../../assets/fotos/rebeca-avatar.jpg'
+import { PantallaCarga } from '../../shared/components/PantallaCarga'
 import { LineasFondo } from '../../shared/components/LineasFondo'
 import { NavAdmin } from '../components/NavAdmin'
 
@@ -120,13 +121,15 @@ export function AdminLayout() {
         </header>
 
         <main className="min-w-0 flex-1 p-4 md:p-8">
-          {renovada ? (
-            <Outlet />
-          ) : (
-            <div className="min-h-[calc(100vh-9rem)] overflow-hidden rounded-3xl bg-forest-900 text-cream-50 shadow-sm">
+          <Suspense fallback={<PantallaCarga variante="seccion" />}>
+            {renovada ? (
               <Outlet />
-            </div>
-          )}
+            ) : (
+              <div className="min-h-[calc(100vh-9rem)] overflow-hidden rounded-3xl bg-forest-900 text-cream-50 shadow-sm">
+                <Outlet />
+              </div>
+            )}
+          </Suspense>
         </main>
       </div>
     </div>

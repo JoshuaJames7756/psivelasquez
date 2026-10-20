@@ -1,5 +1,6 @@
-import { RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
+import { ClerkLoaded, ClerkLoading, RedirectToSignIn, SignedIn, SignedOut } from '@clerk/clerk-react'
 import type { ReactNode } from 'react'
+import { PantallaCarga } from '../../shared/components/PantallaCarga'
 
 /**
  * Protege /admin: si hay sesión de Clerk válida, renderiza el panel.
@@ -13,10 +14,16 @@ import type { ReactNode } from 'react'
 export function RequireAuth({ children }: { children: ReactNode }) {
   return (
     <>
-      <SignedIn>{children}</SignedIn>
-      <SignedOut>
-        <RedirectToSignIn />
-      </SignedOut>
+      {/* Mientras Clerk arranca no hay forma de saber si hay sesión: pantalla de carga, no pantalla en blanco. */}
+      <ClerkLoading>
+        <PantallaCarga />
+      </ClerkLoading>
+      <ClerkLoaded>
+        <SignedIn>{children}</SignedIn>
+        <SignedOut>
+          <RedirectToSignIn />
+        </SignedOut>
+      </ClerkLoaded>
     </>
   )
 }
