@@ -9,10 +9,23 @@ interface ItemPregunta {
 const preguntas: ItemPregunta[] = [
   {
     pregunta: '¿Cómo sé si necesito iniciar un proceso psicológico?',
-    // Respuesta genérica y prudente a propósito: no es un diagnóstico,
-    // solo invita a escribir. Contenido clínico real, revisar con Rebeca.
     respuesta:
       'No hace falta esperar una crisis para empezar. Si sientes que algo te pesa más de lo que puedes manejar solo, ya es una buena razón para conversarlo. Escríbeme y vemos juntos si esto es lo que necesitas.',
+  },
+  {
+    pregunta: '¿Tengo que saber exactamente qué me pasa?',
+    respuesta:
+      'No. No necesitas un diagnóstico ni saber ponerle nombre a lo que sientes. Con que algo te esté pesando es suficiente para empezar; entenderlo es parte del trabajo que hacemos juntos.',
+  },
+  {
+    pregunta: '¿Será incómodo hablar de esto?',
+    respuesta:
+      'Es normal sentir nervios al empezar. Vamos a tu ritmo: puedes contarme lo que te sientas cómodo de compartir y dejar para después lo que todavía no. No tienes que hablar de todo en la primera sesión.',
+  },
+  {
+    pregunta: '¿Qué pasa si nunca he ido a terapia?',
+    respuesta:
+      'Muchas personas llegan por primera vez. En la primera sesión te explico cómo trabajamos, conversamos sobre lo que te trae y resuelves tus dudas. Después decidimos juntos cómo seguir.',
   },
   {
     pregunta: '¿Con qué frecuencia son las sesiones?',
@@ -30,9 +43,29 @@ const preguntas: ItemPregunta[] = [
       'Atiendo solo 8 cupos por semana, así que el adelanto del 50% protege tu horario y evita que alguien más lo tome mientras coordinamos. El saldo se conversa por WhatsApp.',
   },
   {
+    pregunta: '¿Qué pasa después de reservar?',
+    respuesta:
+      'Tu horario queda solicitado y te escribo por WhatsApp para coordinar el adelanto. Cuando envías el comprobante, confirmo tu cita. Si no se confirma dentro del plazo indicado, el horario se libera para otra persona.',
+  },
+  {
     pregunta: '¿Qué pasa si necesito cancelar o cambiar mi cita?',
     respuesta:
       'Escríbeme por WhatsApp apenas lo sepas y buscamos otro horario disponible. Entiendo que surgen imprevistos, solo te pido avisar con la mayor anticipación posible para poder ofrecer el cupo a alguien más.',
+  },
+  {
+    pregunta: '¿Lo que cuento es confidencial?',
+    respuesta:
+      'Sí. Lo que conversamos en sesión es confidencial, con excepciones muy acotadas que explico en el aviso ético. También puedes leer qué datos se piden al reservar en la política de privacidad.',
+  },
+  {
+    pregunta: '¿Atiendes adolescentes?',
+    respuesta:
+      'Trabajo con adolescentes y adultos. En el caso de menores de edad, coordinamos con su madre, padre o tutor.',
+  },
+  {
+    pregunta: '¿Puedes recetarme medicamentos?',
+    respuesta:
+      'No, como psicóloga no receto medicamentos. Si en algún momento vemos que sería útil una valoración médica o psiquiátrica, te lo comento y te oriento.',
   },
 ]
 
@@ -80,13 +113,10 @@ function ItemFaq({ pregunta, respuesta }: ItemPregunta) {
 }
 
 /**
- * Respuestas redactadas a partir de lo que el doc ya establece
- * (flujo de reserva, adelanto 50%, modalidad, 8 cupos/semana).
- * La primera pregunta ("¿cómo sé si necesito...") es la única con
- * contenido clínico real de fondo — se mantuvo deliberadamente
- * genérica (invita a escribir, no diagnostica) pero de todos modos
- * Rebeca debería revisarla y ajustarla a su propio criterio clínico
- * antes de publicar.
+ * Respuestas redactadas por Xion en la voz de Rebeca a partir de lo que el
+ * documento rector establece (flujo de reserva, adelanto 50%, modalidad,
+ * 8 cupos por semana, adolescentes y adultos). Las que tocan criterio
+ * clínico o políticas propias están en CONTENIDO_A_REVISAR.md.
  *
  * nivelTitulo: este componente vive en dos contextos con jerarquía
  * distinta — como sección de HomePage (donde el <h1> real está en

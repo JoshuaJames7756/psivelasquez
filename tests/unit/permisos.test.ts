@@ -92,7 +92,7 @@ describe('exportación CSV (con sesión)', () => {
 })
 
 describe('reserva pública POST /api/citas', () => {
-  const valido = { slotId: UUID, nombre: 'Ana Pérez', telefono: '+59170000000', primeraVez: true, modalidad: 'presencial' }
+  const valido = { slotId: UUID, nombre: 'Ana Pérez', telefono: '+59170000000', primeraVez: true, modalidad: 'presencial', consentimiento: true }
 
   it('rechaza datos inválidos con 400 sin tocar la base', async () => {
     const malos = [
@@ -106,6 +106,9 @@ describe('reserva pública POST /api/citas', () => {
       { ...valido, edad: 3.5 },
       { ...valido, modalidad: 'hologramas' },
       { ...valido, primeraVez: 'si' },
+      { ...valido, consentimiento: false },
+      { ...valido, consentimiento: 'true' },
+      { nombre: 'Ana Pérez', slotId: UUID, primeraVez: true, modalidad: 'online' },
     ]
     for (const body of malos) {
       const r = await llamar(citas, { method: 'POST', body })

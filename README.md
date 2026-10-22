@@ -196,3 +196,15 @@ Qué cubren:
 - **Flujo de reserva** completo con la API simulada, incluido el error y el reintento.
 
 No cubren el panel con sesión real de Clerk ni la base de datos real: eso se prueba a mano antes de lanzar (ver `SEGURIDAD.md`).
+
+
+## Privacidad y consentimiento
+
+- Página pública `/privacidad` (`PrivacidadPage.tsx`), enlazada desde el pie y desde el formulario de reserva. Está en `noindex` hasta que Rebeca la apruebe: al aprobarla, quitar `noindex` en `src/modules/shared/seo/sitio.ts`.
+- El formulario exige aceptar la política. El servidor lo valida (`consentimiento === true`) y guarda la fecha y la versión en `pacientes.consentimiento_en` y `consentimiento_version` (migración 012).
+- Si cambia el texto: actualizar la fecha en `PrivacidadPage.tsx` y `VERSION_POLITICA` en `server-lib/privacidad.ts`.
+- El texto es un borrador claro, no asesoría legal: conviene una revisión profesional antes del lanzamiento.
+
+## Contenido pendiente de aprobar
+
+Los textos de Cómo trabajo, aviso ético, las 7 áreas y las preguntas frecuentes están redactados y a la espera de que Rebeca los apruebe. La lista corta de lo delicado está en `CONTENIDO_A_REVISAR.md`. Al aprobar, quitar `noindex: true` de esas rutas en `src/modules/shared/seo/sitio.ts`.

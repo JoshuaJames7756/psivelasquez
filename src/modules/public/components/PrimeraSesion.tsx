@@ -8,7 +8,7 @@ import { TituloSeccion } from '../../shared/components/TituloSeccion'
 const pasos = [
   {
     titulo: 'Contacto por WhatsApp, coordinamos el sábado',
-    detalle: 'Elegís el horario que te quede bien, sin formularios largos.',
+    detalle: 'Eliges el horario que te quede bien, sin formularios largos.',
   },
   {
     titulo: 'Reserva con adelanto del 50% (protege el cupo)',
@@ -16,7 +16,7 @@ const pasos = [
   },
   {
     titulo: 'Primera sesión, sin presión de tener todo claro',
-    detalle: 'No necesitás llegar con un diagnóstico o un guion armado.',
+    detalle: 'No necesitas llegar con un diagnóstico o un guion armado.',
   },
   {
     titulo: 'Definimos juntos frecuencia y forma del proceso',

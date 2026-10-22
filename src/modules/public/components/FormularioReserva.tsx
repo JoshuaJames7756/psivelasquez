@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import type { SlotPublico } from '../hooks/useSlotsPublicos'
 
 interface Props {
@@ -21,6 +22,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   // Campo trampa para bots: oculto a personas, nunca debe llenarse.
   const [sitioWeb, setSitioWeb] = useState('')
+  const [consentimiento, setConsentimiento] = useState(false)
 
   async function manejarSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -42,6 +44,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
           primeraVez,
           modalidad,
           sitioWeb,
+          consentimiento,
         }),
       })
 
@@ -125,6 +128,7 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
 
               <div>
                 <label className="text-xs font-medium text-sage-600">Motivo breve</label>
+                <p className="text-xs text-sage-500">Cuéntame solo lo necesario; los detalles los vemos en sesión.</p>
                 <textarea
                   maxLength={1000}
                   value={motivoInicial}
@@ -164,6 +168,23 @@ export function FormularioReserva({ slot, onClose, onReservado }: Props) {
                   ))}
                 </div>
               </div>
+
+              <label className="flex items-start gap-2 text-sm text-sage-700">
+                <input
+                  type="checkbox"
+                  required
+                  checked={consentimiento}
+                  onChange={(e) => setConsentimiento(e.target.checked)}
+                  className="mt-1"
+                />
+                <span>
+                  Acepto que uses estos datos para coordinar mi cita, según la{' '}
+                  <Link to="/privacidad" target="_blank" className="font-medium underline hover:text-sage-900">
+                    política de privacidad
+                  </Link>
+                  .
+                </span>
+              </label>
 
               {errorMsg && <p className="text-sm text-terracotta-600">{errorMsg}</p>}
 

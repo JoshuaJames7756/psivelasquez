@@ -84,11 +84,21 @@ test.describe('cada página pública', () => {
   })
 })
 
-test('las páginas con contenido pendiente de Rebeca están en noindex', async ({ page }) => {
-  for (const ruta of ['/como-trabajo/', '/aviso-etico/']) {
+test('las páginas con contenido pendiente de aprobar están en noindex', async ({ page }) => {
+  for (const ruta of ['/como-trabajo/', '/aviso-etico/', '/privacidad/']) {
     await page.goto(ruta)
     await expect(page.locator('meta[name="robots"]'), ruta).toHaveAttribute('content', /noindex/)
   }
+})
+
+test('la política de privacidad existe, es accesible desde el pie y desde el formulario', async ({ page }) => {
+  await page.goto('/privacidad/')
+  await expect(page.locator('h1')).toHaveText(/Política de privacidad/)
+  await expect(page.getByRole('heading', { level: 2 })).toHaveCount(7)
+  const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
+  expect(r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')).toEqual([])
+  await page.goto('/')
+  await expect(page.getByRole('contentinfo').getByRole('link', { name: 'Privacidad' })).toBeVisible()
 })
 
 test('flujo de reserva: elegir cupo, llenar el formulario y confirmar', async ({ page }) => {
@@ -116,10 +126,14 @@ test('flujo de reserva: elegir cupo, llenar el formulario y confirmar', async ({
   await page.locator('input[maxlength="120"]').fill('Ana Pérez')
   await page.locator('input[placeholder="+591..."]').fill('+59170000000')
   await page.getByRole('button', { name: 'online' }).click()
+  // Sin aceptar la política de privacidad el navegador no deja enviar
+  await page.getByRole('button', { name: /Solicitar cupo/ }).click()
+  expect(envio).toBeNull()
+  await page.getByRole('checkbox', { name: /política de privacidad/ }).check()
   await page.getByRole('button', { name: /Solicitar cupo/ }).click()
 
   await expect(page.getByText(/Tu cupo quedó solicitado/)).toBeVisible()
-  expect(envio).toMatchObject({ slotId: slot.id, nombre: 'Ana Pérez', modalidad: 'online', primeraVez: true, sitioWeb: '' })
+  expect(envio).toMatchObject({ slotId: slot.id, nombre: 'Ana Pérez', modalidad: 'online', primeraVez: true, sitioWeb: '', consentimiento: true })
 })
 
 test('reserva: si la API falla se muestra el error y se puede reintentar', async ({ page }) => {
@@ -132,6 +146,7 @@ test('reserva: si la API falla se muestra el error y se puede reintentar', async
   await page.goto('/reservar/')
   await page.getByRole('button', { name: /10:00/ }).first().click()
   await page.locator('input[maxlength="120"]').fill('Luis Rojas')
+  await page.getByRole('checkbox', { name: /política de privacidad/ }).check()
   await page.getByRole('button', { name: /Solicitar cupo/ }).click()
   await expect(page.getByText(/se acaba de reservar/)).toBeVisible()
   await expect(page.getByRole('button', { name: /Solicitar cupo/ })).toBeEnabled()

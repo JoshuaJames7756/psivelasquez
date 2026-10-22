@@ -79,6 +79,15 @@ export function EnfoquePage() {
             </section>
           )}
 
+          {enfoque.aviso && (
+            <p
+              role="note"
+              className="rounded-2xl border border-terracotta-200 bg-terracotta-50 p-4 text-sm leading-relaxed text-sage-800"
+            >
+              {enfoque.aviso}
+            </p>
+          )}
+
           <motion.section
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}

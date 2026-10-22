@@ -128,6 +128,9 @@ export function Footer() {
             <Link to="/aviso-etico" className="underline transition-colors hover:text-sage-300">
               Aviso ético
             </Link>
+            <Link to="/privacidad" className="underline transition-colors hover:text-sage-300">
+              Privacidad
+            </Link>
             <a
               href="https://xiontech-seven.vercel.app"
               className="underline transition-colors hover:text-sage-300"

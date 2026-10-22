@@ -18,9 +18,16 @@ export function ComoSeSienteEsteEspacio() {
       <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-sage-200/40 blur-3xl" />
       <LineasFondo variante="ondas" className="inset-x-0 bottom-0 h-36 w-full" />
       <div className="relative mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
-        <div className="order-2 flex aspect-[4/3] items-center justify-center rounded-2xl border-2 border-dashed border-sage-300 bg-sage-50 md:order-1">
-          <p className="px-6 text-center text-sm text-sage-400">
-            Foto del consultorio pendiente
+        {/* Composición editorial mientras no exista una foto real del consultorio
+            (Prompt 2.0, sección 10: nada de fotos stock). Para poner la foto,
+            reemplazar este div por un <img> con la misma proporción 4/3. */}
+        <div className="relative order-2 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-sage-100 md:order-1">
+          <LineasFondo variante="hojas" className="-bottom-8 -left-8 h-3/4 w-3/4 text-sage-300" />
+          <LineasFondo variante="ondas" className="inset-x-0 top-0 h-1/3 w-full text-sage-200" />
+          <p className="font-serif-brand relative px-8 text-center text-3xl leading-snug text-sage-800 md:text-4xl">
+            Sin apuro,
+            <br />
+            sin juicio.
           </p>
         </div>
 

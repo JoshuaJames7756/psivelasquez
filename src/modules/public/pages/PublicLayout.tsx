@@ -1,4 +1,4 @@
-import { AnimatePresence } from 'motion/react'
+import { AnimatePresence, MotionConfig } from 'motion/react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Footer } from '../components/Footer'
 import { NavPublica } from '../components/NavPublica'
@@ -11,6 +11,7 @@ export function PublicLayout() {
   useSeo(buscarSeo(pathname) ?? { ...seo404, ruta: pathname })
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="min-h-screen bg-cream-50">
       <NavPublica />
       <AnimatePresence mode="wait">
@@ -20,5 +21,6 @@ export function PublicLayout() {
       </AnimatePresence>
       <Footer />
     </div>
+    </MotionConfig>
   )
 }

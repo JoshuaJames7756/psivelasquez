@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { verificarSesion } from '../../server-lib/auth.js'
 import { sql, vencerSlotsExpirados } from '../../server-lib/db.js'
+import { VERSION_POLITICA } from '../../server-lib/privacidad.js'
 import { esFecha, esUuid } from '../../server-lib/validar.js'
 
 const HORAS_VENTANA_EXPIRACION = 48 // confirmado con Joshua: 24-48h, se usa el máximo
@@ -13,6 +14,7 @@ interface BodySolicitar {
   motivoInicial?: string
   primeraVez: boolean
   sitioWeb?: string
+  consentimiento: true
   modalidad: 'presencial' | 'online'
 }
 
@@ -30,6 +32,7 @@ function validarBodySolicitar(body: unknown): body is BodySolicitar {
     telOk &&
     motivoOk &&
     edadOk &&
+    b.consentimiento === true &&
     typeof b.primeraVez === 'boolean' &&
     (b.modalidad === 'presencial' || b.modalidad === 'online')
   )
@@ -100,8 +103,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // huérfanos si alguien se adelanta).
       const [slotActualizado] = await sql`
         with p as (
-          insert into pacientes (nombre, edad, telefono, motivo_inicial, primera_vez)
-          select ${nombre.trim()}, ${edad ?? null}, ${telefono ?? null}, ${motivoInicial ?? null}, ${primeraVez}
+          insert into pacientes (nombre, edad, telefono, motivo_inicial, primera_vez, consentimiento_en, consentimiento_version)
+          select ${nombre.trim()}, ${edad ?? null}, ${telefono ?? null}, ${motivoInicial ?? null}, ${primeraVez}, now(), ${VERSION_POLITICA}
           where exists (select 1 from slots_sabado where id = ${slotId} and estado = 'disponible')
           returning id
         )

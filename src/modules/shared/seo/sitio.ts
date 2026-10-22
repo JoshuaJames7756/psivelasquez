@@ -76,6 +76,13 @@ const base: DatosSeo[] = [
     descripcion: 'Aviso ético y de confidencialidad de la consulta de Rebeca Velásquez.',
     noindex: true,
   },
+  {
+    // Quitar noindex cuando Rebeca apruebe el texto (y, idealmente, tras una revisión legal).
+    ruta: '/privacidad',
+    titulo: 'Política de privacidad | Rebeca Velásquez',
+    descripcion: 'Qué datos se piden al reservar, para qué se usan, quién los ve y cómo pedir que se corrijan o eliminen.',
+    noindex: true,
+  },
 ]
 
 const porEnfoque: DatosSeo[] = enfoques.map((e) => ({

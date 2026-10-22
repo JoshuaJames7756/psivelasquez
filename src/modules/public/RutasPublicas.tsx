@@ -8,6 +8,7 @@ import { FormacionPage } from './pages/FormacionPage'
 import { HomePage } from './pages/HomePage'
 import { ModalidadPage } from './pages/ModalidadPage'
 import { NotFoundPage } from './pages/NotFoundPage'
+import { PrivacidadPage } from './pages/PrivacidadPage'
 import { PublicLayout } from './pages/PublicLayout'
 import { ReservarPage } from './pages/ReservarPage'
 import { SobreMiPage } from './pages/SobreMiPage'
@@ -30,6 +31,7 @@ export function rutasPublicas() {
       <Route path="/faq" element={<FaqPage />} />
       <Route path="/reservar" element={<ReservarPage />} />
       <Route path="/aviso-etico" element={<AvisoEticoPage />} />
+      <Route path="/privacidad" element={<PrivacidadPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )

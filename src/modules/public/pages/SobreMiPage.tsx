@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { CabeceraPagina } from '../../shared/components/CabeceraPagina'
+import { LineasFondo } from '../../shared/components/LineasFondo'
 
 /**
  * Texto dividido en 3 bloques (experiencia / formación / manera de
@@ -44,10 +45,12 @@ export function SobreMiPage() {
           </Link>
         </div>
 
-        <div className="mx-auto flex aspect-[3/4] w-full max-w-sm items-center justify-center rounded-3xl border-2 border-dashed border-sage-300 bg-sage-50 md:mx-0">
-          <p className="px-6 text-center text-sm text-sage-700">
-            Otra foto de Rebeca, pendiente
-          </p>
+        {/* Composición editorial hasta tener una segunda foto real de Rebeca.
+            Para ponerla, reemplazar este div por un <img> con proporción 3/4. */}
+        <div className="relative mx-auto flex aspect-[3/4] w-full max-w-sm items-center justify-center overflow-hidden rounded-3xl bg-sage-100 md:mx-0">
+          <LineasFondo variante="rama" className="-bottom-6 -right-8 h-4/5 w-3/5 text-sage-300" />
+          <LineasFondo variante="contorno" className="-left-10 -top-6 h-3/5 w-3/5 text-sage-200" />
+          <span aria-hidden="true" className="font-serif-brand relative text-7xl text-sage-700">RV</span>
         </div>
       </div>
       </div>
