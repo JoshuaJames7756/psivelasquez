@@ -22,7 +22,7 @@ export function FormaFlotante({
   return (
     <motion.div
       aria-hidden="true"
-      className={`pointer-events-none absolute rounded-full blur-2xl ${color} ${className}`}
+      className={`pointer-events-none absolute rounded-full [mask-image:radial-gradient(closest-side,black_35%,transparent)] ${color} ${className}`}
       animate={desactivado ? undefined : { y: [0, -recorrido, 0], x: [0, recorrido / 2, 0] }}
       transition={{ duration: duracionCiclo, repeat: Infinity, ease: 'easeInOut' }}
     />

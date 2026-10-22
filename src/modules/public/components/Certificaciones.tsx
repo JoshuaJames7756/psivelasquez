@@ -76,7 +76,7 @@ function Decoracion() {
   return (
     <>
       <LineasFondo variante="circulos" className="-right-28 -top-28 h-96 w-96" />
-      <FormaFlotante className="-bottom-16 -left-10 h-56 w-56" color="bg-terracotta-100/50" />
+      <FormaFlotante className="bottom-6 -left-10 h-56 w-56" color="bg-terracotta-100/50" />
     </>
   )
 }

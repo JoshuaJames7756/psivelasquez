@@ -48,7 +48,7 @@ export function CabeceraPagina({
 
   return (
     <header
-      className={`relative overflow-hidden bg-gradient-to-b px-6 pb-14 pt-16 md:pb-20 md:pt-24 ${fondoPorTono[tono]}`}
+      className={`relative overflow-hidden bg-gradient-to-b px-6 pb-10 pt-10 md:pb-12 md:pt-14 ${fondoPorTono[tono]}`}
     >
       {estilo === 'ondas' && (
         <>
@@ -59,7 +59,7 @@ export function CabeceraPagina({
       {estilo === 'rama' && (
         <>
           <LineasFondo variante="rama" className="-right-6 top-0 hidden h-full w-56 md:block" />
-          <FormaFlotante className="-left-20 bottom-0 h-56 w-56" color="bg-sage-200/60" />
+          <FormaFlotante className="-left-20 bottom-10 h-56 w-56" color="bg-sage-200/60" />
         </>
       )}
       {estilo === 'circulos' && (
@@ -78,7 +78,7 @@ export function CabeceraPagina({
       {estilo === 'puntos' && (
         <>
           <PuntosFondo className="-right-4 top-4 h-44 w-64" />
-          <FormaFlotante className="-bottom-20 right-1/4 h-44 w-44" color="bg-sage-200/40" />
+          <FormaFlotante className="bottom-8 right-1/4 h-44 w-44" color="bg-sage-200/40" />
           <AnilloGiratorio className="-left-6 top-6 h-24 w-24" segundos={80} />
         </>
       )}

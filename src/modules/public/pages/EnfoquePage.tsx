@@ -57,14 +57,9 @@ export function EnfoquePage() {
           {enfoque.senales && enfoque.senales.length > 0 && (
             <section>
               <h2 className="font-serif-brand text-xl text-sage-900">Algunas señales comunes</h2>
-              <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+              <ul className="mt-4 grid gap-x-10 gap-y-5 sm:grid-cols-2">
                 {enfoque.senales.map((t) => (
-                  <li key={t} className="flex gap-3 rounded-2xl border border-sage-200 bg-cream-50 p-4 text-sm text-sage-800">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sage-100 text-sage-600">
-                      <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" aria-hidden="true">
-                        <path d="M2.5 6.5l2.5 2.5 4.5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
+                  <li key={t} className="border-l-2 border-terracotta-300 pl-4 leading-relaxed text-sage-800">
                     {t}
                   </li>
                 ))}
