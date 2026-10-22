@@ -208,3 +208,10 @@ No cubren el panel con sesión real de Clerk ni la base de datos real: eso se pr
 ## Contenido pendiente de aprobar
 
 Los textos de Cómo trabajo, aviso ético, las 7 áreas y las preguntas frecuentes están redactados y a la espera de que Rebeca los apruebe. La lista corta de lo delicado está en `CONTENIDO_A_REVISAR.md`. Al aprobar, quitar `noindex: true` de esas rutas en `src/modules/shared/seo/sitio.ts`.
+
+## Rendimiento y política de seguridad de contenido (CSP)
+
+- Clerk solo se descarga en `/admin` y `/sign-in` (`src/modules/admin/ClerkRaiz.tsx`). El sitio público no baja su código ni llama a sus servidores.
+- Lighthouse (medido en local, simulando móvil): rendimiento 91 a 93, accesibilidad 100, buenas prácticas 100, SEO 100. En escritorio 98 a 100.
+- `vercel.json` define una CSP estricta para el sitio público (`Content-Security-Policy`, aplicada de verdad) y una CSP para `/admin` y `/sign-in` en modo `Report-Only` (avisa en la consola, no bloquea).
+- **Pendiente tras comprar el dominio y activar Clerk en producción:** agregar `https://clerk.TU-DOMINIO` a `script-src` y `connect-src` de la política del panel. Luego abrir `/sign-in` con la consola del navegador abierta; si no hay avisos de "Content Security Policy", cambiar `Content-Security-Policy-Report-Only` por `Content-Security-Policy` en esas dos entradas.

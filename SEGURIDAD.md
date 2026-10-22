@@ -36,3 +36,7 @@ Revisión hecha sobre toda la API (`/api` y `/server-lib`).
 ## Actualización: cron cerrado en producción
 
 `/api/cron/generar-slots` ahora responde 401 en producción si `CRON_SECRET` no está definida (antes quedaba abierto). Vercel envía el secreto solo al invocar el cron. Hay una prueba automática que lo verifica.
+
+## Cabeceras y CSP
+
+El sitio público usa una CSP que solo permite scripts propios (sin `unsafe-inline` ni `eval`), imágenes propias y de Cloudinary, y el mapa de Google. El panel y el login usan una CSP en modo informe hasta confirmar el dominio de Clerk en producción (ver README). Además: HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` y `Permissions-Policy`.

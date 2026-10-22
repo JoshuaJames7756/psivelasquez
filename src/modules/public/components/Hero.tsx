@@ -47,10 +47,9 @@ export function Hero() {
             Rebeca Velásquez — Psicóloga Clínica
           </motion.p>
 
+          {/* El título es lo primero que se pinta (LCP): llega visible en el HTML, sin esperar a JavaScript */}
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: duracion(0.6), delay: 0.1 }}
+            initial={false}
             className="font-serif-brand text-4xl leading-tight text-sage-900 md:text-5xl"
           >
             Psicoterapia para atravesar momentos difíciles, con una mirada clínica y{' '}

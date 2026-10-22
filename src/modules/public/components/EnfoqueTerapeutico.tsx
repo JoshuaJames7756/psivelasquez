@@ -124,7 +124,7 @@ export function EnfoqueTerapeutico() {
       </div>
 
       <div className="relative mx-auto mt-4 flex max-w-6xl items-center justify-between px-6">
-        <div className="flex gap-2" role="group" aria-label="Elegir área">
+        <div className="flex" role="group" aria-label="Elegir área">
           {enfoques.map((e, i) => (
             <button
               key={e.slug}
@@ -132,10 +132,15 @@ export function EnfoqueTerapeutico() {
               onClick={() => irA(i)}
               aria-label={`Ir a ${e.titulo}`}
               aria-current={i === activo}
-              className={`h-2 rounded-full transition-all ${
-                i === activo ? 'w-6 bg-sage-700' : 'w-2 bg-sage-300'
-              }`}
-            />
+              className="group flex h-6 min-w-6 items-center justify-center"
+            >
+              <span
+                aria-hidden="true"
+                className={`block h-2 rounded-full transition-all ${
+                  i === activo ? 'w-6 bg-sage-700' : 'w-2 bg-sage-300 group-hover:bg-sage-400'
+                }`}
+              />
+            </button>
           ))}
         </div>
         <Link
