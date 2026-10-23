@@ -38,7 +38,7 @@ export function NotasRapidas() {
           className="w-full resize-none rounded-2xl border border-cream-300 bg-cream-100/60 p-3 text-sm text-sage-900 placeholder:text-sage-500 focus:border-sage-500 focus:outline-none"
         />
         <div className="mt-2 flex items-center justify-between">
-          <span className="text-xs text-sage-500">Ctrl + Enter para guardar</span>
+          <span className="text-xs text-sage-600">Ctrl + Enter para guardar</span>
           <button
             type="submit"
             disabled={!texto.trim() || guardando}

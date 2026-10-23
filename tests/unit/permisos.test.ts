@@ -142,6 +142,7 @@ describe('reserva pública POST /api/citas', () => {
     sql
       .mockResolvedValueOnce([{ id: UUID, estado: 'disponible' }])
       .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([{ total: 0 }])
       .mockResolvedValueOnce([{ id: UUID, estado: 'solicitada', expira_en: '2026-10-19' }])
     const r = await llamar(citas, { method: 'POST', body: valido })
     expect(r.status).toBe(201)

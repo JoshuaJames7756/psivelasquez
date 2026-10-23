@@ -50,7 +50,7 @@ export function ContenidoPage() {
               onClick={() => setPlataforma(p)}
               className={`rounded-full px-4 py-1.5 text-sm font-medium ${
                 plataforma === p
-                  ? 'bg-sage-700 text-sage-900'
+                  ? 'bg-sage-700 text-cream-50'
                   : 'border border-sage-300 text-sage-800 hover:bg-sage-50'
               }`}
             >

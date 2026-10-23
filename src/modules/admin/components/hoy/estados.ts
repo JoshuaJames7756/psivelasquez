@@ -17,9 +17,9 @@ export const chipEstado: Record<EstadoCita, string> = {
   confirmada: 'bg-sage-200 text-sage-800',
   pagada: 'bg-sage-600 text-cream-50',
   completada: 'bg-cream-300 text-sage-800',
-  cancelada: 'bg-cream-200 text-sage-500',
+  cancelada: 'bg-cream-200 text-sage-700',
   liberada: 'bg-sage-100 text-sage-700',
-  vencida: 'bg-cream-200 text-sage-500',
+  vencida: 'bg-cream-200 text-sage-700',
 }
 
 const ACTIVOS: EstadoCita[] = ['solicitada', 'confirmada', 'pagada', 'completada']

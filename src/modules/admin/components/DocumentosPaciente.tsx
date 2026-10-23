@@ -72,7 +72,7 @@ export function DocumentosPaciente({
       {(error || errorEliminar) && <p className="mb-2 text-xs text-terracotta-600">{error ?? errorEliminar}</p>}
 
       {documentos.length === 0 ? (
-        <p className="text-sm text-sage-500">Sin documentos adjuntos.</p>
+        <p className="text-sm text-sage-600">Sin documentos adjuntos.</p>
       ) : (
         <ul className="space-y-2">
           {documentos.map((doc) => (

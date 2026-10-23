@@ -20,7 +20,7 @@ function Fila({
   return (
     <motion.li
       layout
-      className={`flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 ${libre ? 'opacity-70' : ''}`}
+      className={`flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3`}
     >
       <span className="font-serif-brand w-14 text-lg text-sage-900">{slot.hora_inicio.slice(0, 5)}</span>
 

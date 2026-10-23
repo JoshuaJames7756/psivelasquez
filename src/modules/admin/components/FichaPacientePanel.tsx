@@ -200,7 +200,7 @@ export function FichaPacientePanel({
             <button
               onClick={nuevaNota}
               disabled={creandoNota}
-              className="rounded-full bg-terracotta-500 px-4 py-1.5 text-sm font-medium text-cream-50 hover:bg-terracotta-600 disabled:opacity-50"
+              className="rounded-full bg-terracotta-600 px-4 py-1.5 text-sm font-medium text-cream-50 hover:brightness-90 disabled:opacity-50"
             >
               {creandoNota ? 'Creando...' : '+ Nueva nota de sesión'}
             </button>

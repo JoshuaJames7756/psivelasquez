@@ -4,6 +4,9 @@ import { sql, vencerSlotsExpirados } from '../../server-lib/db.js'
 import { VERSION_POLITICA } from '../../server-lib/privacidad.js'
 import { esFecha, esUuid } from '../../server-lib/validar.js'
 
+// Tope de solicitudes esperando confirmación a la vez: evita que un bot que cambia de
+// teléfono acapare todos los cupos de la semana. Pasado el tope se invita a usar WhatsApp.
+const MAX_SOLICITUDES_PENDIENTES = 5
 const HORAS_VENTANA_EXPIRACION = 48 // confirmado con Joshua: 24-48h, se usa el máximo
 
 interface BodySolicitar {
@@ -96,6 +99,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             error: 'Ya tienes una solicitud pendiente. Escríbeme por WhatsApp para coordinarla.',
           })
         }
+      }
+
+      const [{ total }] = (await sql`
+        select count(*)::int as total from slots_sabado where estado = 'solicitada'
+      `) as Array<{ total: number }>
+      if (total >= MAX_SOLICITUDES_PENDIENTES) {
+        return res.status(429).json({
+          error: 'Hay varias solicitudes esperando confirmación. Escríbeme por WhatsApp para reservar tu cupo.',
+        })
       }
 
       // Todo en UNA sentencia: el paciente solo se crea si el cupo sigue

@@ -15,7 +15,7 @@ export function IndicadorAutoguardado({ estado }: { estado: EstadoAutoguardado }
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className={`text-xs ${estado === 'error' ? 'text-terracotta-300' : 'text-sage-400'}`}
+          className={`text-xs ${estado === 'error' ? 'text-terracotta-600' : 'text-sage-600'}`}
         >
           {textoPorEstado[estado]}
         </motion.span>

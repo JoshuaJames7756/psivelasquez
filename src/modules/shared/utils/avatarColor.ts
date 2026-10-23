@@ -1,13 +1,13 @@
 // Paleta acotada a la marca (sage + terracotta), nunca colores fuera
 // de identidad. Determinístico por id: el mismo paciente siempre
 // tiene el mismo color, no se recalcula al azar en cada render.
+// Todos con contraste suficiente (WCAG AA) para las iniciales en crema.
 const PALETA = [
-  'bg-sage-500',
+  'bg-sage-600',
   'bg-sage-700',
-  'bg-terracotta-400',
+  'bg-sage-800',
   'bg-terracotta-600',
-  'bg-sage-400',
-  'bg-terracotta-300',
+  'bg-forest-700',
 ]
 
 export function colorAvatar(id: string) {

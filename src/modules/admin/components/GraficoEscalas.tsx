@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { useRegistrarEscala } from '../hooks/useRegistrarEscala'
 import type { EscalaSeguimiento, TipoEscala } from '../../shared/types/db'
 
@@ -41,7 +41,7 @@ function SerieEscala({ tipo, datos }: { tipo: TipoEscala; datos: EscalaSeguimien
           />
           {tipo}
         </span>
-        <span className="text-xs text-sage-500">
+        <span className="text-xs text-sage-600">
           Último: {ultimo.puntaje}/{max}
         </span>
       </div>
@@ -79,6 +79,8 @@ function FormularioRegistro({
     setPuntaje('')
   })
 
+  const idForm = useId()
+
   function manejarSubmit(ev: React.FormEvent) {
     ev.preventDefault()
     const n = Number(puntaje)
@@ -89,8 +91,9 @@ function FormularioRegistro({
   return (
     <form onSubmit={manejarSubmit} className="mt-4 flex items-end gap-2">
       <div>
-        <label className="text-xs text-sage-600">Escala</label>
+        <label htmlFor={`${idForm}-tipo`} className="text-xs text-sage-600">Escala</label>
         <select
+          id={`${idForm}-tipo`}
           value={tipo}
           onChange={(e) => setTipo(e.target.value as TipoEscala)}
           className="mt-1 block rounded-lg border border-sage-200 px-2 py-1.5 text-sm"
@@ -100,8 +103,9 @@ function FormularioRegistro({
         </select>
       </div>
       <div>
-        <label className="text-xs text-sage-600">Puntaje</label>
+        <label htmlFor={`${idForm}-puntaje`} className="text-xs text-sage-600">Puntaje</label>
         <input
+          id={`${idForm}-puntaje`}
           type="number"
           min={0}
           max={MAX_POR_TIPO[tipo]}
@@ -136,7 +140,7 @@ export function GraficoEscalas({
   return (
     <div>
       {gad7.length === 0 && phq9.length === 0 ? (
-        <p className="text-sm text-sage-500">Sin escalas registradas todavía.</p>
+        <p className="text-sm text-sage-600">Sin escalas registradas todavía.</p>
       ) : (
         <div className="space-y-4">
           <SerieEscala tipo="GAD-7" datos={gad7} />

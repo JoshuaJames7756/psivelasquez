@@ -215,3 +215,9 @@ Los textos de Cómo trabajo, aviso ético, las 7 áreas y las preguntas frecuent
 - Lighthouse (medido en local, simulando móvil): rendimiento 91 a 93, accesibilidad 100, buenas prácticas 100, SEO 100. En escritorio 98 a 100.
 - `vercel.json` define una CSP estricta para el sitio público (`Content-Security-Policy`, aplicada de verdad) y una CSP para `/admin` y `/sign-in` en modo `Report-Only` (avisa en la consola, no bloquea).
 - **Pendiente tras comprar el dominio y activar Clerk en producción:** agregar `https://clerk.TU-DOMINIO` a `script-src` y `connect-src` de la política del panel. Luego abrir `/sign-in` con la consola del navegador abierta; si no hay avisos de "Content Security Policy", cambiar `Content-Security-Policy-Report-Only` por `Content-Security-Policy` en esas dos entradas.
+
+## Pruebas del panel y guía de despliegue
+
+- `npm run test:e2e:panel` recorre todo `/admin` en el navegador con Clerk simulado (`tests/stubs/clerk.tsx`) y la API interceptada: con datos, sin datos y con la API caída; accesibilidad (axe), sin scroll horizontal en 768 y 390 px y apertura de la ficha del paciente. No necesita cuenta de Clerk ni base de datos. El simulado solo se activa con `E2E_CLERK_STUB=1` y nunca entra al build de producción.
+- Reservas públicas: además del campo trampa y del límite de un teléfono por solicitud pendiente, hay un tope de 5 solicitudes esperando confirmación a la vez (`MAX_SOLICITUDES_PENDIENTES` en `api/citas/index.ts`).
+- `GUIA_DESPLIEGUE.md` tiene el orden exacto para publicar y la lista de verificación posterior.

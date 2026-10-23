@@ -125,7 +125,7 @@ export function NavAdmin({ onNavegar }: { onNavegar?: () => void }) {
     <nav aria-label="Panel" className="space-y-6">
       {ordenGrupos.map((grupo) => (
         <div key={grupo}>
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-sage-300/60">
+          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-sage-300">
             {grupo}
           </p>
           <div className="space-y-1">

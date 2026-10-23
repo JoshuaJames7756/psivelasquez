@@ -11,6 +11,7 @@ const PUERTO = Number(process.env.E2E_PORT ?? 4173)
 
 export default defineConfig({
   testDir: 'tests/e2e',
+  testIgnore: /panel\.spec\.ts/, // el panel tiene su propia configuración (playwright.panel.config.ts)
   timeout: 30_000,
   fullyParallel: true,
   reporter: [['list']],
