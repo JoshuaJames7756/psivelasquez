@@ -30,3 +30,14 @@ describe('cabeceras de seguridad (vercel.json)', () => {
     }
   })
 })
+
+describe('cabeceras de seguridad (public/_headers, Cloudflare V1)', () => {
+  const h = readFileSync('public/_headers', 'utf8')
+  it('CSP estricta, sin Clerk ni eval, y HSTS', () => {
+    expect(h).toContain("script-src 'self';")
+    expect(h).not.toMatch(/script-src[^;\n]*'unsafe-(inline|eval)'/)
+    expect(h).not.toContain('clerk')
+    expect(h).toContain("object-src 'none'")
+    expect(h).toContain('Strict-Transport-Security')
+  })
+})

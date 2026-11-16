@@ -97,7 +97,7 @@ export function Hero() {
               to="/reservar"
               className="mt-8 inline-block rounded-full bg-sage-700 px-8 py-3 text-base font-medium text-cream-50 shadow-sm transition-colors hover:bg-sage-800 hover:shadow-md"
             >
-              Ver horarios disponibles
+              Reservar una sesión
             </Link>
           </motion.div>
         </div>

@@ -1,69 +1,30 @@
-# Guía de despliegue y verificación
+# Guía de despliegue V1 (sitio estático en Cloudflare)
 
-Orden exacto para publicar el sitio y comprobar que todo funciona. Pensada para hacerse de corrido en 1 a 2 horas.
+V1 es solo el sitio público: sin panel, sin login, sin base de datos y sin variables de entorno secretas.
+La reserva arma un mensaje y abre WhatsApp (número en `src/modules/public/data/contacto.ts`).
+No hay que ejecutar ninguna migración SQL.
 
-## 1. Base de datos (Neon)
+## 1. Probar en local
+    npm install
+    npm test
+    npm run build        # genera dist/ con 17 páginas prerenderizadas, sitemap y robots
 
-En el SQL Editor de Neon, ejecuta en este orden las migraciones que aún no estén aplicadas (están en `db/migrations/`). Si empezaste de cero, todas, de `001` a `012`.
+## 2. Dominio y URL
+Con el dominio comprado, compila con su URL para que sitemap y canonical salgan correctos:
+    VITE_SITE_URL=https://TUDOMINIO.com npm run build
 
-**Importante:** la `012_consentimiento.sql` va ANTES de publicar el código nuevo. El formulario de reserva ya guarda el consentimiento y fallaría sin esas columnas.
+## 3. Publicar en Cloudflare (plan gratis, sin tarjeta)
+1. Crea cuenta en dash.cloudflare.com.
+2. Opción A (rápida): `npx wrangler login` y luego `npx wrangler deploy` (usa `wrangler.jsonc`, sirve la carpeta `dist`).
+3. Opción B: conecta el repo en Workers & Pages. Build: `npm run build`. Variable `VITE_SITE_URL` con tu dominio.
+4. En el proyecto, Settings > Domains > Add custom domain.
+Los archivos estáticos no consumen la cuota de peticiones de Workers. Las cabeceras de seguridad están en `public/_headers`.
 
-Después, genera los cupos del próximo sábado (ver README, "Generar los slots").
+## 4. Verificar después de publicar
+- Abrir `/`, `/reservar/`, `/privacidad/` y una ruta inexistente (debe mostrar 404).
+- Enviar el formulario de reserva: debe abrir WhatsApp con el mensaje.
+- `/sitemap.xml` y `/robots.txt` con tu dominio.
 
-## 2. Variables de entorno (Vercel, Settings, Environment Variables)
-
-| Variable | Qué es | Dónde se consigue |
-|---|---|---|
-| `DATABASE_URL` | Cadena de conexión de Neon | Neon, Connection details |
-| `CLERK_SECRET_KEY` | Clave secreta de Clerk | Clerk, API Keys |
-| `CLERK_PUBLISHABLE_KEY` | Clave pública de Clerk (servidor) | Clerk, API Keys |
-| `VITE_CLERK_PUBLISHABLE_KEY` | La misma clave pública (navegador) | Clerk, API Keys |
-| `ADMIN_USER_IDS` | IDs de usuario de Clerk de Rebeca y tuyo, separados por coma | Clerk, Users, abrir cada usuario, copiar `user_...` |
-| `CRON_SECRET` | Cadena larga y aleatoria (32+ caracteres) | La inventas tú |
-| `VITE_SITE_URL` | Dirección pública, sin `/` al final | Por ejemplo `https://psivelasquez.vercel.app` |
-| `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` | Cuenta de Cloudinary | Cloudinary, Dashboard |
-| `AUTHORIZED_PARTIES` | (Opcional) Dominios desde los que se acepta iniciar sesión, separados por coma | Tu dominio |
-
-`ADMIN_USER_IDS` es obligatoria: si falta, nadie puede entrar al panel (es a propósito, falla cerrado).
-
-Las variables `VITE_...` se leen al construir: si las cambias, hay que volver a desplegar.
-
-## 3. Clerk
-
-1. Desactivar el registro público: User & Authentication, Restrictions, apagar "Sign-up". Solo deben entrar Rebeca y tú.
-2. Verificar que ambos usuarios existen y sus IDs están en `ADMIN_USER_IDS`.
-3. Más adelante, con dominio propio: crear la instancia de producción, cambiar las claves en Vercel y seguir el README (sección de CSP) para agregar el dominio de Clerk.
-
-## 4. Publicar
-
-`git push` y esperar el despliegue en Vercel. El build corre `tsc`, genera las 17 páginas prerenderizadas y el sitemap.
-
-## 5. Verificación (10 a 15 minutos)
-
-**Sitio público**
-- [ ] El inicio carga y el título se ve de inmediato.
-- [ ] `/reservar` muestra los cupos del sábado.
-- [ ] Reservar un cupo con datos de prueba: pide aceptar la política de privacidad y confirma.
-- [ ] Ese cupo aparece como "Por confirmar" en el panel.
-- [ ] `/sitemap.xml` y `/robots.txt` responden.
-
-**Panel (entrar a `/admin`)**
-- [ ] Entra con tu cuenta y con la de Rebeca. Con una cuenta que no esté en `ADMIN_USER_IDS` NO debe dejar entrar.
-- [ ] Hoy, Agenda, Pacientes, Seguimiento, Tareas, Finanzas, Credenciales y Contenido abren sin errores.
-- [ ] Confirmar la reserva de prueba desde Agenda.
-- [ ] Abrir la ficha del paciente de prueba, escribir una nota de sesión y ver "Guardado".
-- [ ] Registrar una escala (GAD-7) y ver el gráfico.
-- [ ] Subir un documento de prueba y abrirlo (el enlace dura 5 minutos).
-- [ ] Descargar el respaldo CSV desde Pacientes.
-- [ ] Borrar el paciente de prueba.
-
-**Seguridad y trabajo programado**
-- [ ] Abrir `/api/cron/generar-slots` desde el navegador: debe responder 401.
-- [ ] En Vercel, Cron Jobs, ejecutar el trabajo una vez y ver que responde bien.
-- [ ] Con las herramientas del navegador abiertas, entrar a `/sign-in` y revisar que no haya avisos de "Content Security Policy" (ver README).
-
-Si algo falla, anota la pantalla y el mensaje exacto y mándamelo.
-
-## 6. Después de que Rebeca apruebe los textos
-
-Quitar `noindex: true` de `/como-trabajo`, `/aviso-etico` y `/privacidad` en `src/modules/shared/seo/sitio.ts` y volver a publicar.
+## V2 y V3
+- V2: completar biografía, trayectoria y fotos en los archivos de `src/modules/public/data` y componentes indicados en comentarios.
+- V3 (panel, agenda, reservas): el código sigue en `api/`, `server-lib/`, `db/migrations` (001 a 012) y `src/modules/admin`. Se reactiva compilando con `VITE_PANEL=1` y usando `vercel.json` (Vercel + Neon + Clerk). Hay un respaldo completo: `rebeca-velasquez-v3-panel.zip`.

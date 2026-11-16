@@ -61,27 +61,23 @@ const base: DatosSeo[] = [
   {
     ruta: '/reservar',
     titulo: 'Reservar una sesión | Rebeca Velásquez',
-    descripcion: 'Elige un horario disponible del próximo sábado y solicita tu sesión de psicoterapia presencial u online.',
+    descripcion: 'Solicita tu sesión de psicoterapia presencial u online: llena un formulario corto y escríbele a Rebeca por WhatsApp.',
   },
-  // Páginas sin contenido final: se publican pero no se indexan todavía.
+  // Textos generales de la V1 (se detallarán en la V2 si Rebeca lo desea).
   {
     ruta: '/como-trabajo',
     titulo: 'Cómo trabajo | Rebeca Velásquez',
     descripcion: 'Metodología de trabajo de Rebeca Velásquez, psicóloga clínica.',
-    noindex: true,
   },
   {
     ruta: '/aviso-etico',
     titulo: 'Aviso ético | Rebeca Velásquez',
     descripcion: 'Aviso ético y de confidencialidad de la consulta de Rebeca Velásquez.',
-    noindex: true,
   },
   {
-    // Quitar noindex cuando Rebeca apruebe el texto (y, idealmente, tras una revisión legal).
     ruta: '/privacidad',
     titulo: 'Política de privacidad | Rebeca Velásquez',
-    descripcion: 'Qué datos se piden al reservar, para qué se usan, quién los ve y cómo pedir que se corrijan o eliminen.',
-    noindex: true,
+    descripcion: 'Este sitio no guarda tus datos: cómo funciona el formulario de reserva por WhatsApp, cookies y tus derechos.',
   },
 ]
 

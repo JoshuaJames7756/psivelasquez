@@ -10,11 +10,10 @@ const reveal = (delay = 0) => ({
 });
 
 /**
- * Texto redactado por Xion en la voz de Rebeca a partir de lo que el
- * documento rector establece: enfoque cognitivo-conductual y el recorrido
- * conocer, comprender, trabajar, medir, ajustar. Los puntos que describen
- * su práctica concreta están marcados en CONTENIDO_A_REVISAR.md para que
- * ella los confirme antes de quitar el noindex en sitio.ts.
+ * Texto redactado en la voz de Rebeca a partir de lo documentado en el
+ * proyecto: enfoque cognitivo-conductual y el recorrido conocer, comprender,
+ * trabajar, medir, ajustar. Se mantiene general a propósito: no describe
+ * técnicas ni instrumentos concretos. Detallar en la V2 si ella lo desea.
  */
 const pasos = [
   {
@@ -30,12 +29,12 @@ const pasos = [
   {
     titulo: "Trabajar",
     texto:
-      "Definimos objetivos acordados y trabajamos en ellos con herramientas prácticas. A veces te propondré pequeñas actividades para probar en tu día a día, siempre con tu acuerdo.",
+      "Definimos objetivos acordados y trabajamos en ellos con herramientas prácticas del enfoque cognitivo-conductual, a un ritmo que puedas sostener.",
   },
   {
     titulo: "Medir",
     texto:
-      "Para ver cómo avanzas, revisamos juntos cómo te has sentido con el tiempo. Cuando resulta útil, uso escalas breves y estandarizadas, como el GAD-7 para ansiedad o el PHQ-9 para ánimo. Son una guía de seguimiento, no un diagnóstico.",
+      "Para ver cómo avanzas, revisamos juntos cómo te has sentido con el tiempo y qué está funcionando. Es una guía de seguimiento para ajustar el proceso, no un diagnóstico.",
   },
   {
     titulo: "Ajustar",

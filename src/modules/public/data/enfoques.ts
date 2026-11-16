@@ -4,10 +4,8 @@
  * (índice /enfoques) y EnfoquePage.tsx (detalle /enfoques/:slug).
  *
  * Los títulos y resúmenes son texto de Rebeca. Los campos queEs, senales
- * y comoAyuda fueron redactados por Xion en su voz, con lenguaje prudente
- * (sin diagnósticos, sin promesas de resultados) y están listados en
- * CONTENIDO_A_REVISAR.md para que ella los apruebe. Si el texto cambia,
- * se edita acá una sola vez.
+ * y comoAyuda están redactados con lenguaje general y prudente (sin
+ * diagnósticos ni promesas de resultados). Si el texto cambia (V2), se edita acá una sola vez.
  */
 export interface Enfoque {
   slug: string

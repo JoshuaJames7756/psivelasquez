@@ -84,89 +84,60 @@ test.describe('cada página pública', () => {
   })
 })
 
-test('las páginas con contenido pendiente de aprobar están en noindex', async ({ page }) => {
-  for (const ruta of ['/como-trabajo/', '/aviso-etico/', '/privacidad/']) {
+test('las páginas públicas se pueden indexar', async ({ page }) => {
+  for (const ruta of ['/', '/como-trabajo/', '/aviso-etico/', '/privacidad/', '/reservar/']) {
     await page.goto(ruta)
-    await expect(page.locator('meta[name="robots"]'), ruta).toHaveAttribute('content', /noindex/)
+    await expect(page.locator('meta[name="robots"][content*="noindex"]'), ruta).toHaveCount(0)
   }
 })
 
-test('la política de privacidad existe, es accesible desde el pie y desde el formulario', async ({ page }) => {
+test('la política de privacidad existe, es accesible desde el pie', async ({ page }) => {
   await page.goto('/privacidad/')
   await expect(page.locator('h1')).toHaveText(/Política de privacidad/)
-  await expect(page.getByRole('heading', { level: 2 })).toHaveCount(7)
+  await expect(page.locator('main h2')).toHaveCount(4)
   const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze()
   expect(r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')).toEqual([])
   await page.goto('/')
   await expect(page.getByRole('contentinfo').getByRole('link', { name: 'Privacidad' })).toBeVisible()
 })
 
-test('flujo de reserva: elegir cupo, llenar el formulario y confirmar', async ({ page }) => {
-  const slot = { id: '123e4567-e89b-12d3-a456-426614174000', fecha: '2026-10-24', hora_inicio: '09:00:00', modalidad: null, estado: 'disponible' }
-  let envio: Record<string, unknown> | null = null
-
-  await page.route('**/api/citas**', async (route) => {
-    const req = route.request()
-    if (req.method() === 'POST') {
-      envio = req.postDataJSON()
-      return route.fulfill({ status: 201, json: { slot: { id: slot.id, estado: 'solicitada' } } })
-    }
-    return route.fulfill({ json: { slots: envio ? [{ ...slot, estado: 'solicitada' }] : [slot] } })
+test('reserva: el formulario arma el mensaje y abre WhatsApp', async ({ page }) => {
+  let enviado = ''
+  await page.addInitScript(() => {
+    window.open = ((url: string) => {
+      ;(window as unknown as { __wa: string }).__wa = String(url)
+      return null
+    }) as typeof window.open
   })
-
   await page.goto('/reservar/')
-  await page.getByRole('button', { name: /09:00/ }).first().click()
-  const dialogo = page.getByRole('heading', { name: /Reservar 09:00/ })
-  await expect(dialogo).toBeVisible()
 
-  // Validación del navegador: el nombre es obligatorio
-  await page.getByRole('button', { name: /Solicitar cupo/ }).click()
-  expect(envio).toBeNull()
+  // El nombre es obligatorio: sin él no se abre WhatsApp
+  await page.getByRole('button', { name: /Escribirme por WhatsApp/ }).click()
+  await expect(page.getByText(/nombre/i).first()).toBeVisible()
+  expect(await page.evaluate(() => (window as unknown as { __wa?: string }).__wa)).toBeUndefined()
 
-  await page.locator('input[maxlength="120"]').fill('Ana Pérez')
-  await page.locator('input[placeholder="+591..."]').fill('+59170000000')
+  await page.getByLabel(/Tu nombre/).first().fill('Ana Pérez')
   await page.getByRole('button', { name: 'online' }).click()
-  // Sin aceptar la política de privacidad el navegador no deja enviar
-  await page.getByRole('button', { name: /Solicitar cupo/ }).click()
-  expect(envio).toBeNull()
-  await page.getByRole('checkbox', { name: /política de privacidad/ }).check()
-  await page.getByRole('button', { name: /Solicitar cupo/ }).click()
+  await page.getByRole('button', { name: /Escribirme por WhatsApp/ }).click()
 
-  await expect(page.getByText(/Tu cupo quedó solicitado/)).toBeVisible()
-  expect(envio).toMatchObject({ slotId: slot.id, nombre: 'Ana Pérez', modalidad: 'online', primeraVez: true, sitioWeb: '', consentimiento: true })
+  enviado = (await page.evaluate(() => (window as unknown as { __wa?: string }).__wa)) ?? ''
+  expect(enviado).toContain('https://wa.me/59160389762?text=')
+  const texto = decodeURIComponent(enviado.split('text=')[1])
+  expect(texto).toContain('Ana Pérez')
+  expect(texto).toMatch(/online/i)
+  await expect(page.getByRole('status')).toBeVisible()
 })
 
-test('reserva: si la API falla se muestra el error y se puede reintentar', async ({ page }) => {
-  const slot = { id: '123e4567-e89b-12d3-a456-426614174000', fecha: '2026-10-24', hora_inicio: '10:00:00', modalidad: null, estado: 'disponible' }
-  await page.route('**/api/citas**', (route) =>
-    route.request().method() === 'POST'
-      ? route.fulfill({ status: 409, json: { error: 'Ese cupo se acaba de reservar, elige otro horario' } })
-      : route.fulfill({ json: { slots: [slot] } }),
-  )
-  await page.goto('/reservar/')
-  await page.getByRole('button', { name: /10:00/ }).first().click()
-  await page.locator('input[maxlength="120"]').fill('Luis Rojas')
-  await page.getByRole('checkbox', { name: /política de privacidad/ }).check()
-  await page.getByRole('button', { name: /Solicitar cupo/ }).click()
-  await expect(page.getByText(/se acaba de reservar/)).toBeVisible()
-  await expect(page.getByRole('button', { name: /Solicitar cupo/ })).toBeEnabled()
-})
-
-test('la API de la reserva caída muestra un mensaje y no una pantalla vacía', async ({ page }) => {
-  await page.route('**/api/citas**', (route) => route.abort())
-  await page.goto('/reservar/')
-  await expect(page.getByText(/error|no se pudo|inténtalo/i).first()).toBeVisible()
-})
-
-test('reserva: con la API caída aparece "Reintentar" y recupera los cupos al volver', async ({ page }) => {
-  let caida = true
-  const slot = { id: '123e4567-e89b-12d3-a456-426614174000', fecha: '2026-10-24', hora_inicio: '11:00:00', modalidad: null, estado: 'disponible' }
-  await page.route('**/api/citas**', (route) => (caida ? route.abort() : route.fulfill({ json: { slots: [slot] } })))
-  await page.goto('/reservar/')
-  await expect(page.getByRole('alert')).toContainText('No pudimos cargar los cupos')
-  caida = false
-  await page.getByRole('button', { name: 'Reintentar' }).click()
-  await expect(page.getByRole('button', { name: /11:00/ })).toBeVisible()
+test('reserva: no hace ninguna llamada a /api', async ({ page }) => {
+  const llamadas: string[] = []
+  page.on('request', (r) => {
+    if (new URL(r.url()).pathname.startsWith('/api/')) llamadas.push(r.url())
+  })
+  for (const ruta of ['/', '/reservar/', '/sobre-mi/', '/enfoques/']) {
+    await page.goto(ruta)
+    await page.waitForLoadState('networkidle')
+  }
+  expect(llamadas).toEqual([])
 })
 
 /**

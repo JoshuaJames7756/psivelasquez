@@ -8,3 +8,39 @@ export function linkWhatsApp(telefono: string, mensaje?: string) {
   const base = `https://wa.me/${soloDigitos}`
   return mensaje ? `${base}?text=${encodeURIComponent(mensaje)}` : base
 }
+
+export interface DatosReserva {
+  nombre: string
+  edad?: string
+  modalidad: 'presencial' | 'online'
+  horario: 'cualquiera' | 'manana' | 'tarde'
+  primeraVez: boolean
+  motivo?: string
+}
+
+const TEXTO_HORARIO: Record<DatosReserva['horario'], string> = {
+  cualquiera: 'cualquier horario del sábado',
+  manana: 'sábado por la mañana (09:00 a 12:00)',
+  tarde: 'sábado por la tarde (13:00 a 17:00)',
+}
+
+/**
+ * Mensaje prellenado para pedir una sesión. Solo incluye lo que la persona
+ * escribió; el motivo es opcional y se recorta para no llevar detalles
+ * clínicos por el enlace.
+ */
+export function construirMensajeReserva(d: DatosReserva): string {
+  const lineas = [
+    'Hola Rebeca, quisiera solicitar una sesión.',
+    '',
+    `Nombre: ${d.nombre.trim()}`,
+  ]
+  const edad = d.edad?.trim()
+  if (edad) lineas.push(`Edad: ${edad}`)
+  lineas.push(`Modalidad: ${d.modalidad}`)
+  lineas.push(`Horario preferido: ${TEXTO_HORARIO[d.horario]}`)
+  lineas.push(`Primera vez en terapia: ${d.primeraVez ? 'sí' : 'no'}`)
+  const motivo = d.motivo?.trim().slice(0, 300)
+  if (motivo) lineas.push(`Motivo breve: ${motivo}`)
+  return lineas.join('\n')
+}

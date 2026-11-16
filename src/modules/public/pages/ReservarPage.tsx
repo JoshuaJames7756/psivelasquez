@@ -1,105 +1,33 @@
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { CabeceraPagina } from '../../shared/components/CabeceraPagina'
-import { FormularioReserva } from '../components/FormularioReserva'
-import { useSlotsPublicos, type SlotPublico } from '../hooks/useSlotsPublicos'
-import type { EstadoCita } from '../../shared/types/db'
-
-const estiloPorEstado: Record<EstadoCita, string> = {
-  disponible: 'border-sage-400 text-sage-700 hover:bg-sage-100 cursor-pointer',
-  solicitada: 'border-terracotta-300 bg-terracotta-50 text-terracotta-600 cursor-not-allowed',
-  confirmada: 'border-sage-300 bg-sage-200 text-sage-500 cursor-not-allowed',
-  pagada: 'border-sage-300 bg-sage-200 text-sage-500 cursor-not-allowed',
-  completada: 'border-sage-300 bg-sage-200 text-sage-500 cursor-not-allowed',
-  cancelada: 'border-sage-200 bg-sage-50 text-sage-400 cursor-not-allowed',
-  liberada: 'border-sage-400 text-sage-700 hover:bg-sage-100 cursor-pointer',
-  vencida: 'border-sage-200 bg-sage-50 text-sage-400 cursor-not-allowed',
-}
-
-const microcopyPorEstado: Record<EstadoCita, string> = {
-  disponible: 'Escríbeme por WhatsApp para reservarlo',
-  solicitada: 'Cupo reservado',
-  confirmada: 'Cupo reservado',
-  pagada: 'Cupo reservado',
-  completada: 'No disponible',
-  cancelada: 'No disponible',
-  liberada: 'Escríbeme por WhatsApp para reservarlo',
-  vencida: 'No disponible',
-}
+import { FormularioWhatsApp } from '../components/FormularioWhatsApp'
 
 export function ReservarPage() {
-  const { slots, cargando, error, recargar } = useSlotsPublicos()
-  const [slotSeleccionado, setSlotSeleccionado] = useState<SlotPublico | null>(null)
-  const [reservaExitosa, setReservaExitosa] = useState(false)
-
-  function manejarClick(slot: SlotPublico) {
-    if (slot.estado !== 'disponible' && slot.estado !== 'liberada') return
-    setSlotSeleccionado(slot)
-  }
-
-  async function manejarReservado() {
-    setSlotSeleccionado(null)
-    setReservaExitosa(true)
-    await recargar()
-  }
-
   return (
     <main>
       <CabeceraPagina
-        etiqueta="Próximo sábado"
-        titulo="Reservar"
-        intro="Estos son los cupos disponibles del próximo sábado. Elige un horario para comenzar tu reserva."
+        etiqueta="Primer paso"
+        titulo="Reservar una sesión"
+        intro="Cuéntame lo básico y se abrirá WhatsApp con tu mensaje listo. Te responderé para coordinar el horario."
         estilo="ondas"
         tono="sage"
         ancho="max-w-4xl"
       />
-      <div className="mx-auto max-w-4xl px-6 pb-20 pt-4">
-
-      {reservaExitosa && (
-        <div className="mt-6 rounded-xl border-2 border-sage-400 bg-sage-100 p-4 text-sm text-sage-800">
-          Tu cupo quedó solicitado. Escríbeme por WhatsApp para coordinar el pago del 50% y
-          confirmarlo.
+      <div className="px-6 pb-20 pt-4">
+        <FormularioWhatsApp />
+        <div className="mx-auto mt-8 max-w-xl space-y-2 text-center text-sm text-sage-700">
+          <p>
+            Atiendo los <strong>sábados de 09:00 a 17:00</strong>, presencial u online. Para reservar
+            tu horario se coordina un adelanto del 50% por WhatsApp.
+          </p>
+          <p>
+            ¿Prefieres escribirme directo? Usa el botón de WhatsApp del pie de página, o revisa las{' '}
+            <Link to="/faq" className="font-medium underline decoration-terracotta-300 underline-offset-4">
+              preguntas frecuentes
+            </Link>
+            .
+          </p>
         </div>
-      )}
-
-      {cargando && <p className="mt-10 text-sage-500">Cargando cupos...</p>}
-      {error && (
-        <div role="alert" className="mt-10 flex flex-wrap items-center gap-3 text-terracotta-600">
-          <p>{error}</p>
-          <button
-            type="button"
-            onClick={recargar}
-            className="rounded-full border border-terracotta-300 px-4 py-1.5 text-sm font-medium hover:bg-terracotta-50"
-          >
-            Reintentar
-          </button>
-        </div>
-      )}
-
-      {!cargando && !error && slots.length === 0 && (
-        <p className="mt-10 text-sage-500">No hay cupos publicados todavía para el próximo sábado.</p>
-      )}
-
-      {!cargando && slots.length > 0 && (
-        <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {slots.map((slot) => (
-            <button
-              key={slot.id}
-              onClick={() => manejarClick(slot)}
-              disabled={slot.estado !== 'disponible' && slot.estado !== 'liberada'}
-              className={`rounded-xl border-2 p-4 text-center transition ${estiloPorEstado[slot.estado]}`}
-            >
-              <p className="font-semibold">{slot.hora_inicio.slice(0, 5)}</p>
-              <p className="mt-1 text-xs">{microcopyPorEstado[slot.estado]}</p>
-            </button>
-          ))}
-        </div>
-      )}
-
-      <FormularioReserva
-        slot={slotSeleccionado}
-        onClose={() => setSlotSeleccionado(null)}
-        onReservado={manejarReservado}
-      />
       </div>
     </main>
   )

@@ -7,12 +7,12 @@ import { TituloSeccion } from '../../shared/components/TituloSeccion'
  */
 const pasos = [
   {
-    titulo: 'Contacto por WhatsApp, coordinamos el sábado',
-    detalle: 'Eliges el horario que te quede bien, sin formularios largos.',
+    titulo: 'Me escribes por WhatsApp',
+    detalle: 'Llenas un formulario corto y se abre WhatsApp con tu mensaje listo, sin crear cuentas.',
   },
   {
-    titulo: 'Reserva con adelanto del 50% (protege el cupo)',
-    detalle: 'Solo atiendo 8 cupos por semana, por eso se reserva así.',
+    titulo: 'Coordinamos horario y reserva',
+    detalle: 'Atiendo los sábados y tengo 8 cupos por semana, por eso el cupo se reserva con un adelanto del 50%.',
   },
   {
     titulo: 'Primera sesión, sin presión de tener todo claro',

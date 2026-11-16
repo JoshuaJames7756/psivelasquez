@@ -2,11 +2,9 @@ import { Link } from "react-router-dom";
 import { CabeceraPagina } from "../../shared/components/CabeceraPagina";
 
 /**
- * Redactado por Xion en la voz de Rebeca con criterios habituales de
- * ética profesional en psicología. Es un texto con peso ético y legal:
- * los puntos marcados en CONTENIDO_A_REVISAR.md (límites de la
- * confidencialidad, uso de WhatsApp, urgencias) deben ser confirmados
- * por ella antes de quitar el noindex en sitio.ts.
+ * Texto redactado en la voz de Rebeca con criterios habituales de ética
+ * profesional en psicología. Si ella quiere precisar algo (por ejemplo, la
+ * política con menores o los límites de la confidencialidad), se ajusta en la V2.
  */
 const apartados = [
   {
@@ -48,7 +46,7 @@ const apartados = [
   {
     titulo: "WhatsApp es para coordinar",
     texto:
-      "Uso WhatsApp para coordinar horarios, reservas y pagos. Te pido no enviar por ahí información clínica detallada: eso lo conversamos en sesión.",
+      "Uso WhatsApp para coordinar horarios, reservas y pagos. Los detalles de lo que te pasa los conversamos en sesión.",
   },
 ];
 

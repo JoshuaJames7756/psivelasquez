@@ -1,5 +1,8 @@
 # Rebeca Velásquez — Sitio + Panel Clínico
 
+> **Estado: V1 (sitio informativo estático).** Sin panel, login ni base de datos; la reserva abre WhatsApp. Ver `GUIA_DESPLIEGUE.md`. El panel (V3) sigue en el código pero inactivo: se activa con `VITE_PANEL=1`.
+
+
 Xion Technology. Sitio público y panel administrativo (`/admin`) como una
 sola aplicación React + Vite, con backend serverless en `/api` sobre Neon
 (Postgres) y autenticación con Clerk.

@@ -30,22 +30,22 @@ const preguntas: ItemPregunta[] = [
   {
     pregunta: '¿Con qué frecuencia son las sesiones?',
     respuesta:
-      'Como atiendo un solo día a la semana, lo habitual es una sesión semanal o quincenal. La frecuencia exacta la definimos juntos después de la primera sesión, según tu proceso.',
+      'La frecuencia la definimos juntos después de la primera sesión, según lo que necesites y tu disponibilidad.',
   },
   {
     pregunta: '¿La atención es presencial u online?',
     respuesta:
-      'Ambas. Puedes elegir la modalidad que prefieras al reservar tu cupo, presencial en Edif. VyV NUR (Cochabamba) u online.',
+      'Ambas. Puedes elegir la modalidad que prefieras al reservar, presencial en Edif. VyV NUR (Cochabamba) u online.',
   },
   {
     pregunta: '¿Por qué piden un adelanto para reservar?',
     respuesta:
-      'Atiendo solo 8 cupos por semana, así que el adelanto del 50% protege tu horario y evita que alguien más lo tome mientras coordinamos. El saldo se conversa por WhatsApp.',
+      'Atiendo solo 8 cupos por semana, así que el adelanto del 50% protege tu horario. El saldo se conversa por WhatsApp.',
   },
   {
     pregunta: '¿Qué pasa después de reservar?',
     respuesta:
-      'Tu horario queda solicitado y te escribo por WhatsApp para coordinar el adelanto. Cuando envías el comprobante, confirmo tu cita. Si no se confirma dentro del plazo indicado, el horario se libera para otra persona.',
+      'Se abre WhatsApp con tu mensaje listo y yo te respondo para coordinar el horario del sábado y el adelanto del 50%. Cuando envías el comprobante, confirmo tu cita.',
   },
   {
     pregunta: '¿Qué pasa si necesito cancelar o cambiar mi cita?',
@@ -55,12 +55,12 @@ const preguntas: ItemPregunta[] = [
   {
     pregunta: '¿Lo que cuento es confidencial?',
     respuesta:
-      'Sí. Lo que conversamos en sesión es confidencial, con excepciones muy acotadas que explico en el aviso ético. También puedes leer qué datos se piden al reservar en la política de privacidad.',
+      'Sí. Lo que conversamos en sesión es confidencial, con excepciones muy acotadas que explico en el aviso ético. Este sitio no guarda los datos del formulario de reserva; los detalles están en la política de privacidad.',
   },
   {
     pregunta: '¿Atiendes adolescentes?',
     respuesta:
-      'Trabajo con adolescentes y adultos. En el caso de menores de edad, coordinamos con su madre, padre o tutor.',
+      'Trabajo con adolescentes y adultos. Si tienes dudas sobre cómo sería en tu caso, escríbeme y lo conversamos.',
   },
   {
     pregunta: '¿Puedes recetarme medicamentos?',
@@ -113,10 +113,9 @@ function ItemFaq({ pregunta, respuesta }: ItemPregunta) {
 }
 
 /**
- * Respuestas redactadas por Xion en la voz de Rebeca a partir de lo que el
- * documento rector establece (flujo de reserva, adelanto 50%, modalidad,
- * 8 cupos por semana, adolescentes y adultos). Las que tocan criterio
- * clínico o políticas propias están en CONTENIDO_A_REVISAR.md.
+ * Respuestas redactadas en la voz de Rebeca a partir de lo documentado
+ * (flujo de reserva por WhatsApp, adelanto 50%, modalidad, 8 cupos por
+ * semana, adolescentes y adultos). Se mantienen generales a propósito.
  *
  * nivelTitulo: este componente vive en dos contextos con jerarquía
  * distinta — como sección de HomePage (donde el <h1> real está en

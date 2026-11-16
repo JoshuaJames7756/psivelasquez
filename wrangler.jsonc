@@ -1,0 +1,11 @@
+{
+  // V1: sitio 100% estático en Cloudflare Workers Static Assets (sin código de servidor).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "psi-velasquez",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

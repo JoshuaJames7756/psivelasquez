@@ -1,8 +1,8 @@
 import { LineasFondo } from '../../shared/components/LineasFondo'
 import { Link } from 'react-router-dom'
+import { NUMERO_WHATSAPP } from '../data/contacto'
 import { linkWhatsApp } from '../../shared/utils/whatsapp'
 
-const numeroWhatsApp = '59160389762'
 
 const navegacion = [
   { to: '/sobre-mi', label: 'Sobre mí' },
@@ -40,7 +40,7 @@ export function Footer() {
               ¿Lista para empezar?
             </p>
             <p className="mt-1 text-sm text-cream-300">
-              Mira los cupos disponibles o escríbeme directo.
+              Cuéntame lo básico y coordinamos tu primera sesión.
             </p>
           </div>
           <div className="flex gap-3">
@@ -48,10 +48,10 @@ export function Footer() {
               to="/reservar"
               className="rounded-full bg-sage-600 px-5 py-2.5 text-sm font-medium text-cream-50 transition-colors hover:bg-sage-500"
             >
-              Ver horarios
+              Reservar
             </Link>
             <a
-              href={linkWhatsApp(numeroWhatsApp)}
+              href={linkWhatsApp(NUMERO_WHATSAPP)}
               target="_blank"
               rel="noreferrer"
               className="rounded-full border border-cream-300/40 px-5 py-2.5 text-sm font-medium text-cream-100 transition-colors hover:border-cream-100"

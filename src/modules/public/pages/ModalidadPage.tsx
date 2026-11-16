@@ -106,7 +106,7 @@ export function ModalidadPage() {
               to="/reservar"
               className="inline-block rounded-full bg-sage-700 px-8 py-3 text-base font-medium text-cream-50 shadow-sm transition-colors hover:bg-sage-800"
             >
-              Ver horarios disponibles
+              Reservar una sesión
             </Link>
           </motion.div>
         </div>

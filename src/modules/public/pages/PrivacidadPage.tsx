@@ -2,90 +2,59 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { CabeceraPagina } from '../../shared/components/CabeceraPagina'
 import { linkWhatsApp } from '../../shared/utils/whatsapp'
+import { NUMERO_WHATSAPP } from '../data/contacto'
 
-// Debe coincidir con VERSION_POLITICA en server-lib/privacidad.ts
-const ACTUALIZADA = '20 de octubre de 2026'
-const numeroWhatsApp = '59160389762'
+const ACTUALIZADA = '16 de noviembre de 2026'
 
 const secciones: { titulo: string; cuerpo: ReactNode }[] = [
   {
-    titulo: 'Qué datos te pido al reservar',
+    titulo: 'Este sitio no guarda tus datos',
     cuerpo: (
       <>
         <p>
-          Tu nombre, tu edad, tu WhatsApp, un motivo breve, si es tu primera vez en terapia y si
-          prefieres sesión presencial u online. Solo el nombre es obligatorio.
+          No hay cuentas ni base de datos. El formulario de la página de reservas solo arma un
+          mensaje en tu propio dispositivo y abre WhatsApp. Lo que escribes no pasa por este sitio:
+          se envía únicamente si tú tocas &laquo;enviar&raquo; en WhatsApp.
         </p>
         <p className="mt-3">
-          Te pido que en el motivo cuentes lo mínimo. Los detalles los conversamos en sesión, no
-          en este formulario.
+          Te pido que en el motivo cuentes lo mínimo. Los detalles los conversamos en sesión.
         </p>
       </>
     ),
   },
   {
-    titulo: 'Para qué los uso',
+    titulo: 'Qué pasa cuando me escribes por WhatsApp',
     cuerpo: (
       <p>
-        Solo para coordinar tu cita por WhatsApp y, si empezamos terapia, para llevar el registro
-        de tu proceso. No los uso para publicidad ni los vendo.
+        Uso tu mensaje para coordinar tu cita y, si empezamos terapia, para acompañar tu proceso.
+        No lo uso para publicidad ni lo comparto. WhatsApp pertenece a Meta y se rige por sus
+        propias condiciones.
       </p>
-    ),
-  },
-  {
-    titulo: 'Quién puede verlos',
-    cuerpo: (
-      <p>
-        Yo y la persona de soporte técnico que mantiene este sistema (Xion Technology), solo para
-        que funcione correctamente. Nadie más tiene acceso.
-      </p>
-    ),
-  },
-  {
-    titulo: 'Dónde se guardan y cómo los cuido',
-    cuerpo: (
-      <>
-        <p>
-          En servicios tecnológicos que pueden estar fuera de Bolivia: Vercel (el sitio), Neon (la
-          base de datos), Clerk (el inicio de sesión del panel) y Cloudinary (imágenes y
-          documentos).
-        </p>
-        <p className="mt-3">
-          El acceso es con cuenta personal, las conexiones son cifradas, los documentos de
-          pacientes son privados y se abren con enlaces que vencen a los pocos minutos, y queda un
-          registro de quién abre cada ficha.
-        </p>
-      </>
     ),
   },
   {
     titulo: 'Cookies y servicios de terceros',
     cuerpo: (
-      <p>
-        El sitio solo usa el almacenamiento técnico necesario para funcionar y para el acceso
-        privado del panel. No uso cookies de publicidad ni de seguimiento. El mapa de la página de
-        modalidad lo carga Google, y WhatsApp pertenece a Meta: ambos se rigen por sus propias
-        condiciones.
-      </p>
-    ),
-  },
-  {
-    titulo: 'Cuánto tiempo los conservo',
-    cuerpo: (
-      <p>
-        Si tu solicitud no se concreta, puedes pedir que borre tus datos cuando quieras. Si
-        iniciamos un proceso terapéutico, tu registro se conserva mientras dure y el tiempo que
-        exija mi práctica profesional.
-      </p>
+      <>
+        <p>
+          No uso cookies de publicidad ni de seguimiento, ni herramientas de analítica. El sitio se
+          aloja en un servicio de internet que, como cualquier servidor web, puede registrar datos
+          técnicos de cada visita (por ejemplo la dirección IP) para que funcione con seguridad.
+        </p>
+        <p className="mt-3">
+          El mapa de la página de modalidad lo carga Google, que se rige por sus propias
+          condiciones.
+        </p>
+      </>
     ),
   },
   {
     titulo: 'Tus derechos',
     cuerpo: (
       <p>
-        Puedes pedirme ver, corregir o eliminar tus datos escribiéndome por{' '}
+        Puedes pedirme ver, corregir o eliminar lo que me hayas escrito escribiéndome por{' '}
         <a
-          href={linkWhatsApp(numeroWhatsApp)}
+          href={linkWhatsApp(NUMERO_WHATSAPP)}
           target="_blank"
           rel="noreferrer"
           className="font-medium text-sage-800 underline hover:text-sage-600"

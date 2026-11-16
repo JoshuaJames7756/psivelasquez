@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ScrollReveal } from '../../shared/components/ScrollReveal'
 import { ComoSeSienteEsteEspacio } from '../components/ComoSeSienteEsteEspacio'
-import { ContenidoRedes } from '../components/ContenidoRedes'
 import { EnfoqueTerapeutico } from '../components/EnfoqueTerapeutico'
 import { Hero } from '../components/Hero'
 import { ParaQuienEs } from '../components/ParaQuienEs'
@@ -26,7 +25,6 @@ export function HomePage() {
         <SobreRebeca />
       </ScrollReveal>
       <EnfoqueTerapeutico />
-      {/* Video corto y curado de Rebeca — pendiente de asset real */}
       <ScrollReveal>
         <ParaQuienEs />
       </ScrollReveal>
@@ -36,7 +34,6 @@ export function HomePage() {
       <ScrollReveal>
         <ComoSeSienteEsteEspacio />
       </ScrollReveal>
-      <ContenidoRedes />
 
       <ScrollReveal>
         <section className="con-grain mx-auto max-w-3xl px-6 py-14 text-center md:py-16">
