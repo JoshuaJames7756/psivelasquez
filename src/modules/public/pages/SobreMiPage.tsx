@@ -1,16 +1,11 @@
-import { Link } from 'react-router-dom'
 import { CabeceraPagina } from '../../shared/components/CabeceraPagina'
-import { LineasFondo } from '../../shared/components/LineasFondo'
+import rebecaHero from '../../../assets/fotos/rebeca-hero.jpg'
 
 /**
  * Texto dividido en 3 bloques (experiencia / formación / manera de
  * acompañar) sin cambiar los datos biográficos, solo reorganizando
  * el mismo contenido que ya existía para que sea más legible en
  * mobile (antes era un único párrafo largo).
- *
- * Foto: placeholder marcado a propósito — usar el mismo retrato que
- * el Hero (aunque con otro recorte) seguiría siendo la misma foto
- * repetida. Pendiente de una foto realmente distinta de Rebeca.
  */
 export function SobreMiPage() {
   return (
@@ -37,20 +32,17 @@ export function SobreMiPage() {
             honesto sin miedo.
           </p>
 
-          <Link
-            to="/como-trabajo"
-            className="mt-8 inline-block rounded-full border border-sage-400 px-6 py-2.5 text-sm font-medium text-sage-700 transition-colors hover:bg-sage-100"
-          >
-            Conocer cómo trabajo →
-          </Link>
         </div>
 
-        {/* Composición editorial hasta tener una segunda foto real de Rebeca.
-            Para ponerla, reemplazar este div por un <img> con proporción 3/4. */}
-        <div className="relative mx-auto flex aspect-[3/4] w-full max-w-sm items-center justify-center overflow-hidden rounded-3xl bg-sage-100 md:mx-0">
-          <LineasFondo variante="rama" className="-bottom-6 -right-8 h-4/5 w-3/5 text-sage-300" />
-          <LineasFondo variante="contorno" className="-left-10 -top-6 h-3/5 w-3/5 text-sage-200" />
-          <span aria-hidden="true" className="font-serif-brand relative text-7xl text-sage-700">RV</span>
+        <div className="relative mx-auto w-full max-w-sm md:mx-0">
+          <div aria-hidden="true" className="absolute inset-0 translate-x-3 translate-y-3 rounded-3xl bg-sage-200/60" />
+          <img
+            src={rebecaHero}
+            alt="Rebeca Velásquez, psicóloga clínica"
+            className="relative aspect-[3/4] w-full rounded-3xl object-cover"
+            width={800}
+            height={1067}
+          />
         </div>
       </div>
       </div>

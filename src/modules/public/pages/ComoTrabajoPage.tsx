@@ -10,6 +10,10 @@ const reveal = (delay = 0) => ({
 });
 
 /**
+ * V2: esta página NO está activa en la V1 (sin ruta, sin menú, fuera del sitemap).
+ * Para activarla: agregar la ruta en RutasPublicas.tsx, el enlace en NavPublica/Footer
+ * y su entrada en shared/seo/sitio.ts.
+ *
  * Texto redactado en la voz de Rebeca a partir de lo documentado en el
  * proyecto: enfoque cognitivo-conductual y el recorrido conocer, comprender,
  * trabajar, medir, ajustar. Se mantiene general a propósito: no describe

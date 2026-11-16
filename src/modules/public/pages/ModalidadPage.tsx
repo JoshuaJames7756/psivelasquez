@@ -88,11 +88,9 @@ export function ModalidadPage() {
             <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-terracotta-600">Horario</p>
-                <p className="mt-1 font-serif-brand text-3xl text-sage-900">Sábados</p>
+                <p className="mt-1 font-serif-brand text-3xl text-sage-900">Agenda tu cita</p>
               </div>
-              <p className="font-serif-brand text-3xl text-sage-800">
-                09:00 <span className="text-terracotta-400">a</span> 17:00
-              </p>
+              <p className="max-w-xs text-sage-700">Escríbeme por WhatsApp y coordinamos el horario que mejor te quede.</p>
             </div>
           </motion.section>
 

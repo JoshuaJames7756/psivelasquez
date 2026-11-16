@@ -8,8 +8,8 @@ const campo =
 
 const horarios: { valor: DatosReserva['horario']; texto: string }[] = [
   { valor: 'cualquiera', texto: 'Cualquier horario' },
-  { valor: 'manana', texto: 'Mañana (09:00 a 12:00)' },
-  { valor: 'tarde', texto: 'Tarde (13:00 a 17:00)' },
+  { valor: 'manana', texto: 'Mañana' },
+  { valor: 'tarde', texto: 'Tarde' },
 ]
 
 /**

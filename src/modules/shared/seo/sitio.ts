@@ -50,7 +50,7 @@ const base: DatosSeo[] = [
     ruta: '/modalidad',
     titulo: 'Modalidad y ubicación | Terapia presencial y online',
     descripcion:
-      'Atención presencial en Cochabamba (Edif. VyV NUR, Parque Fidel Anze) y online por videollamada. Sábados de 09:00 a 17:00.',
+      'Atención presencial en Cochabamba (Edif. VyV NUR, Parque Fidel Anze) y online por videollamada.',
   },
   {
     ruta: '/faq',
@@ -64,11 +64,6 @@ const base: DatosSeo[] = [
     descripcion: 'Solicita tu sesión de psicoterapia presencial u online: llena un formulario corto y escríbele a Rebeca por WhatsApp.',
   },
   // Textos generales de la V1 (se detallarán en la V2 si Rebeca lo desea).
-  {
-    ruta: '/como-trabajo',
-    titulo: 'Cómo trabajo | Rebeca Velásquez',
-    descripcion: 'Metodología de trabajo de Rebeca Velásquez, psicóloga clínica.',
-  },
   {
     ruta: '/aviso-etico',
     titulo: 'Aviso ético | Rebeca Velásquez',
@@ -120,12 +115,6 @@ export const jsonLdInicio = {
         addressCountry: 'BO',
       },
       areaServed: 'Cochabamba, Bolivia',
-      openingHoursSpecification: {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: 'Saturday',
-        opens: '09:00',
-        closes: '17:00',
-      },
       availableLanguage: 'es',
       founder: { '@id': `${SITE_URL}/#rebeca` },
     },

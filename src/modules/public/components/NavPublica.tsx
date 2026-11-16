@@ -4,7 +4,6 @@ import rebecaAvatar from '../../../assets/fotos/rebeca-avatar.jpg'
 
 const links = [
   { to: '/sobre-mi', label: 'Sobre mí' },
-  { to: '/como-trabajo', label: 'Cómo trabajo' },
   { to: '/enfoques', label: 'Enfoques' },
   { to: '/formacion', label: 'Formación' },
   { to: '/modalidad', label: 'Modalidad' },

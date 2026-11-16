@@ -85,7 +85,7 @@ test.describe('cada página pública', () => {
 })
 
 test('las páginas públicas se pueden indexar', async ({ page }) => {
-  for (const ruta of ['/', '/como-trabajo/', '/aviso-etico/', '/privacidad/', '/reservar/']) {
+  for (const ruta of ['/', '/aviso-etico/', '/privacidad/', '/reservar/']) {
     await page.goto(ruta)
     await expect(page.locator('meta[name="robots"][content*="noindex"]'), ruta).toHaveCount(0)
   }

@@ -19,9 +19,9 @@ export interface DatosReserva {
 }
 
 const TEXTO_HORARIO: Record<DatosReserva['horario'], string> = {
-  cualquiera: 'cualquier horario del sábado',
-  manana: 'sábado por la mañana (09:00 a 12:00)',
-  tarde: 'sábado por la tarde (13:00 a 17:00)',
+  cualquiera: 'cualquier horario',
+  manana: 'por la mañana',
+  tarde: 'por la tarde',
 }
 
 /**

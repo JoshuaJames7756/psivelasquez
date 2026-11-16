@@ -12,7 +12,7 @@ const pasos = [
   },
   {
     titulo: 'Coordinamos horario y reserva',
-    detalle: 'Atiendo los sábados y tengo 8 cupos por semana, por eso el cupo se reserva con un adelanto del 50%.',
+    detalle: 'Elegimos juntos un horario y el cupo se reserva con un adelanto del 50%.',
   },
   {
     titulo: 'Primera sesión, sin presión de tener todo claro',

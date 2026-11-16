@@ -17,8 +17,7 @@ export function ReservarPage() {
         <FormularioWhatsApp />
         <div className="mx-auto mt-8 max-w-xl space-y-2 text-center text-sm text-sage-700">
           <p>
-            Atiendo los <strong>sábados de 09:00 a 17:00</strong>, presencial u online. Para reservar
-            tu horario se coordina un adelanto del 50% por WhatsApp.
+            Atiendo presencial u online. Para reservar tu horario se coordina un adelanto del 50% por WhatsApp.
           </p>
           <p>
             ¿Prefieres escribirme directo? Usa el botón de WhatsApp del pie de página, o revisa las{' '}

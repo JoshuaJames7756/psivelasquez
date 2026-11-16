@@ -40,12 +40,12 @@ const preguntas: ItemPregunta[] = [
   {
     pregunta: '¿Por qué piden un adelanto para reservar?',
     respuesta:
-      'Atiendo solo 8 cupos por semana, así que el adelanto del 50% protege tu horario. El saldo se conversa por WhatsApp.',
+      'El adelanto del 50% protege tu horario. El saldo se conversa por WhatsApp.',
   },
   {
     pregunta: '¿Qué pasa después de reservar?',
     respuesta:
-      'Se abre WhatsApp con tu mensaje listo y yo te respondo para coordinar el horario del sábado y el adelanto del 50%. Cuando envías el comprobante, confirmo tu cita.',
+      'Se abre WhatsApp con tu mensaje listo y yo te respondo para coordinar el horario y el adelanto del 50%. Cuando envías el comprobante, confirmo tu cita.',
   },
   {
     pregunta: '¿Qué pasa si necesito cancelar o cambiar mi cita?',

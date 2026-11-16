@@ -8,7 +8,7 @@ describe('mensaje de reserva por WhatsApp', () => {
     const m = construirMensajeReserva(base)
     expect(m).toContain('Nombre: Ana Pérez')
     expect(m).toContain('Modalidad: online')
-    expect(m).toContain('sábado por la mañana (09:00 a 12:00)')
+    expect(m).toContain('Horario preferido: por la mañana')
     expect(m).toContain('Primera vez en terapia: sí')
     expect(m).not.toContain('Edad')
     expect(m).not.toContain('Motivo')

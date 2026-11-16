@@ -6,7 +6,6 @@ import { linkWhatsApp } from '../../shared/utils/whatsapp'
 
 const navegacion = [
   { to: '/sobre-mi', label: 'Sobre mí' },
-  { to: '/como-trabajo', label: 'Cómo trabajo' },
   { to: '/enfoques', label: 'Enfoques' },
   { to: '/formacion', label: 'Formación' },
   { to: '/modalidad', label: 'Modalidad' },
@@ -82,7 +81,6 @@ export function Footer() {
               <br />
               Cochabamba, Bolivia
             </p>
-            <p className="mt-2 text-sm text-cream-300">Sábados, 09:00 a 17:00</p>
             <p className="mt-2 text-sm text-cream-300">Presencial y online</p>
             <a
               href="https://maps.google.com/maps?q=Edif.+VyV+NUR+Parque+Fidel+Anze+200+Cochabamba"

@@ -1,6 +1,5 @@
 import { Route } from 'react-router-dom'
 import { AvisoEticoPage } from './pages/AvisoEticoPage'
-import { ComoTrabajoPage } from './pages/ComoTrabajoPage'
 import { EnfoquePage } from './pages/EnfoquePage'
 import { EnfoquesIndexPage } from './pages/EnfoquesIndexPage'
 import { FaqPage } from './pages/FaqPage'
@@ -23,7 +22,6 @@ export function rutasPublicas() {
     <Route element={<PublicLayout />}>
       <Route path="/" element={<HomePage />} />
       <Route path="/sobre-mi" element={<SobreMiPage />} />
-      <Route path="/como-trabajo" element={<ComoTrabajoPage />} />
       <Route path="/enfoques" element={<EnfoquesIndexPage />} />
       <Route path="/enfoques/:slug" element={<EnfoquePage />} />
       <Route path="/formacion" element={<FormacionPage />} />
